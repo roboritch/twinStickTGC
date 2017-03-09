@@ -12,7 +12,8 @@ public class KeyEvents : Singleton<KeyEvents>{
 	[SerializeField] private string localFileName = "Generic Bindings";
 	[SerializeField] private string localFolderName = "Bindings";
 	private ActionBindings currentActionBindings;
-
+	[SerializeField]
+	private bool loadBindingsFromFile = false;
 	void Start(){
 		setDefaultBindings();
 		if(!Directory.Exists(appendToLocalPath(localFolderName)))
@@ -21,7 +22,8 @@ public class KeyEvents : Singleton<KeyEvents>{
 		if(!File.Exists(appendToLocalPath(localFolderName + "/" + localFileName))){
 			SaveAndLoadXML.saveXML<ActionBindings>(appendToLocalPath(localFolderName + "/" + localFileName), currentActionBindings);
 		} else{ //disabled while developing new keys
-			//tryToLoadBidings();
+			if(loadBindingsFromFile)
+				tryToLoadBidings();
 		}
 	}
 
@@ -42,22 +44,33 @@ public class KeyEvents : Singleton<KeyEvents>{
 		return currentActionBindings;
 	}
 
-	public void saveNewActionBindings(ActionBindings bindings){
-		
-	}
-
 	#region setDefaultBindings
 
 	/// <summary>
 	/// all default keys must be set here in lew of a key changing screen
 	/// </summary>
 	private void setDefaultBindings(){
-
-		////////////////////////////////////////////////////////////
-
-		////////////////////////////////////////////////////////////
+		currentActionBindings.mainAction = new KeyCode[] {KeyCode.E};
+		currentActionBindings.moveUp = new KeyCode[] { KeyCode.W };
+		currentActionBindings.moveDown = new KeyCode[] { KeyCode.S };
+		currentActionBindings.moveLeft = new KeyCode[] { KeyCode.A };
+		currentActionBindings.moveRight = new KeyCode[] { KeyCode.D };
 	}
 
+	#endregion
+
+	#region action delegates
+	/*	instructions to assigen a method to a KeypressCallback 
+		nameOfDelegateContainer += methodName;
+		the plus is necasary since multuple methods classes may want to work with the same callback
+		*/
+
+	public delegate void KeypressCallback();
+	public KeypressCallback mainAction; //can store multuple methods to call when the button is pressed
+	public KeypressCallback moveUp;
+	public KeypressCallback moveDown;
+	public KeypressCallback moveLeft;
+	public KeypressCallback moveRight;
 	#endregion
 
 	//key events must be manualy placed in the update
@@ -65,7 +78,21 @@ public class KeyEvents : Singleton<KeyEvents>{
 	//with all elements visible
 	#region button checks
 	void Update(){
-		
+		if (correctKeysPressed(currentActionBindings.mainAction)) {
+			mainAction();
+		}
+		if (correctKeysPressed(currentActionBindings.moveUp)) {
+			moveUp();
+		}
+		if (correctKeysPressed(currentActionBindings.moveDown)) {
+			moveDown();
+		}
+		if (correctKeysPressed(currentActionBindings.moveLeft)) {
+			moveLeft();
+		}
+		if (correctKeysPressed(currentActionBindings.moveRight)) {
+			moveRight();
+		}
 	}
 
 
@@ -108,6 +135,19 @@ public class KeyEvents : Singleton<KeyEvents>{
 //use example as format for saved keys
 public struct ActionBindings{
 	[XmlArrayItemAttribute("key")]
-	[XmlArrayAttribute("example")]
-	public KeyCode[] example;
+	[XmlArrayAttribute("mainAction")]
+	public KeyCode[] mainAction;
+	[XmlArrayItemAttribute("key")]
+	[XmlArrayAttribute("moveUp")]
+	public KeyCode[] moveUp;
+	[XmlArrayItemAttribute("key")]
+	[XmlArrayAttribute("moveDown")]
+	public KeyCode[] moveDown;
+	[XmlArrayItemAttribute("key")]
+	[XmlArrayAttribute("moveLeft")]
+	public KeyCode[] moveLeft;
+	[XmlArrayItemAttribute("key")]
+	[XmlArrayAttribute("moveRight")]
+	public KeyCode[] moveRight;
 }
+
