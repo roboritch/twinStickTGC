@@ -40,14 +40,14 @@ public class Movment : MonoBehaviour {
 	[SerializeField] private float maxAccelerationPerSec = .1f;
 	[SerializeField] private float decelerationMultiplyer = 3f;
 
-	public Player.floatModifyer maxSpeedModifyers;
+	public Actor.floatModifyer maxSpeedModifyers;
 
 	public float getMaxSpeed() {
 		if(maxSpeedModifyers == null) 
 			return maxSpeed;
 
 		float modifyedSpeed = maxSpeed;
-		foreach (Player.floatModifyer part in maxSpeedModifyers.GetInvocationList()) {
+		foreach (Actor.floatModifyer part in maxSpeedModifyers.GetInvocationList()) {
 			modifyedSpeed += part(maxSpeed);
 		}
 		print(modifyedSpeed);

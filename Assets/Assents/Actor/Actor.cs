@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Player : MonoBehaviour {
+public class Actor : MonoBehaviour {
 
 	#region modifyer delegates	
 	public delegate float floatModifyer(float input);
@@ -31,11 +31,12 @@ public class Player : MonoBehaviour {
 	}
 	#endregion
 
-	#region movment atachment
+	#region movment attachment
+	
 	#endregion
 
-	#region over time efects
-
+	#region over time effects
+	
 	#endregion
 
 	// Use this for initialization
