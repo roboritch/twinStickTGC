@@ -13,8 +13,6 @@ public class Movment : MonoBehaviour {
 		rigidBody = GetComponent<Rigidbody2D>();
 	}
 
-
-
 	#region key binds
 	private void initKeyCallBacks() {
 		KeyEvents.Instance.buttionCallbackFunctions.moveUp = moveUp;
@@ -24,16 +22,16 @@ public class Movment : MonoBehaviour {
 	}
 
 	public void moveUp() {
-		movmentWantedVertacal = maxSpeed;
+		movmentWantedVertacal = getMaxSpeed();
 	}
 	public void moveDown() {
-		movmentWantedVertacal = -maxSpeed;
+		movmentWantedVertacal = -getMaxSpeed();
 	}
 	public void moveLeft() {
-		movmentWantedHorizontal = -maxSpeed;
+		movmentWantedHorizontal = -getMaxSpeed();
 	}
 	public void moveRight() {
-		movmentWantedHorizontal = maxSpeed;
+		movmentWantedHorizontal = getMaxSpeed();
 	}
 	#endregion
 
@@ -45,10 +43,15 @@ public class Movment : MonoBehaviour {
 	public Player.floatModifyer maxSpeedModifyers;
 
 	public float getMaxSpeed() {
-		float modifyedSpeed = maxSpeed;
-		modifyedSpeed += maxSpeedModifyers(maxSpeed);
+		if(maxSpeedModifyers == null) 
+			return maxSpeed;
 
-		return maxSpeed;
+		float modifyedSpeed = maxSpeed;
+		foreach (Player.floatModifyer part in maxSpeedModifyers.GetInvocationList()) {
+			modifyedSpeed += part(maxSpeed);
+		}
+		print(modifyedSpeed);
+		return modifyedSpeed;
 	}
 	/// <summary>
 	/// this var should be used when an ability affects player movment
@@ -72,21 +75,16 @@ public class Movment : MonoBehaviour {
 
 		float accelerationAmount = Time.timeScale * maxAccelerationPerSec * Time.deltaTime; //make movment independent of framrate
 
-		if (currentVelocety.magnitude > maxSpeed) { //if the object velocity is greater than max slow it quicly
-			accelerationAmount *= 20;
+		if (wantedVelocety.magnitude > maxSpeed) { //if the object velocity is greater than max set it to max
+			wantedVelocety = wantedVelocety.normalized * maxSpeed;
 		}
 
 		Vector2 newVelocity = Vector2.Lerp(currentVelocety, wantedVelocety, accelerationAmount);
-		if(newVelocity.sqrMagnitude < currentVelocety.sqrMagnitude) { //slow down faster on deceleration
-			print("slowing");
-			newVelocity = Vector2.Lerp(currentVelocety, wantedVelocety, accelerationAmount * decelerationMultiplyer);
-		}
 
 		rigidBody.velocity = newVelocity;
 	}
 
 	#endregion
-
 
 	// Use this for initialization
 	void Start () {
