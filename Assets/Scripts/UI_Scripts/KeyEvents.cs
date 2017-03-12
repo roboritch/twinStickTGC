@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Xml.Serialization;
 using System.IO;
-using UnityEditor;
+
 
 
 public delegate void KeypressCallback();
@@ -46,6 +46,19 @@ public class KeyEvents : Singleton<KeyEvents>{
 	public ActionBindings getActionBindings(){
 		return currentActionBindings;
 	}
+
+	#region Mouse control
+	public void constrainMouseToScreen(bool state) {
+		if(state)
+		Cursor.lockState = CursorLockMode.Confined;
+		else
+		Cursor.lockState = CursorLockMode.None;
+	}
+
+
+
+	#endregion
+
 
 	#region setDefaultBindings
 

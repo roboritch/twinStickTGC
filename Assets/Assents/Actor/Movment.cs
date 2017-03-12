@@ -36,19 +36,19 @@ public class Movment : MonoBehaviour {
 	#endregion
 
 	#region move
-	[SerializeField] private float maxSpeed = 10f;
-	[SerializeField] private float maxAccelerationPerSec = .1f;
+	[SerializeField] private float speed_MAX = 10f;
+	[SerializeField] private float accelerationPerSec_MAX = .1f;
 	[SerializeField] private float decelerationMultiplyer = 3f;
 
 	public Actor.floatModifyer maxSpeedModifyers;
 
 	public float getMaxSpeed() {
 		if(maxSpeedModifyers == null) 
-			return maxSpeed;
+			return speed_MAX;
 
-		float modifyedSpeed = maxSpeed;
+		float modifyedSpeed = speed_MAX;
 		foreach (Actor.floatModifyer part in maxSpeedModifyers.GetInvocationList()) {
-			modifyedSpeed += part(maxSpeed);
+			modifyedSpeed += part(speed_MAX);
 		}
 		print(modifyedSpeed);
 		return modifyedSpeed;
@@ -73,10 +73,10 @@ public class Movment : MonoBehaviour {
 		Vector2 wantedVelocety = new Vector2(movmentWantedHorizontal,movmentWantedVertacal);
 		Vector2 currentVelocety = rigidBody.velocity;
 
-		float accelerationAmount = Time.timeScale * maxAccelerationPerSec * Time.deltaTime; //make movment independent of framrate
+		float accelerationAmount = Time.timeScale * accelerationPerSec_MAX * Time.deltaTime; //make movment independent of framrate
 
-		if (wantedVelocety.magnitude > maxSpeed) { //if the object velocity is greater than max set it to max
-			wantedVelocety = wantedVelocety.normalized * maxSpeed;
+		if (wantedVelocety.magnitude > speed_MAX) { //if the object velocity is greater than max set it to max
+			wantedVelocety = wantedVelocety.normalized * speed_MAX;
 		}
 
 		Vector2 newVelocity = Vector2.Lerp(currentVelocety, wantedVelocety, accelerationAmount);

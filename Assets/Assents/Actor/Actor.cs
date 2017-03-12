@@ -9,12 +9,12 @@ public class Actor : MonoBehaviour {
 	#endregion
 
 	#region health
-	[SerializeField] private float maxHealth = 100;
-	[SerializeField] private float minHealth = 0; //some cards may set this > 0 for a short time
+	[SerializeField] private float health_MAX = 100;
+	[SerializeField] private float health_MIN = 0; //some cards may set this > 0 for a short time
 	[SerializeField] private float health;
 
 	private void healthInit() {
-		health = maxHealth;
+		health = health_MAX;
 	}
 	#endregion
 	
