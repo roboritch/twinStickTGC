@@ -34,8 +34,12 @@ public class Actor : MonoBehaviour {
 		
 	}
 	#endregion
-	
+
 	#region over time effects
+
+	#endregion
+
+	#region Hand of Cards
 	
 	#endregion
 
