@@ -8,8 +8,9 @@ public class ProjectileGun : Card {
 		throw new NotImplementedException();
 	}
 
-	public override void useCard(Actor cardUser) {
-		cardUser.
+	public override bool useCard(Actor cardUser) {
+		//TODO projectile gun
+		return false;
 	}
 
 	// Use this for initialization

@@ -1,21 +1,29 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// holds refrencs to the current player and all posible actions
+/// sets key bidings for all card slots
+/// </summary>
 public class Hand : MonoBehaviour {
 
-	public CardSlot[] handSlots = new CardSlot[4];
-	
+	public Actor curretPlayer;
+	public CardSlot[] cardSlots = new CardSlot[4];
+	public Deck deck;
 
-
-
-	// Use this for initialization
-	void Start () {
-		
+	[SerializeField]
+	private bool playerControled;
+	private void initKeyBindings() {
+		for (int i = 0; i < cardSlots.Length; i++) {
+			KeyEvents.Instance.buttionCallbackFunctions.activateCard[i] += cardSlots[i].activateCard;
+		}
 	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+
+	void Start() {
+		if(playerControled)
+		initKeyBindings();
+    }
+
 }

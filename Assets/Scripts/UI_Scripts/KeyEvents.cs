@@ -64,7 +64,7 @@ public class KeyEvents : Singleton<KeyEvents>{
 
 	/// <summary>
 	/// all default keys must be set here in lew of a key changing screen
-	/// </summary>
+	/// </summary>probabilityMultiplyer_4Point
 	private void setDefaultBindings(){
 		currentActionBindings.mainAction = new KeyCode[] {KeyCode.E};
 		buttionCallbackFunctions.mainAction = emptyCallback;
@@ -80,6 +80,21 @@ public class KeyEvents : Singleton<KeyEvents>{
 
 		currentActionBindings.moveRight = new KeyCode[] { KeyCode.D };
 		buttionCallbackFunctions.moveRight = emptyCallback;
+
+
+		buttionCallbackFunctions.activateCard = new KeypressCallback[4];
+
+        currentActionBindings.activateCard1 = new KeyCode[] { KeyCode.Alpha1 };
+		buttionCallbackFunctions.activateCard[0] = emptyCallback;
+
+		currentActionBindings.activateCard2 = new KeyCode[] { KeyCode.Alpha2 };
+		buttionCallbackFunctions.activateCard[1] = emptyCallback;
+
+		currentActionBindings.activateCard3 = new KeyCode[] { KeyCode.Alpha3 };
+		buttionCallbackFunctions.activateCard[2] = emptyCallback;
+
+		currentActionBindings.activateCard4 = new KeyCode[] { KeyCode.Alpha4 };
+		buttionCallbackFunctions.activateCard[3] = emptyCallback;
 	}
 
 	#endregion
@@ -175,6 +190,18 @@ public struct ActionBindings{
 	[XmlArrayItemAttribute("key")]
 	[XmlArrayAttribute("moveRight")]
 	public KeyCode[] moveRight;
+	[XmlArrayItemAttribute("key")]
+	[XmlArrayAttribute("activateCard1")]
+	public KeyCode[] activateCard1;
+	[XmlArrayItemAttribute("key")]
+	[XmlArrayAttribute("activateCard2")]
+	public KeyCode[] activateCard2;
+	[XmlArrayItemAttribute("key")]
+	[XmlArrayAttribute("activateCard3")]
+	public KeyCode[] activateCard3;
+	[XmlArrayItemAttribute("key")]
+	[XmlArrayAttribute("activateCard4")]
+	public KeyCode[] activateCard4;
 }
 
 public struct delegateCallbacks {
@@ -183,4 +210,5 @@ public struct delegateCallbacks {
 	public KeypressCallback moveDown;
 	public KeypressCallback moveLeft;
 	public KeypressCallback moveRight;
+	public KeypressCallback[] activateCard;
 }

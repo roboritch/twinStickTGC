@@ -35,6 +35,6 @@ public abstract class Card : MonoBehaviour{
 
 	public abstract void displayDescription(defaultTextHolder decriptionBox);
 
-	public abstract void useCard(Actor cardUser);
+	public abstract bool useCard(Actor cardUser);
 
 }
