@@ -10,17 +10,19 @@ public class NewCardTimer : MonoBehaviour {
 	private float time_sec = 1f;
 	private bool countingDown = false;
 
+
+	#region Timer updates
 	public void startCountdown(float timeTillNewCard_sec) {
 		time_sec = timeTillNewCard_sec;
 		initalTime_sec = timeTillNewCard_sec;
-        countingDown = true;
+		countingDown = true;
 	}
 
 	public void reduceCountDown(float timeReduced_sec) {
 		time_sec -= timeReduced_sec;
 		updateTimer(false);
 	}
-	
+
 	/// <summary>
 	/// updates countown
 	/// </summary>
@@ -31,6 +33,13 @@ public class NewCardTimer : MonoBehaviour {
 		}
 		updateGrapic();
 	}
+
+	private void drawNewCard() {
+
+	}
+
+	#endregion
+
 
 	#region Grapics
 	private void initGrapics() {

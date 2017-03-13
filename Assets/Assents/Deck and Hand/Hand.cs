@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class Hand : MonoBehaviour {
 
-	pubic 
+	public CardSlot[] handSlots = new CardSlot[4];
+	
 
 
 
