@@ -1,8 +1,9 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Actor : MonoBehaviour {
+public class Actor : MonoBehaviour , IDamageable {
 
 	#region modifyer delegates	
 	public delegate float floatModifyer(float input);
@@ -16,8 +17,14 @@ public class Actor : MonoBehaviour {
 	private void healthInit() {
 		health = health_MAX;
 	}
+
+	public void takeDamage(float amount) {
+		health -= amount;
+	}
+
+	public new Collider2D collider;
 	#endregion
-	
+
 	//all conections to KeyEvents shoud be here and be disablable
 	#region button callbacks
 	[SerializeField] private bool playerControled = true;
@@ -45,6 +52,7 @@ public class Actor : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		collider = GetComponent<Collider2D>();
 		initButtonCallbacks();
 		healthInit();
 	}
@@ -53,4 +61,11 @@ public class Actor : MonoBehaviour {
 	void Update () {
 		
 	}
+
+	#region card helper functions
+	public Vector2 get2dPostion() {
+		return new Vector2(transform.position.x, transform.position.y);
+    }
+	#endregion
+
 }

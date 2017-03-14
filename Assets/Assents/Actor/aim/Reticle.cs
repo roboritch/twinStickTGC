@@ -17,6 +17,10 @@ public class Reticle : MonoBehaviour {
 		transform.position = reticlePos;
 	}
 
+	public Vector3 getPosition() {
+		return transform.position;
+	}
+
 	// Use this for initialization
 	void Start () {
 		

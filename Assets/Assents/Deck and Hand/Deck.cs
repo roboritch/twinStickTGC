@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Deck : MonoBehaviour {
-	//use this code to check types for special card draw 
+	//use this code to check types for special card draw information from interfaces
 	//typeof(IMyInterface).IsAssignableFrom(typeof(MyType)) 
+
 	private float totalProbabilityNumber = 0;
+	private int cardsInTheDeck = 0;
 	private LinkedList<CardtypesAndProbabilities> cardTypesAndProbabilitys;
 
 	private int drawFail = 0; // prevent recurshon inf loop
@@ -25,10 +27,11 @@ public class Deck : MonoBehaviour {
 			probNumber += item.probabilityMultiplyer;
 			if(probNumber > rndNum) {
 				if (item.removedOnDraw)
-					cardTypesAndProbabilitys.Remove(item);
+					removeCardFromDeck(item);
 				return item.cardType;
 			}
 		}
+
 		Debug.LogError("draw card fail, retrying"); // this shouldn't happen
 		if (drawFail++ > 10)
 			return null;
@@ -36,16 +39,33 @@ public class Deck : MonoBehaviour {
 			return drawCard(); 
 	}
 
-	
+	private void removeCardFromDeck(CardtypesAndProbabilities card) {
+		cardTypesAndProbabilitys.Remove(card);
+		updateCardsInDeck(-1);
+    }
 
 	public void addCardToDeck(System.Type cardType, float probabilityMultiplyer,bool cardRemovedOnDraw) {
 		cardTypesAndProbabilitys.AddLast(new CardtypesAndProbabilities(cardType, probabilityMultiplyer,cardRemovedOnDraw));
 		totalProbabilityNumber += probabilityMultiplyer;
+		updateCardsInDeck(1);
     }
+
+	private defaultTextHolder cardCount;
+	private void updateCardsInDeck(int cardChangeAmount) {
+		cardsInTheDeck += cardChangeAmount;
+		cardCount.setNewDefautText(cardsInTheDeck.ToString());
+	}
+
+	// called before start
+	void Awake() {
+		cardCount = GetComponentInChildren<defaultTextHolder>();
+		cardTypesAndProbabilitys = new LinkedList<CardtypesAndProbabilities>();
+		addCardToDeck(typeof(ProjectileGun), ProjectileGun.probabiltyOfDraw, ProjectileGun.removeOnDraw);
+	}
 
 	// Use this for initialization
 	void Start() {
-		cardTypesAndProbabilitys = new LinkedList<CardtypesAndProbabilities>();
+		
     }
 	
 	// Update is called once per frame

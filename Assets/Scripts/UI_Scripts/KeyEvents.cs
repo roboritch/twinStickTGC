@@ -134,6 +134,18 @@ public class KeyEvents : Singleton<KeyEvents>{
 		if (correctKeysPressed(currentActionBindings.moveRight)) {
 			buttionCallbackFunctions.moveRight();
 		}
+		if (correctKeysPressed(currentActionBindings.activateCard1)) {
+			buttionCallbackFunctions.activateCard[0]();
+		}
+		if (correctKeysPressed(currentActionBindings.activateCard2)) {
+			buttionCallbackFunctions.activateCard[1]();
+		}
+		if (correctKeysPressed(currentActionBindings.activateCard3)) {
+			buttionCallbackFunctions.activateCard[2]();
+		}
+		if (correctKeysPressed(currentActionBindings.activateCard4)) {
+			buttionCallbackFunctions.activateCard[3]();
+		}
 	}
 
 

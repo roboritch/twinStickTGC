@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -7,11 +8,17 @@ using UnityEngine.UI;
 public class CardSlot : MonoBehaviour {
 	private Image image;
 
-	public Card cardBeingHeld;
+	[SerializeField] private Card cardBeingHeld;
+	public void receiveCard(Card card) {
+		cardBeingHeld = card;
+		displayCardIcon();
+	}
+
 
 	[SerializeField]
 	private Sprite defaultSprite;
 	public void displayCardIcon() {
+		if(cardBeingHeld != null)
 		image.sprite = cardBeingHeld.cardArt;
 	}
 	
@@ -28,8 +35,11 @@ public class CardSlot : MonoBehaviour {
 	/// this is called on a button press
 	/// </summary>
 	public void activateCard() {
+		if(cardBeingHeld != null)
 		if(cardBeingHeld.useCard(hand.curretPlayer)) { //card activation succsess
 			startCountdown(cardBeingHeld.cardReloadTime_seconds);
+			displayDefaultSprite();
+			cardBeingHeld = null;
 		}
 	}
 
@@ -42,6 +52,7 @@ public class CardSlot : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+		if(countingDown)
 		updateTimer(true);
 	}
 
@@ -69,7 +80,7 @@ public class CardSlot : MonoBehaviour {
 	/// </summary>
 	/// <param name="frameUpdate">true if called in NewCardTimer's Update method, false otherwise</param>
 	private void updateTimer(bool frameUpdate) {
-		if (countingDown && frameUpdate) {
+		if (frameUpdate) {
 			time_sec -= Time.deltaTime * Time.timeScale;
 		}
 		checkTimerDone();
@@ -78,16 +89,23 @@ public class CardSlot : MonoBehaviour {
 
 	private void checkTimerDone() {
 		if (time_sec <= 0f) {
-
+			countingDown = false;
+			drawCard();
 		}
+	}
+
+	private void drawCard() {
+		Type card = hand.deck.drawCard();
+		if (card != null)
+			receiveCard((Card)Activator.CreateInstance(card));
 	}
 	#endregion
 
 
 	#region Grapics
 	private void initTimerGrapics() {
-		grapicSize = GetComponentInChildren<RectTransform>();
-		timerImage = GetComponentInChildren<Image>();
+		grapicSize = transform.GetChild(0).GetComponent<RectTransform>();
+		timerImage = transform.GetChild(0).GetComponent<Image>();
 	}
 
 	private float barSize = 100f;

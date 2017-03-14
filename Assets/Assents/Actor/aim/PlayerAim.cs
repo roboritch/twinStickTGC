@@ -1,10 +1,17 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerAim : MonoBehaviour {
+public class PlayerAim : MonoBehaviour, IGetAim {
 	[SerializeField] private GameObject reticle;
-	
+
+	public void getAim(out Vector2 aimLocation) {
+		Vector3 pos = aimLocationObject.getPosition();
+		aimLocation.x = pos.x;
+		aimLocation.y = pos.y;
+	}
+
 	private Reticle aimLocationObject;
 
 	#region look at function
@@ -39,4 +46,6 @@ public class PlayerAim : MonoBehaviour {
 		lookAtRedicle();
 		updateCameraPos();
     }
+
+
 }

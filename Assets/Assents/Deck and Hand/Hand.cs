@@ -21,9 +21,18 @@ public class Hand : MonoBehaviour {
 		}
 	}
 
+	/// <summary>
+	/// Debug code for now
+	/// </summary>
+	private void drawInitalCardFromDeck() {
+		cardSlots[0].receiveCard((Card)Activator.CreateInstance(deck.drawCard()));
+	}
+
 	void Start() {
 		if(playerControled)
-		initKeyBindings();
+			initKeyBindings();
+		drawInitalCardFromDeck();
     }
 
+	
 }
