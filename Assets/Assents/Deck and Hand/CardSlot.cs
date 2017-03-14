@@ -43,10 +43,13 @@ public class CardSlot : MonoBehaviour {
 		}
 	}
 
-	// Use this for initialization
-	void Start () {
+	void Awake() {
 		hand = GetComponentInParent<Hand>();
 		initCardSlot();
+	}
+
+	// Use this for initialization
+	void Start () {
 		initTimerGrapics();
     }
 	

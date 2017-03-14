@@ -36,13 +36,15 @@ public class ProjectileGun : Card {
 		ExecuteEvents.Execute<IGetAim>(cardUser.gameObject, null, (x, y) => x.getAim(out aimLocation));
 
 		RaycastHit2D[] hits = new RaycastHit2D[1]; 
-		int hitNumb = cardUser.collider.Raycast(aimLocation, hits,20f); //TODO change aim location to relative direction
+		int hitNumb = cardUser.collider.Raycast(aimLocation-(Vector2)cardUser.transform.position, hits,20f); //TODO change aim location to relative direction
 		if(hitNumb == 0) {
 			return null;
 		}
 		IDamageable hitObject = hits[0].transform.GetComponent<IDamageable>();
 		return hitObject;
 	}
+
+
 
 	#region overrid vars
 	public override void displayDescription(defaultTextHolder decriptionBox) {
