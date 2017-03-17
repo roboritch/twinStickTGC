@@ -60,7 +60,7 @@ public class Deck : MonoBehaviour {
 	void Awake() {
 		cardCount = GetComponentInChildren<defaultTextHolder>();
 		cardTypesAndProbabilitys = new LinkedList<CardtypesAndProbabilities>();
-		addCardToDeck(typeof(ProjectileGun), ProjectileGun.probabiltyOfDraw, ProjectileGun.removeOnDraw);
+		addCardToDeck(typeof(HitscanBase), HitscanBase.probabiltyOfDraw, HitscanBase.removeOnDraw);
 	}
 
 	// Use this for initialization

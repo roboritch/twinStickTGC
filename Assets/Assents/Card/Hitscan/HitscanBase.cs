@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class ProjectileGun : Card {
+public class HitscanBase : Card {
 	#region Initalization of static members
-	static ProjectileGun() { } //insures these values are overwriten properly
+	static HitscanBase() { } //insures these values are overwriten properly
 	public new static readonly bool removeOnDraw = true;
 	public new static readonly float probabiltyOfDraw = 1f;
 	#endregion
@@ -15,7 +15,7 @@ public class ProjectileGun : Card {
 	// sprite is done via the unity inspecter by 
 	// clicking on this script in the project assets window
 
-	public ProjectileGun() { 
+	public HitscanBase() { 
 		cardReloadTime_seconds = 5f;
 		cardResorceCost = 1f;
 		cardArt = SpriteHolder.Instance.pistol;
