@@ -25,7 +25,12 @@ public class Hand : MonoBehaviour {
 	/// Debug code for now
 	/// </summary>
 	private void drawInitalCardFromDeck() {
-		cardSlots[0].receiveCard((Card)Activator.CreateInstance(deck.drawCard()));
+		for (int i = 0; i < 3; i++) {
+			System.Type card = deck.drawCard();
+			if(card != null)
+				cardSlots[i].receiveCard((Card)Activator.CreateInstance(card));
+		}
+
 	}
 
 	void Start() {

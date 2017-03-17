@@ -5,14 +5,21 @@ using UnityEngine;
 public class Deck : MonoBehaviour {
 	//use this code to check types for special card draw information from interfaces
 	//typeof(IMyInterface).IsAssignableFrom(typeof(MyType)) 
-
+	
+	/// <summary>
+	/// the sum of all probability multiplyers in the deck
+	/// this must be updated when cards are added and removed from the deck
+	/// </summary>
 	private float totalProbabilityNumber = 0;
 	private int cardsInTheDeck = 0;
+	/// <summary>
+	/// this is a representation of all the cards in a players deck
+	/// </summary>
 	private LinkedList<CardtypesAndProbabilities> cardTypesAndProbabilitys;
 
 	private int drawFail = 0; // prevent recurshon inf loop
 	/// <summary>
-	/// 
+	/// draws a card from the deck if there is any
 	/// </summary>
 	/// <returns>a card from the deck, NULL if empty</returns>
 	public System.Type drawCard() {
@@ -21,7 +28,7 @@ public class Deck : MonoBehaviour {
 			return null;
 		}
 
-		float rndNum = Random.Range(0, totalProbabilityNumber);
+		float rndNum = Random.Range(0, totalProbabilityNumber); 
 		float probNumber = 0;
 		foreach (var item in cardTypesAndProbabilitys) {
 			probNumber += item.probabilityMultiplyer;
@@ -41,6 +48,7 @@ public class Deck : MonoBehaviour {
 
 	private void removeCardFromDeck(CardtypesAndProbabilities card) {
 		cardTypesAndProbabilitys.Remove(card);
+		totalProbabilityNumber -= card.probabilityMultiplyer;
 		updateCardsInDeck(-1);
     }
 
@@ -60,7 +68,9 @@ public class Deck : MonoBehaviour {
 	void Awake() {
 		cardCount = GetComponentInChildren<defaultTextHolder>();
 		cardTypesAndProbabilitys = new LinkedList<CardtypesAndProbabilities>();
-		addCardToDeck(typeof(HitscanBase), HitscanBase.probabiltyOfDraw, HitscanBase.removeOnDraw);
+		for (int i = 0; i < 5; i++) {
+			addCardToDeck(typeof(HitscanBase), HitscanBase.probabiltyOfDraw, HitscanBase.removeOnDraw);
+		}
 	}
 
 	// Use this for initialization

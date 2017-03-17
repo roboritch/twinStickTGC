@@ -15,11 +15,14 @@ public class CardSlot : MonoBehaviour {
 	}
 
 
-	[SerializeField]
-	private Sprite defaultSprite;
+	[SerializeField] private Sprite defaultSprite;
+	[SerializeField] private Sprite noCardsLeft;
+
 	public void displayCardIcon() {
-		if(cardBeingHeld != null)
-		image.sprite = cardBeingHeld.cardArt;
+		if (cardBeingHeld != null)
+			image.sprite = cardBeingHeld.cardArt;
+		else
+			image.sprite = noCardsLeft;
 	}
 	
 	private void displayDefaultSprite() {
@@ -87,7 +90,7 @@ public class CardSlot : MonoBehaviour {
 			time_sec -= Time.deltaTime * Time.timeScale;
 		}
 		checkTimerDone();
-		updateGrapic();
+		updateGrapic_Timer();
 	}
 
 	private void checkTimerDone() {
@@ -101,6 +104,10 @@ public class CardSlot : MonoBehaviour {
 		Type card = hand.deck.drawCard();
 		if (card != null)
 			receiveCard((Card)Activator.CreateInstance(card));
+		else
+			displayCardIcon();
+		resetTimerGrapics();
+		updateGrapic_Timer();
 	}
 	#endregion
 
@@ -111,10 +118,15 @@ public class CardSlot : MonoBehaviour {
 		timerImage = transform.GetChild(0).GetComponent<Image>();
 	}
 
+	private void resetTimerGrapics() {
+		initalTime_sec = 1f;
+		time_sec = 1f;
+	}
+
 	private float barSize = 100f;
 	private RectTransform grapicSize;
 	private Image timerImage;
-	private void updateGrapic() {
+	private void updateGrapic_Timer() {
 		if (initalTime_sec != 0)
 			grapicSize.sizeDelta = new Vector2(barSize * (time_sec / initalTime_sec), grapicSize.sizeDelta.y);
 	}
