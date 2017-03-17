@@ -14,11 +14,14 @@ public class Movment : MonoBehaviour {
 	}
 
 	#region key binds
+	[SerializeField] private bool playerControled;
 	private void initKeyCallBacks() {
-		KeyEvents.Instance.buttionCallbackFunctions.moveUp = moveUp;
-		KeyEvents.Instance.buttionCallbackFunctions.moveDown = moveDown;
-		KeyEvents.Instance.buttionCallbackFunctions.moveLeft = moveLeft;
-		KeyEvents.Instance.buttionCallbackFunctions.moveRight = moveRight;
+		if (playerControled) {
+			KeyEvents.Instance.buttionCallbackFunctions.moveUp += moveUp;
+			KeyEvents.Instance.buttionCallbackFunctions.moveDown += moveDown;
+			KeyEvents.Instance.buttionCallbackFunctions.moveLeft += moveLeft;
+			KeyEvents.Instance.buttionCallbackFunctions.moveRight += moveRight;
+		}
 	}
 
 	public void moveUp() {
