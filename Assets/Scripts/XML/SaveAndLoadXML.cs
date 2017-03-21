@@ -44,7 +44,7 @@ public static class SaveAndLoadXML{
 	public static bool loadXML<T>(string filePath, out T fileOut){
 		fileOut = default(T);
 		if(File.Exists(filePath)){
-			Debug.Log("no file with that name exists in the location/n" + filePath);
+			Debug.Log("no file with that name exists in the location\n" + filePath);
 			return false;
 		}
 			
@@ -58,7 +58,7 @@ public static class SaveAndLoadXML{
 		} catch(Exception ex){
 			if(stream != null)
 				stream.Close();
-			Debug.LogError("struct load failed, error:/n" + ex);
+			Debug.LogError("struct load failed, error:\n" + ex);
 			return false;
 		}
 		return true;

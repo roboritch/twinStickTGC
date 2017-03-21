@@ -118,6 +118,22 @@ public class Actor : MonoBehaviour , IDamageable {
 	public Vector2 get2dPostion() {
 		return new Vector2(transform.position.x, transform.position.y);
     }
+	
+	/// <summary>
+	/// aim of this object
+	/// </summary>
+	private IGetAim aimObject;
+	public Vector2 getNormalizedAim(Vector2 startPoint) {
+		if(aimObject == null) {
+			Debug.LogWarning("No aim in object!\n" + gameObject.GetInstanceID());
+			return new Vector2();
+		}
+		Vector2 aimLocation;
+		aimObject.getAim(out aimLocation);
+		aimLocation = aimLocation - startPoint; //vector from actor to aim
+		aimLocation = aimLocation.normalized;
+		return aimLocation;
+	}
 	#endregion
 
 }

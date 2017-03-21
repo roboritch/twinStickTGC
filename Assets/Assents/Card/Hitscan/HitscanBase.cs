@@ -22,6 +22,8 @@ public class HitscanBase : Card {
     }
 	#endregion
 
+
+
 	private void fireGun(Actor cardUser) {
 		IDamageable hitObject = raycastProjectile(cardUser);
         if (hitObject != null) {
@@ -51,6 +53,10 @@ public class HitscanBase : Card {
 	public override bool useCard(Actor cardUser) {
 		fireGun(cardUser);
 		return true;
+	}
+
+	public override void cacheResorces() {
+		//no resorces to be cashed
 	}
 	#endregion
 }

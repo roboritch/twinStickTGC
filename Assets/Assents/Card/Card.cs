@@ -50,4 +50,9 @@ public abstract class Card {
 	/// <returns>true if card used,false if card not used</returns>
 	public abstract bool useCard(Actor cardUser);
 
+	/// <summary>
+	/// All on disk assents required for the card are loaded into memory
+	/// </summary>
+	public abstract void cacheResorces();
+
 }

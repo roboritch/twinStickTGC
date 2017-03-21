@@ -20,23 +20,66 @@ public class ProjectileWeaponBase : Card {
 		cardArt = SpriteHolder.Instance.pistol;
 	}
 	#endregion
+	
+	#region Basic Methods
+	protected float getProjectileSpeed(Actor cardUser) {
+		//TODO add interface that can be found in Actor that changes projectile speed
+		return 5f;
+	}
 
-	private void fireGun(Actor cardUser,ProjectileBase projectile) {
+	protected float getProjectileDamage() {
+		//TODO add interface that can be found in Actor that changes projectile damage
+		return 5f;
+	}
+	#endregion
+
+	//These vars should be reused
+	protected float projectileDistanceFromUser;
+	protected void fireGun(Actor cardUser) {
+		Vector2 userPosition = cardUser.get2dPostion(); //this can be changed to a muzzle location
+		Vector2 projectileSize = new Vector2(0.4f, 0.4f); 
+		Vector2 aimVectorFromUser = cardUser.getNormalizedAim(userPosition);
+
+		//setting projectile properties
+		ProjectileBase projectile = instantiateProjectile(0);
+		projectile.transform.position = userPosition + aimVectorFromUser * .5f;
+		projectile.setVolocity(aimVectorFromUser * getProjectileSpeed(cardUser));
+		projectile.setDamage(getProjectileDamage());
 
 	}
 
-	private void createProjectile(Vector2 projectileVolocity,ProjectileBase projectile) {
-
+	protected ProjectileBase instantiateProjectile(int projectileType) {
+		GameObject projectile = projectilePrefabs[projectileType];
+		if(projectile == null) { //debug helper null check
+			Debug.LogError("projectile prefab null, check resorce folder\n" + this.GetType().Name + "/" + projectilePrefabNames[projectileType]);
+			return null;
+		}
+		projectile = UnityEngine.Object.Instantiate(projectile);
+		ProjectileBase instantiatedProjectile = projectile.GetComponent<ProjectileBase>(); 
+		return instantiatedProjectile;
 	}
 
+	/// <summary>
+	/// the names of all your projectile prefabs
+	/// </summary>
+	protected string[] projectilePrefabNames = { "projectile" };
+	protected GameObject[] projectilePrefabs;
+	protected void loadProjectileResorces() {
+		projectilePrefabs = new GameObject[projectilePrefabNames.Length];
+		for (int i = 0; i < projectilePrefabNames.Length; i++) {
+			projectilePrefabs[i] = CardPrefabResorceLoader.Instance.loadPrefab(this.GetType().Name + "/" + projectilePrefabNames[i]);
+		}
+	}
 
+	
 	#region override vars
 	public override void displayDescription(defaultTextHolder decriptionBox) {
 		throw new NotImplementedException();
 	}
 
 	public override bool useCard(Actor cardUser) {
-		throw new NotImplementedException();
+		
+		return true;
 	}
 	#endregion
 }
