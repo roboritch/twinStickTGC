@@ -29,8 +29,6 @@ public class HitscanBase : Card {
 		}
 	}
 	
-	
-
 	protected IDamageable raycastProjectile(Actor cardUser) {
 		Vector2 aimLocation = new Vector2();
 		ExecuteEvents.Execute<IGetAim>(cardUser.gameObject, null, (x, y) => x.getAim(out aimLocation));
@@ -43,10 +41,9 @@ public class HitscanBase : Card {
 		IDamageable hitObject = hits[0].transform.GetComponent<IDamageable>();
 		return hitObject;
 	}
+	
 
-
-
-	#region overrid vars
+	#region override vars
 	public override void displayDescription(defaultTextHolder decriptionBox) {
 		throw new NotImplementedException();
 	}

@@ -4,14 +4,15 @@ using UnityEngine.UI;
 
 /** atached to some text componentents to facilitate better maintenance of the defuat text 
  in the text component */
+[RequireComponent(typeof(Text))]
 public class defaultTextHolder : MonoBehaviour{
 		
 	private string defautText;
 	private Text textComponent;
 	
 	// Use this for initialization
-	void Start(){
-		textComponent = transform.GetComponent<Text>();
+	void Awake(){
+		textComponent = GetComponent<Text>();
 		defaultColor = textComponent.color;
 		defautText = textComponent.text;
 	}

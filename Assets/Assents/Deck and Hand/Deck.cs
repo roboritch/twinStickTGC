@@ -61,7 +61,7 @@ public class Deck : MonoBehaviour {
 	private defaultTextHolder cardCount;
 	private void updateCardsInDeck(int cardChangeAmount) {
 		cardsInTheDeck += cardChangeAmount;
-		cardCount.setNewDefautText(cardsInTheDeck.ToString());
+		cardCount.addNewTextToDefalt(cardsInTheDeck.ToString());
 	}
 
 	// called before start
