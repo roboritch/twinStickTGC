@@ -62,16 +62,19 @@ public class ProjectileWeaponBase : Card {
 	/// <summary>
 	/// the names of all your projectile prefabs
 	/// </summary>
-	protected string[] projectilePrefabNames = { "projectile" };
+	protected projectileStats[] projectilePrefabNames = { new projectileStats("projectile",5f,5f) };
 	protected GameObject[] projectilePrefabs;
 	protected void loadProjectileResorces() {
 		projectilePrefabs = new GameObject[projectilePrefabNames.Length];
 		for (int i = 0; i < projectilePrefabNames.Length; i++) {
-			projectilePrefabs[i] = CardPrefabResorceLoader.Instance.loadPrefab(this.GetType().Name + "/" + projectilePrefabNames[i]);
+			projectilePrefabs[i] = CardPrefabResorceLoader.Instance.loadPrefab(getProjectilePath(i));
 		}
 	}
 
-	
+	protected string getProjectilePath(int projectileIndex) {
+		return this.GetType().Name + "/" + projectilePrefabNames[projectileIndex];
+	}
+		
 	#region override vars
 	public override void displayDescription(defaultTextHolder decriptionBox) {
 		throw new NotImplementedException();
@@ -81,5 +84,24 @@ public class ProjectileWeaponBase : Card {
 		
 		return true;
 	}
+
+	public override void cacheResorces() {
+		for (int i = 0; i < projectilePrefabNames.Length; i++) {
+			CardPrefabResorceLoader.Instance.cashePrefab(getProjectilePath(i));
+		}
+	}
 	#endregion
+}
+
+public struct projectileStats {
+	public projectileStats(string name,float speed,float damage) {
+		prefabName = name;
+		this.speed = speed;
+		this.damage = damage;
+	}
+
+	public string prefabName;
+	public float speed;
+	public float damage;
+		
 }
