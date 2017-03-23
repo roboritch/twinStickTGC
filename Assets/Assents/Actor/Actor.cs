@@ -107,6 +107,7 @@ public class Actor : MonoBehaviour , IDamageable {
 		initButtonCallbacks();
 		healthInit();
 		initGrapics();
+		aimObject = GetComponent(typeof(IGetAim)) as IGetAim;
 	}
 	
 	// Update is called once per frame

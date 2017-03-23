@@ -14,10 +14,14 @@ public class ProjectileWeaponBase : Card {
 	// sprite is done via the unity inspecter by 
 	// clicking on this script in the project assets window
 
+	protected string getIconPath() {
+		return GetType().Name + "/";
+	}
+
 	public ProjectileWeaponBase() {
 		cardReloadTime_seconds = 5f;
 		cardResorceCost = 1f;
-		cardArt = SpriteHolder.Instance.pistol;
+		cardArt = CardPrefabResorceLoader.Instance.loadSprite(getIconPath());
 	}
 	#endregion
 	
@@ -45,13 +49,14 @@ public class ProjectileWeaponBase : Card {
 		projectile.transform.position = userPosition + aimVectorFromUser * projectileDistanceFromUser; //start projectile a little ways off of the user
 		projectile.setVolocity(aimVectorFromUser * getProjectileSpeed(cardUser));
 		projectile.setDamage(getProjectileDamage());
-
+		projectile.setProjectileColor(Color.yellow);
+		projectile.setFireingPlayer(cardUser.collider);
 	}
 
 	protected ProjectileBase instantiateProjectile(int projectileType) {
-		GameObject projectile = projectilePrefabs[projectileType];
-		if(projectile == null) { //debug helper null check
-			Debug.LogError("projectile prefab null, check resorce folder\n" + this.GetType().Name + "/" + projectilePrefabInformation[projectileType]);
+		GameObject projectile = CardPrefabResorceLoader.Instance.loadPrefab(getProjectilePath(0));
+        if (projectile == null) { //debug helper null check
+			Debug.LogError("projectile prefab null, check resorce folder\n" + this.GetType().Name + "/" + projectilePrefabInformation[projectileType].prefabName);
 			return null;
 		}
 		projectile = UnityEngine.Object.Instantiate(projectile);
@@ -63,25 +68,18 @@ public class ProjectileWeaponBase : Card {
 	/// the names of all your projectile prefabs
 	/// </summary>
 	protected projectileStats[] projectilePrefabInformation = { new projectileStats("projectile",5f,5f) };
-	protected GameObject[] projectilePrefabs;
-	protected void loadProjectileResorces() {
-		projectilePrefabs = new GameObject[projectilePrefabInformation.Length];
-		for (int i = 0; i < projectilePrefabInformation.Length; i++) {
-			projectilePrefabs[i] = CardPrefabResorceLoader.Instance.loadPrefab(getProjectilePath(i));
-		}
-	}
 
 	protected string getProjectilePath(int projectileIndex) {
-		return this.GetType().Name + "/" + projectilePrefabInformation[projectileIndex];
+		return this.GetType().Name + "/" + projectilePrefabInformation[projectileIndex].prefabName;
 	}
 		
 	#region override vars
 	public override void displayDescription(defaultTextHolder decriptionBox) {
 		throw new NotImplementedException();
 	}
-
+	
 	public override bool useCard(Actor cardUser) {
-		
+		fireGun(cardUser);
 		return true;
 	}
 

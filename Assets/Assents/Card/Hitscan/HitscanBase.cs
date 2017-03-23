@@ -15,17 +15,21 @@ public class HitscanBase : Card {
 	// sprite is done via the unity inspecter by 
 	// clicking on this script in the project assets window
 
+	protected string getIconPath() {
+		return GetType().Name + "/";
+    }
+
 	public HitscanBase() { 
 		cardReloadTime_seconds = 5f;
 		cardResorceCost = 1f;
-		cardArt = SpriteHolder.Instance.pistol;
+		cardArt = CardPrefabResorceLoader.Instance.loadSprite(getIconPath());
     }
 	#endregion
 
 
 	private void fireGun(Actor cardUser) {
 		IDamageable hitObject = raycastProjectile(cardUser);
-        if (hitObject != null) {
+		if (hitObject != null) {
 			hitObject.takeDamage(3f);
 		}
 	}
@@ -52,7 +56,7 @@ public class HitscanBase : Card {
 		BeamAnimation beam = UnityEngine.Object.Instantiate(beamGO).GetComponent<BeamAnimation>();
 		beam.setBeamLength(startLocation, endLocation);
 		beam.setBeamColor(Color.red);
-		//beam.startBeamAnimation(2f);
+		beam.startBeamAnimation(2f);
 		
 	}
 

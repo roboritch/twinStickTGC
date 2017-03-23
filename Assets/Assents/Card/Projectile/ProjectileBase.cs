@@ -11,6 +11,7 @@ using UnityEngine;
 /// </summary>
 [RequireComponent(typeof(Collider2D))]
 [RequireComponent(typeof(Rigidbody2D))]
+[RequireComponent(typeof(SpriteRenderer))]
 public class ProjectileBase : MonoBehaviour {
 
 	protected new Collider2D collider;
@@ -40,10 +41,21 @@ public class ProjectileBase : MonoBehaviour {
 		rigidbody.velocity = velocity;
 	}
 
+	private SpriteRenderer sprite;
+	public void setProjectileColor(Color color) {
+		sprite.color = color;
+	}
+
+
+    public void setFireingPlayer(Collider2D coll) {
+		Physics2D.IgnoreCollision(collider, coll, true);
+	}
+
 	#region mono methods
 	void Awake() {
 		collider = GetComponent<Collider2D>();
 		rigidbody = GetComponent<Rigidbody2D>();
+		sprite = GetComponent<SpriteRenderer>();
 	}
 
 	/// <summary>

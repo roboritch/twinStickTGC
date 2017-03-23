@@ -4,6 +4,32 @@ using UnityEngine;
 
 public class CardPrefabResorceLoader : Singleton<CardPrefabResorceLoader> {
 
+	#region Card Icon loading
+	private Dictionary<string, Sprite> spriteResorces = new Dictionary<string, Sprite>();
+
+	/// <summary>
+	/// naming convention for icon to be in CardClassName/
+	/// </summary>
+	/// <param name="resorcePathname">CardClassName/ should be input here</param>
+	/// <returns></returns>
+	public Sprite loadSprite(string resorcePathname) {
+		Sprite sprite;
+		if (spriteResorces.TryGetValue(resorcePathname, out sprite)) {
+			return sprite;
+		} else { //get resorce from folder
+			sprite = Resources.Load<Sprite>(resorcePathname + "icon");
+			if (sprite == null) {
+				return null;
+			}
+			spriteResorces.Add(resorcePathname, sprite);
+			return sprite;
+		}
+	}
+
+	#endregion
+
+
+	#region Prefab loading
 	/// <summary>
 	/// key is pathname
 	/// prefab is stored
@@ -27,7 +53,7 @@ public class CardPrefabResorceLoader : Singleton<CardPrefabResorceLoader> {
 			prefabResorces.Add(resorcePathname, prefab);
 			return prefab;
 		}
-	}	
+	}
 
 	/// <summary>
 	/// 
@@ -45,4 +71,5 @@ public class CardPrefabResorceLoader : Singleton<CardPrefabResorceLoader> {
 		prefabResorces.Add(resorcePathname, prefab);
 		return true;
 	}
+	#endregion
 }

@@ -58,6 +58,15 @@ public class Deck : MonoBehaviour {
 		updateCardsInDeck(1);
     }
 
+	/// <summary>
+	/// probabilityMultiplyer and cardRemovedOnDraw elements are gotten from card type
+	/// </summary>
+	/// <param name="cardType">the class type of a card</param>
+	public void addCardToDeck(System.Type cardType) {
+		//look at c# refrence of Type for more info on how this works
+		addCardToDeck(cardType, (float)cardType.GetField("probabiltyOfDraw").GetValue(null), (bool)cardType.GetField("removeOnDraw").GetValue(null));
+	}
+
 	private defaultTextHolder cardCount;
 	private void updateCardsInDeck(int cardChangeAmount) {
 		cardsInTheDeck += cardChangeAmount;
@@ -68,8 +77,10 @@ public class Deck : MonoBehaviour {
 	void Awake() {
 		cardCount = GetComponentInChildren<defaultTextHolder>();
 		cardTypesAndProbabilitys = new LinkedList<CardtypesAndProbabilities>();
+
 		for (int i = 0; i < 5; i++) {
-			addCardToDeck(typeof(HitscanBase), HitscanBase.probabiltyOfDraw, HitscanBase.removeOnDraw);
+			addCardToDeck(typeof(HitscanBase));
+			addCardToDeck(typeof(ProjectileWeaponBase));
 		}
 	}
 

@@ -18,7 +18,8 @@ public class BeamAnimation : MonoBehaviour {
 
 		float size = (endLocation - startLocation).magnitude;
 		Vector3 sizeVector = transform.localScale;
-		sizeVector.y = (spriteBoundsY) * size;
+		sizeVector.y = size;
+		transform.localScale = sizeVector;
 	}
 
 	public void setBeamColor(Color color) {
@@ -52,10 +53,11 @@ public class BeamAnimation : MonoBehaviour {
 	// Use this for initialization
 	void Awake () {
 		SR = GetComponent<SpriteRenderer>();
+		spriteBoundsY = SR.bounds.size.y;
 	}
 
 	void Start() {
-		spriteBoundsY = SR.bounds.size.y;
+		
 	}
 
 
