@@ -15,16 +15,4 @@
   <moveRight>
     <key>D</key>
   </moveRight>
-  <activateCard1>
-    <key>Alpha1</key>
-  </activateCard1>
-  <activateCard2>
-    <key>Alpha2</key>
-  </activateCard2>
-  <activateCard3>
-    <key>Alpha3</key>
-  </activateCard3>
-  <activateCard4>
-    <key>Alpha4</key>
-  </activateCard4>
 </ActionBindings>

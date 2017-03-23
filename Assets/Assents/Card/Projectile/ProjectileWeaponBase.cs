@@ -34,7 +34,7 @@ public class ProjectileWeaponBase : Card {
 	#endregion
 
 	//These vars should be reused
-	protected float projectileDistanceFromUser;
+	protected float projectileDistanceFromUser = .3f;
 	protected void fireGun(Actor cardUser) {
 		Vector2 userPosition = cardUser.get2dPostion(); //this can be changed to a muzzle location
 		Vector2 projectileSize = new Vector2(0.4f, 0.4f); 
@@ -42,7 +42,7 @@ public class ProjectileWeaponBase : Card {
 
 		//setting projectile properties
 		ProjectileBase projectile = instantiateProjectile(0);
-		projectile.transform.position = userPosition + aimVectorFromUser * .5f;
+		projectile.transform.position = userPosition + aimVectorFromUser * projectileDistanceFromUser; //start projectile a little ways off of the user
 		projectile.setVolocity(aimVectorFromUser * getProjectileSpeed(cardUser));
 		projectile.setDamage(getProjectileDamage());
 
@@ -51,7 +51,7 @@ public class ProjectileWeaponBase : Card {
 	protected ProjectileBase instantiateProjectile(int projectileType) {
 		GameObject projectile = projectilePrefabs[projectileType];
 		if(projectile == null) { //debug helper null check
-			Debug.LogError("projectile prefab null, check resorce folder\n" + this.GetType().Name + "/" + projectilePrefabNames[projectileType]);
+			Debug.LogError("projectile prefab null, check resorce folder\n" + this.GetType().Name + "/" + projectilePrefabInformation[projectileType]);
 			return null;
 		}
 		projectile = UnityEngine.Object.Instantiate(projectile);
@@ -62,17 +62,17 @@ public class ProjectileWeaponBase : Card {
 	/// <summary>
 	/// the names of all your projectile prefabs
 	/// </summary>
-	protected projectileStats[] projectilePrefabNames = { new projectileStats("projectile",5f,5f) };
+	protected projectileStats[] projectilePrefabInformation = { new projectileStats("projectile",5f,5f) };
 	protected GameObject[] projectilePrefabs;
 	protected void loadProjectileResorces() {
-		projectilePrefabs = new GameObject[projectilePrefabNames.Length];
-		for (int i = 0; i < projectilePrefabNames.Length; i++) {
+		projectilePrefabs = new GameObject[projectilePrefabInformation.Length];
+		for (int i = 0; i < projectilePrefabInformation.Length; i++) {
 			projectilePrefabs[i] = CardPrefabResorceLoader.Instance.loadPrefab(getProjectilePath(i));
 		}
 	}
 
 	protected string getProjectilePath(int projectileIndex) {
-		return this.GetType().Name + "/" + projectilePrefabNames[projectileIndex];
+		return this.GetType().Name + "/" + projectilePrefabInformation[projectileIndex];
 	}
 		
 	#region override vars
@@ -86,7 +86,7 @@ public class ProjectileWeaponBase : Card {
 	}
 
 	public override void cacheResorces() {
-		for (int i = 0; i < projectilePrefabNames.Length; i++) {
+		for (int i = 0; i < projectilePrefabInformation.Length; i++) {
 			CardPrefabResorceLoader.Instance.cashePrefab(getProjectilePath(i));
 		}
 	}

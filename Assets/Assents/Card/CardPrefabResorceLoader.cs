@@ -8,7 +8,7 @@ public class CardPrefabResorceLoader : Singleton<CardPrefabResorceLoader> {
 	/// key is pathname
 	/// prefab is stored
 	/// </summary
-	private Dictionary<string, GameObject> prefabResorces;
+	private Dictionary<string, GameObject> prefabResorces = new Dictionary<string, GameObject>();
 
 	/// <summary>
 	/// load a resorce from disk and store it in ram for reuse (automatic)
