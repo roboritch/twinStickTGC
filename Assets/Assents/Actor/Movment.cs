@@ -63,6 +63,11 @@ public class Movment : MonoBehaviour {
 	private float movmentWantedVertacal = 0;
 	private float movmentWantedHorizontal = 0;
 
+	public void setWantedMovment(Vector2 volocityVector) {
+		movmentWantedHorizontal = volocityVector.x;
+		movmentWantedVertacal = volocityVector.y;
+	}
+
 	public void setWantedMovment(float vertical,float horizontal) {
 		movmentWantedVertacal = vertical;
 		movmentWantedHorizontal = horizontal;

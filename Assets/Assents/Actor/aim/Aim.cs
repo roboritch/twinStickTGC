@@ -14,7 +14,7 @@ public class Aim : MonoBehaviour, IGetAim {
 	}
 
 	#region look at function
-	protected void lookAtAimLocation() {
+	public void lookAtAimLocation() {
 		Vector3 place = aimLocation;
 		place.z = transform.position.z;
 		transform.up = place - transform.position;
