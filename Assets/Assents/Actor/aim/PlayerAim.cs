@@ -21,7 +21,7 @@ public class PlayerAim : Aim {
 		aimLocation3d = Camera.main.ScreenToWorldPoint(aimLocation3d);
 		aimLocation3d.z = layerOfReticle;
 		aimLocationObject.position = aimLocation3d;
-		aimLocation = aimLocation3d;
+		setAim(aimLocation3d);
 	}
 	#endregion
 

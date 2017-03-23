@@ -51,6 +51,17 @@ public class ProjectileBase : MonoBehaviour {
 		Physics2D.IgnoreCollision(collider, coll, true);
 	}
 
+	private float projectileTimeLeft_seconds = 10f; //this should be fine for all but the slowest projectiles
+	public void setProjectileLifetime(float lifetime_seconds) {
+		projectileTimeLeft_seconds = lifetime_seconds;
+	}
+
+	private void checkLifetime() {
+		if(projectileTimeLeft_seconds <= 0f) {
+			destroyProjectile();
+		}
+	}
+
 	#region mono methods
 	void Awake() {
 		collider = GetComponent<Collider2D>();
@@ -65,6 +76,10 @@ public class ProjectileBase : MonoBehaviour {
 	void OnCollisionEnter2D(Collision2D coll) {
 		damageCollObject(coll.transform);
 		destroyProjectile();
+	}
+
+	void Update() {
+		checkLifetime();
 	}
 	#endregion
 }
