@@ -25,15 +25,6 @@ public class PlayerAim : Aim {
 	}
 	#endregion
 
-
-	#region look at function
-	private void lookAtRedicle() {
-		Vector3 place = aimLocationObject.transform.position;
-		place.z = transform.position.z;
-		transform.up = place - transform.position;
-	}
-	#endregion
-
 	#region camera control
 	public Camera cam;
 	[SerializeField] private float camMoveSpeed = 1f;
@@ -56,7 +47,7 @@ public class PlayerAim : Aim {
 	// Update is called once per frame
 	void Update () {
 		updateReticalPosition();
-		lookAtRedicle();
+		lookAtAimLocation();
 		updateCameraPos();
     }
 

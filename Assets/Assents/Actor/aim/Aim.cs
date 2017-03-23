@@ -13,13 +13,12 @@ public class Aim : MonoBehaviour, IGetAim {
 		aimLocation = newAimLocation_WorldSpace;
 	}
 
-	// Use this for initialization
-	void Start () {
-		
+	#region look at function
+	protected void lookAtAimLocation() {
+		Vector3 place = aimLocation;
+		place.z = transform.position.z;
+		transform.up = place - transform.position;
 	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+	#endregion
+
 }
