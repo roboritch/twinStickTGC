@@ -3,16 +3,28 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerAim : MonoBehaviour, IGetAim {
-	[SerializeField] private GameObject reticle;
+public class PlayerAim : Aim {
 
-	public void getAim(out Vector2 aimLocation) {
-		Vector3 pos = aimLocationObject.getPosition();
-		aimLocation.x = pos.x;
-		aimLocation.y = pos.y;
+	#region Reticle
+	[SerializeField]
+	private GameObject reticle;
+
+	private Transform aimLocationObject;
+	[SerializeField]
+	private float layerOfReticle = -.1f;
+
+	/// <summary>
+	/// moves reticale based on mouse location
+	/// </summary>
+	private void updateReticalPosition() {
+		Vector3	aimLocation3d = Input.mousePosition;
+		aimLocation3d = Camera.main.ScreenToWorldPoint(aimLocation3d);
+		aimLocation3d.z = layerOfReticle;
+		aimLocationObject.position = aimLocation3d;
+		aimLocation = aimLocation3d;
 	}
+	#endregion
 
-	private Reticle aimLocationObject;
 
 	#region look at function
 	private void lookAtRedicle() {
@@ -38,11 +50,12 @@ public class PlayerAim : MonoBehaviour, IGetAim {
 	// Use this for initialization
 	void Start () {
 		KeyEvents.Instance.constrainMouseToScreen(true);
-		aimLocationObject = Instantiate(reticle).GetComponent<Reticle>();
+		aimLocationObject = Instantiate(reticle).GetComponent<Transform>();
     }
 	
 	// Update is called once per frame
 	void Update () {
+		updateReticalPosition();
 		lookAtRedicle();
 		updateCameraPos();
     }
