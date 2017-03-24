@@ -57,6 +57,7 @@ public class ProjectileBase : MonoBehaviour {
 	}
 
 	private void checkLifetime() {
+		projectileTimeLeft_seconds -= Time.deltaTime;
 		if(projectileTimeLeft_seconds <= 0f) {
 			destroyProjectile();
 		}
