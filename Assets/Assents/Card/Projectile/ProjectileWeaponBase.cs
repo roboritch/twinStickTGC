@@ -69,8 +69,8 @@ public class ProjectileWeaponBase : Card {
 	/// </summary>
 	protected projectileStats[] projectilePrefabInformation = { new projectileStats("projectile",5f,5f) };
 
-	protected string getProjectilePath(int projectileIndex) {
-		return this.GetType().Name + "/" + projectilePrefabInformation[projectileIndex].prefabName;
+	protected string getProjectilePath(int prefabIndex) {
+		return this.GetType().Name + "/" + projectilePrefabInformation[prefabIndex].prefabName;
 	}
 		
 	#region override vars
@@ -100,6 +100,5 @@ public struct projectileStats {
 
 	public string prefabName;
 	public float speed;
-	public float damage;
-		
+	public float damage;	
 }

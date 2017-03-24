@@ -118,7 +118,7 @@ public class Actor : MonoBehaviour , IDamageable {
 	#region card helper functions
 	public Vector2 get2dPostion() {
 		return new Vector2(transform.position.x, transform.position.y);
-    }
+	}
 	
 	/// <summary>
 	/// aim of this object
@@ -134,6 +134,12 @@ public class Actor : MonoBehaviour , IDamageable {
 		aimLocation = aimLocation - startPoint; //vector from actor to aim
 		aimLocation = aimLocation.normalized;
 		return aimLocation;
+	}
+
+	public Vector2 getAimLocation() {
+		Vector2 aim;
+		aimObject.getAim(out aim);
+		return aim;
 	}
 	#endregion
 

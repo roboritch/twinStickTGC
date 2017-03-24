@@ -60,9 +60,9 @@ public class HitscanBase : Card {
 		
 	}
 
-	protected string[] hitscanFireAnimationPaths = { "beam" };
-	protected string getBeamPath(int animationIndex) {
-		return this.GetType().Name + "/" + hitscanFireAnimationPaths[animationIndex];
+	protected string[] hitscanFireAnimationNames = { "beam" };
+	protected string getBeamPath(int prefabIndex) {
+		return this.GetType().Name + "/" + hitscanFireAnimationNames[prefabIndex];
 	}
 
 	#region override vars
@@ -76,7 +76,7 @@ public class HitscanBase : Card {
 	}
 
 	public override void cacheResorces() {
-		for (int i = 0; i < hitscanFireAnimationPaths.Length; i++) {
+		for (int i = 0; i < hitscanFireAnimationNames.Length; i++) {
 			CardPrefabResorceLoader.Instance.cashePrefab(getBeamPath(i));
 		}
 	}

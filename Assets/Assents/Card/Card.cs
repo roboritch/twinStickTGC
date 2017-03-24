@@ -3,8 +3,34 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public abstract class Card {
-	
-	
+	//this section of code should be placed at the start of all new cards 
+	//to initalize the cards values
+	#region card children initalization code
+#if false
+	#region Initalization of static members
+	static CardName() { } //insures these values are overwriten properly
+	public new static readonly bool removeOnDraw = true;
+	public new static readonly float probabiltyOfDraw = 1f;
+	#endregion
+
+	#region initalization of parent vars
+	// sprite is done via the unity inspecter by 
+	// clicking on this script in the project assets window
+
+	protected string getIconPath() {
+		return GetType().Name + "/";
+	}
+
+	public CardName() {
+		cardReloadTime_seconds = 5f;
+		cardResorceCost = 1f;
+		cardArt = CardPrefabResorceLoader.Instance.loadSprite(getIconPath());
+	}
+	#endregion
+#endif
+	#endregion
+
+
 	/// <summary>
 	/// image that apears in the hand
 	/// </summary>
@@ -39,12 +65,13 @@ public abstract class Card {
 	/// description of what the card does
 	/// </summary>
 	public static string cardDescription;
-	#endregion
+#endregion
 
 	public abstract void displayDescription(defaultTextHolder decriptionBox);
 
 	/// <summary>
-	/// 
+	/// tells the card that the user wants to use it
+	/// will return true if the card is ready to be removed from the hand
 	/// </summary>
 	/// <param name="cardUser"></param>
 	/// <returns>true if card used,false if card not used</returns>
