@@ -80,5 +80,9 @@ public class HitscanBase : Card {
 			CardPrefabResorceLoader.Instance.cashePrefab(getBeamPath(i));
 		}
 	}
+
+	public override void destroyCard() {
+		//nothing needs to be done here
+	}
 	#endregion
 }

@@ -25,21 +25,28 @@ public class AreaBase : Card {
 	}
 	#endregion
 
-	protected DamageArea[] damageAreas;
-	protected void createDamageAreas(Actor cardUser) {
-		Vector2 aimDirection = cardUser.getNormalizedAim(cardUser.get2dPostion());
-		UnityEngine.Object.Instantiate(CardPrefabResorceLoader.Instance.loadPrefab(getAreaPrefabPath(0))).GetComponent<DamageArea>();
+	protected DamageAreaControls createDamageAreas() {
+		return UnityEngine.Object.Instantiate(CardPrefabResorceLoader.Instance.loadPrefab(getAreaPrefabPath()).GetComponent<DamageAreaControls>());
 	}
 	
-	protected areaDamageStats[] areaDamagePrefabNames = { new areaDamageStats("squair",2f,10f) };
-	protected string getAreaPrefabPath(int prefabIndex) {
-		return this.GetType().Name + "/" + areaDamagePrefabNames[prefabIndex];
+	protected string getAreaPrefabPath() {
+		return this.GetType().Name + "/" + "damage areas";
 	}
 
+	
+	protected bool actorSelectingArea = false;
+	protected void giveUserAreaSelector(Actor cardUser) {
+		DamageAreaControls areas = createDamageAreas();
+		foreach (DamageArea area in areas.damageAreas) {
+			area.damageAmount 
+		}	
+	
+	}
+
+
+	#region overide methods
 	public override void cacheResorces() {
-		for (int i = 0; i < areaDamagePrefabNames.Length; i++) {
-			CardPrefabResorceLoader.Instance.cashePrefab(getAreaPrefabPath(0));
-		}
+		CardPrefabResorceLoader.Instance.cashePrefab(getAreaPrefabPath());
 	}
 
 	public override void displayDescription(defaultTextHolder decriptionBox) {
@@ -47,8 +54,17 @@ public class AreaBase : Card {
 	}
 
 	public override bool useCard(Actor cardUser) {
-		throw new NotImplementedException();
+		if(actorSelectingArea == false) {
+			actorSelectingArea = true;
+
+
+		}
 	}
+
+	public override void destroyCard() {
+		
+	}
+	#endregion
 }
 
 public struct areaDamageStats {

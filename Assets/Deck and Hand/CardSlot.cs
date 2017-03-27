@@ -42,6 +42,7 @@ public class CardSlot : MonoBehaviour {
 		if(cardBeingHeld.useCard(hand.curretPlayer)) { //card activation succsess
 			startCountdown(cardBeingHeld.cardReloadTime_seconds);
 			displayDefaultSprite();
+			cardBeingHeld.destroyCard();
 			cardBeingHeld = null;
 		}
 	}

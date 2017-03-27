@@ -82,4 +82,8 @@ public abstract class Card {
 	/// </summary>
 	public abstract void cacheResorces();
 
+	/// <summary>
+	/// called when something requires the card to be removed from the CardSlot
+	/// </summary>
+	public abstract void destroyCard();
 }

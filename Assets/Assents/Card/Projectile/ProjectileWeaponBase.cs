@@ -88,6 +88,10 @@ public class ProjectileWeaponBase : Card {
 			CardPrefabResorceLoader.Instance.cashePrefab(getProjectilePath(i));
 		}
 	}
+
+	public override void destroyCard() {
+		//nothing neads to be done
+	}
 	#endregion
 }
 

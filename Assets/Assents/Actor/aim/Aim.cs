@@ -4,6 +4,12 @@ using UnityEngine;
 
 public class Aim : MonoBehaviour, IGetAim {
 
+	/// <summary>
+	/// this should be used by any Card to 
+	/// grab updates from aim
+	/// </summary>
+	public delegate void VectorGet(out Vector2 aimLocation);
+
 	protected Vector2 aimLocation;
 	public void getAim(out Vector2 aimLocation) {
 		aimLocation = this.aimLocation;
