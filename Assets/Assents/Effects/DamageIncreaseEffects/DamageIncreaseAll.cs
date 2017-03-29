@@ -7,17 +7,19 @@ public class DamageDealtChange : TriggerdEffect {
 
 	protected DamageTypes effectsDamageTypes;
 
-	DamageDealtChange(int numberOfUses,DamageTypes  damageTypesEffected) {
+	DamageDealtChange(int numberOfUses,DamageTypes damageTypesEffected,float changeDamageMultiplication, float changeDamageAddition) {
 		effectType = EffectTypes.damageDealtChange;
 		usesLeft = numberOfUses;
 		effectsDamageTypes = damageTypesEffected;
 	}
 
+	protected float damageAdditonChange;
+	protected float damageMultiplicationChange;
 	public override void applyEffect(Actor applyTo) {
 		DamageIncreaseData damageInfo = applyTo.getDamageIncreseContainer();
 		//check to see the damage type is is one this effect works on
 		if ((effectsDamageTypes & damageInfo.damageType) == damageInfo.damageType) { 
-
+			applyTo.
 		}
 
 	}
