@@ -3,6 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(SpriteRenderer))]
+[RequireComponent(typeof(Collider2D))]
+[RequireComponent(typeof(Aim))]
 public class Actor : MonoBehaviour , IDamageable {
 
 	#region modifyer delegates	
@@ -93,7 +96,23 @@ public class Actor : MonoBehaviour , IDamageable {
 	}
 	#endregion
 
-	#region over time effects
+	#region Effects
+
+	/// <summary>
+	/// increases a damage amount by some value based on the Effects on this actor
+	/// this should be called whenever the damage of an attack is assigned (Prejectile created
+	/// area damage removed from player control), some modifyers can be changed
+	/// while the player has an item equiped
+	/// </summary>
+	/// <param name="amount">the base amount of damage to be dealt</param>
+	/// <param name="damageType">the type of damage being dealt</param>
+	/// <param name="fromCard">is the damage from a card or from equitment
+	/// used if one card increses the damge of another</param>
+	/// <returns></returns>
+	public float modifyDamage(float amount,DT.DamageTypes damageType,bool fromCard) {
+		//TODO get changes from effects amount += 
+		return amount;
+	}
 	
 
 	#endregion

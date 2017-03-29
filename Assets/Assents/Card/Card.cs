@@ -48,7 +48,7 @@ public abstract class Card {
 
 	//These variables must be avalible before an instance of this class is created
 	#region Required Inital Vars
-	static Card() {} //efforces order of static variable initalization 
+	static Card() {} //efforces order of static variable initalization in children
 	/// <summary>
 	/// probability this card is drawn over other cards
 	/// </summary>
