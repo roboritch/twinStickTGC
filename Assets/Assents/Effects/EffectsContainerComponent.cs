@@ -9,50 +9,56 @@ public class EffectsContainerComponent : MonoBehaviour {
 	private Actor actor;
 	//indexed by effect type
 	private LinkedList<TriggerdEffect>[] triggeredEffects;
-	private LinkedList<TimedAndTriggeredEffect>[] combEffect;
-	private LinkedList<TimedEffect> timedEffects;
+	private LinkedList<TimedAndTriggeredEffect>[] timedAndTriggerdEffects;
+	private LinkedList<TimedEffect>[] timedEffects;
 
 	private void initEventStorage() {
 		int numberOfBoxes = Enum.GetNames(typeof(EffectTypes)).Length;
 		triggeredEffects = new LinkedList<TriggerdEffect>[numberOfBoxes];
-		combEffect = new LinkedList<TimedAndTriggeredEffect>[numberOfBoxes];
+		timedAndTriggerdEffects = new LinkedList<TimedAndTriggeredEffect>[numberOfBoxes];
+		timedEffects = new LinkedList<TimedEffect>[numberOfBoxes];
+
 		for (int i = 0; i < numberOfBoxes; i++) {
 			triggeredEffects[i] = new LinkedList<TriggerdEffect>();
-			combEffect[i] = new LinkedList<TimedAndTriggeredEffect>();
-		}
-
-		timedEffects = new LinkedList<TimedEffect>();
+			timedAndTriggerdEffects[i] = new LinkedList<TimedAndTriggeredEffect>();
+			timedEffects[i] = new LinkedList<TimedEffect>();
+		}	
 	}
 
 
 	public void addEffect(Effect effect) {
-		
+		int effectIndex = (int)effect.getEffectType;
+		if (effect is TimedAndTriggeredEffect) {
+			timedAndTriggerdEffects[effectIndex].AddLast((TimedAndTriggeredEffect)effect);
+		} else if (effect is TriggerdEffect) {
+			triggeredEffects[effectIndex].AddLast((TriggerdEffect)effect);
+		}else if (effect is TimedEffect) {
+			timedEffects[effectIndex].AddLast((TimedEffect)effect);
+		}else {
+			Debug.LogWarning("not a valid effect");
+		}
 	}
 
-
-	public delegate returnType EffectInformation<returnType, inputValue>(inputValue value);
-	public EffectInformation<r,I> getEffect<r,I>(EffectTypes effectType, I input) {
-		EffectInformation<r, I> effectsApplyed = null;
-
+	public void triggerEffects(EffectTypes effectType,Actor actor) {
 		LinkedList<TriggerdEffect> listOfEffects = triggeredEffects[(int)effectType]; //list of all effects of that type
-		if (listOfEffects.Count == 0 )
-			return effectsApplyed; // return the null value
-		LinkedListNode<TriggerdEffect> curNode = listOfEffects.First;
-		while (curNode != null) {
-			TriggerdEffect effect = curNode.Value;
-			if (effect.NumberOfUsesLeft <= 0) {
-				LinkedListNode<TriggerdEffect> tempNode = curNode.Next;
-				listOfEffects.Remove(curNode);
-				curNode = tempNode;
-			} else {
-				effectsApplyed += curNode.Value.checkEffectTrigger<r, I>;
-				curNode = curNode.Next;
+		if (!(listOfEffects.Count == 0)) {
+			LinkedListNode<TriggerdEffect> curNode = listOfEffects.First;
+			while (curNode != null) {
+				TriggerdEffect effect = curNode.Value;
+				if (effect.NumberOfUsesLeft <= 0) {
+					LinkedListNode<TriggerdEffect> tempNode = curNode.Next;
+					listOfEffects.Remove(curNode);
+					curNode = tempNode;
+				} else {
+					curNode.Value.applyEffect(actor);
+					curNode = curNode.Next;
+				}
 			}
 		}
 
-		LinkedList<TimedAndTriggeredEffect> listOfEffects2 = combEffect[(int)effectType]; //list of all effects of that type
+		LinkedList<TimedAndTriggeredEffect> listOfEffects2 = timedAndTriggerdEffects[(int)effectType]; //list of all effects of that type
 		if (listOfEffects2.Count == 0)
-			return effectsApplyed; // return prev found values
+			return;
 		LinkedListNode<TimedAndTriggeredEffect> curNode2 = listOfEffects2.First;
 		while (curNode2 != null) {
 			TimedAndTriggeredEffect effect2 = curNode2.Value;
@@ -61,7 +67,7 @@ public class EffectsContainerComponent : MonoBehaviour {
 				listOfEffects2.Remove(curNode2);
 				curNode2 = tempNode;
 			} else {
-				effectsApplyed += curNode2.Value.checkEffectTrigger<r, I>;
+				curNode2.Value.applyEffect(actor);
 				curNode2 = curNode2.Next;
 			}
 		}
@@ -79,44 +85,47 @@ public class EffectsContainerComponent : MonoBehaviour {
 	}
 
 	private void updateTimedAndTriggeredEvents(float timeInc_seconds) {
-		foreach (var item in combEffect) {
-		LinkedListNode<TimedEffect> curNode = item.Value.First;
-		while (curNode != null) {
-			TimedEffect effect = curNode.Value;
-			if (effect.NumberOfUsesLeft <= 0) { //check to see if Effect should be removed
-				LinkedListNode<TimedEffect> tempNode = curNode.Next;
-				timedEffects.Remove(curNode);
-				curNode = tempNode;
-			} else {
-				if (effect.incrmentTimer(timeInc_seconds)) {//Inc effectTimer
-					effect.applyEffect(actor); //apply the effect to the actor
+		for (int i = 0; i < timedAndTriggerdEffects.Length; i++) {
+			LinkedListNode<TimedAndTriggeredEffect> curNode = timedAndTriggerdEffects[i].First;
+			while (curNode != null) {
+				TimedAndTriggeredEffect effect = curNode.Value;
+				if (effect.NumberOfUsesLeft <= 0) { //check to see if Effect should be removed
+					LinkedListNode<TimedAndTriggeredEffect> tempNode = curNode.Next;
+					timedAndTriggerdEffects[i].Remove(curNode);
+					curNode = tempNode;
+				} else {
+					if (effect.incrmentTimer(timeInc_seconds)) {//Inc effectTimer
+						effect.applyEffect(actor); //apply the effect to the actor
+					}
+					curNode = curNode.Next;
 				}
-				curNode = curNode.Next;
 			}
 		}
-		}
 	}
+
 
 	private void updateTimedEffects(float timeInc_seconds) {
-		LinkedListNode<TimedEffect> curNode = timedEffects.First;
-		while (curNode != null) {
-			TimedEffect effect = curNode.Value;
-			if(effect.NumberOfUsesLeft <= 0) { //check to see if Effect should be removed
-				LinkedListNode<TimedEffect> tempNode = curNode.Next;
-				timedEffects.Remove(curNode);
-				curNode = tempNode;
-			} else {
-				if (effect.incrmentTimer(timeInc_seconds)) {//Inc effectTimer
-					effect.applyEffect(actor); //apply the effect to the actor
+		for (int i = 0; i < timedEffects.Length; i++) {
+			LinkedListNode<TimedEffect> curNode = timedEffects[i].First;
+			while (curNode != null) {
+				TimedEffect effect = curNode.Value;
+				if (effect.NumberOfUsesLeft <= 0) { //check to see if Effect should be removed
+					LinkedListNode<TimedEffect> tempNode = curNode.Next;
+					timedEffects[i].Remove(curNode);
+					curNode = tempNode;
+				} else {
+					if (effect.incrmentTimer(timeInc_seconds)) {//Inc effectTimer
+						effect.applyEffect(actor); //apply the effect to the actor
+					}
+					curNode = curNode.Next;
 				}
-				curNode = curNode.Next;
 			}
 		}
 	}
-
 	// Update is called once per frame
 	void Update () {
 		updateTimedEffects(Time.deltaTime);
+		updateTimedAndTriggeredEvents(Time.deltaTime);
 	}
 }
 
