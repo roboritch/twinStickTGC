@@ -23,17 +23,20 @@ public class ProjectileWeaponBase : Card {
 		cardResorceCost = 1f;
 		cardArt = CardPrefabResorceLoader.Instance.loadSprite(getIconPath());
 	}
+	// basic vars
+	protected float baseDamage = 5f;
+	protected float baseProjectileSpeed = 5f;
+	protected DamageTypes damageType = DamageTypes.phyisical_pearcing;
+
 	#endregion
 	
 	#region Basic Methods
 	protected float getProjectileSpeed(Actor cardUser) {
-		//TODO add interface that can be found in Actor that changes projectile speed
-		return 5f;
+		return cardUser.effects.getNewProjectileSpeed(baseProjectileSpeed);
 	}
 
-	protected float getProjectileDamage() {
-		//TODO add interface that can be found in Actor that changes projectile damage
-		return 5f;
+	protected float getProjectileDamage(Actor actor) {
+		return actor.effects.modifyDamage(baseDamage,damageType,true);
 	}
 	#endregion
 
@@ -48,7 +51,7 @@ public class ProjectileWeaponBase : Card {
 		ProjectileBase projectile = instantiateProjectile(0);
 		projectile.transform.position = userPosition + aimVectorFromUser * projectileDistanceFromUser; //start projectile a little ways off of the user
 		projectile.setVolocity(aimVectorFromUser * getProjectileSpeed(cardUser));
-		projectile.setDamage(getProjectileDamage());
+		projectile.setDamage(getProjectileDamage(cardUser));
 		projectile.setProjectileColor(Color.yellow);
 		projectile.setFireingPlayer(cardUser.collider);
 	}

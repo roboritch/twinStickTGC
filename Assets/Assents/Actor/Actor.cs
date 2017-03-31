@@ -98,48 +98,12 @@ public class Actor : MonoBehaviour , IDamageable {
 	#endregion
 
 	#region Effects
-	EffectsContainerComponent effects;
+	public EffectsContainerComponent effects;
 	private void initEffects() {
 		effects = GetComponent<EffectsContainerComponent>();
 	}
-
-
-	private DamageIncreaseData damageIncreasData_EffectTemp;
-	public float damageAddition_EffectTemp;
-	public float damageMultiplication_EffectTemp;
-	public bool damage0Flag_EffectTemp;
-
-	public DamageIncreaseData getDamageIncreseContainer() {
-		return damageIncreasData_EffectTemp;
-	}
-
-	/// <summary>
-	/// increases a damage amount by some value based on the Effects on this actor
-	/// this should be called whenever the damage of an attack is assigned (Prejectile created
-	/// area damage removed from player control), some modifyers can be changed
-	/// while the player has an item equiped
-	/// </summary>
-	/// <param name="amount">the base amount of damage to be dealt</param>
-	/// <param name="damageType">the type of damage being dealt</param>
-	/// <param name="fromCard">is the damage from a card or from equitment
-	/// used if one card increses the damge of another</param>
-	/// <returns></returns>
-	public float modifyDamage(float amount,DamageTypes damageType, bool fromCard) {
-		damage0Flag_EffectTemp = false;
-		damageMultiplication_EffectTemp = 1f;
-		damageAddition_EffectTemp = 0f;
-		// all effects  that modify outgoing damage are called and change this methods
-		// damage addition value and damage multipication value
-		effects.triggerEffects(EffectTypes.damageDealtChange, this);
-		if (damage0Flag_EffectTemp) {
-			return 0f;
-		}
-
-		amount += damageAddition_EffectTemp;
-		amount *= damageMultiplication_EffectTemp;
-
-		return amount;
-	}
+	
+	
 	
 
 	#endregion

@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class DamageAreaControls : MonoBehaviour {
-
-
 	public DamageArea[] damageAreas;
 
 	// Use this for initialization
