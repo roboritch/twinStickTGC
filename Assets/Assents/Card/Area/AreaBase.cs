@@ -25,24 +25,44 @@ public class AreaBase : Card {
 	}
 	#endregion
 
+	/// <summary>
+	/// can return null if loading prefab fails
+	/// </summary>
+	/// <returns></returns>
 	protected DamageAreaControls createDamageAreas() {
-		return UnityEngine.Object.Instantiate(CardPrefabResorceLoader.Instance.loadPrefab(getAreaPrefabPath()).GetComponent<DamageAreaControls>());
+		GameObject AreaPrefab = CardPrefabResorceLoader.Instance.loadPrefab(getAreaPrefabPath());
+		if(AreaPrefab == null) {
+			Debug.LogError("assent Not found!" + StackTraceUtility.ExtractStackTrace());
+			return null;
+		}
+        return UnityEngine.Object.Instantiate(AreaPrefab).GetComponent<DamageAreaControls>();
 	}
 	
 	protected string getAreaPrefabPath() {
-		return this.GetType().Name + "/" + "damage areas";
+		return this.GetType().Name + "/" + "DamageArea";
 	}
 
-	
 	protected bool actorSelectingArea = false;
-	protected void giveUserAreaSelector(Actor cardUser) {
-		DamageAreaControls areas = createDamageAreas();
-		foreach (DamageArea area in areas.damageAreas) {
-			area.damageAmount 
-		}	
-	
+	protected DamageAreaControls currentAreas;
+    protected void giveUserAreaSelector(Actor cardUser) {
+		currentAreas = createDamageAreas();
+		currentAreas.setAimLocationCallbacks(cardUser.transform, cardUser.getActorAimCallback(), DamageAreaControls.LocationUpdateType.SetDistanceFromLocation);
 	}
 
+	protected void activateDamageArea(Actor cardUser) {
+		if(currentAreas == null) {
+			Debug.LogWarning("no damage area to activate!");
+			return;
+		}
+
+		currentAreas.updateAreasDamageAmounts(cardUser, true);
+		currentAreas.startDamageCountdowns();
+	}
+
+	protected void destroyDamageArea() {
+		if(currentAreas != null)
+			currentAreas.destroyAreas();
+	}
 
 	#region overide methods
 	public override void cacheResorces() {
@@ -54,15 +74,19 @@ public class AreaBase : Card {
 	}
 
 	public override bool useCard(Actor cardUser) {
-		if(actorSelectingArea == false) {
+		if (actorSelectingArea == false) {
 			actorSelectingArea = true;
-
-
+			giveUserAreaSelector(cardUser);
+			return false;
+		} else {
+			activateDamageArea(cardUser);
+			currentAreas = null; //detatch the area from this card
+			return true;
 		}
 	}
 
 	public override void destroyCard() {
-		
+		destroyDamageArea();
 	}
 	#endregion
 }

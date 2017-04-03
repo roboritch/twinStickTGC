@@ -1,5 +1,4 @@
-﻿using EffectNS; 
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -145,6 +144,17 @@ public class EffectsContainerComponent : MonoBehaviour {
 		return initalProjectileSpeed * speedMultiplyer;
 	}
 
+
+	#region Damage Increses
+	private DamageIncreaseData updateDamageIncreseData(DamageIncreaseData data) {
+		DamageDealtChange[] listOfEffects = Array.ConvertAll(getListOfEffectsOfType(EffectTypes.damageDealtChange), item => (DamageDealtChange)item);
+		for (int i = 0; i < listOfEffects.Length; i++) {
+			data = listOfEffects[i].damageChanges(data);
+			listOfEffects[i].damageChangeEffectUsed();
+		}
+		return data;
+	}
+
 	/// <summary>
 	/// increases a damage amount by some value based on the Effects on this actor
 	/// this should be called whenever the damage of an attack is assigned (Prejectile created
@@ -158,13 +168,17 @@ public class EffectsContainerComponent : MonoBehaviour {
 	/// <returns></returns>
 	public float modifyDamage(float amount, DamageTypes damageType, bool fromCard) {
 		DamageIncreaseData damageIncreaseData = new DamageIncreaseData(amount, damageType, fromCard);
-		DamageDealtChange[] listOfEffects = Array.ConvertAll(getListOfEffectsOfType(EffectTypes.damageDealtChange),item => (DamageDealtChange)item);
-		for (int i = 0; i < listOfEffects.Length; i++) {
-			damageIncreaseData = listOfEffects[i].damageChanges(damageIncreaseData);
-		}
-		return damageIncreaseData.getModifyedDamageAmount();
+		damageIncreaseData = updateDamageIncreseData(damageIncreaseData);
+        return damageIncreaseData.getModifyedDamageAmount();
 	}
 
+	public DamageIncreaseData getDamageIcreaseAmounts(float amount, DamageTypes damageType, bool fromCard) {
+		DamageIncreaseData damageIncreaseData = new DamageIncreaseData(amount, damageType, fromCard);
+		damageIncreaseData = updateDamageIncreseData(damageIncreaseData);
+		return damageIncreaseData;
+    }
+	#endregion
+		
 
 	#endregion
 

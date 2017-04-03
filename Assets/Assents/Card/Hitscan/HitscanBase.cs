@@ -25,39 +25,105 @@ public class HitscanBase : Card {
 		cardArt = CardPrefabResorceLoader.Instance.loadSprite(getIconPath());
     }
 	#endregion
+	protected float baseDamage = 5f;
+	protected DamageTypes damageType = DamageTypes.phyisical_diffuse;
+	protected float projectileSize = 2f;
+	protected float projectileDistance = 10f;
 
-
-	private void fireGun(Actor cardUser) {
-		IDamageable hitObject = raycastProjectile(cardUser);
-		if (hitObject != null) {
-			hitObject.takeDamage(3f);
+	protected void fireGun(Actor cardUser) {
+		//simple raycast
+		//IDamageable hitObject = raycastProjectile(cardUser);
+		//advanced 
+		float damageAmount = cardUser.effects.modifyDamage(baseDamage, damageType, true);
+		IDamageable[] hitObjects = raycastWideProjectile(cardUser, true, damageAmount);
+		for (int i = 0; i < hitObjects.Length; i++) {
+			hitObjects[i].takeDamage(damageAmount,damageType);
 		}
 	}
 	
+	//TODO adv: have ray slip past corners rather than stopping when part of the ray hits an impasible target
+	/// <summary>
+	/// returns all IDamageble objects hit in order of distance acending
+	/// </summary>
+	/// <param name="cardUser"></param>
+	/// <returns></returns>
+	protected IDamageable[] raycastWideProjectile(Actor cardUser,bool multiHit,float damage) {
+		Vector2 aimLocation = cardUser.getAimLocation();
+
+		Vector2 userLocation = cardUser.transform.position;
+		RaycastHit2D[] hits;
+		//orderd from lowest to highest distance
+		hits = Physics2D.CircleCastAll(userLocation, projectileSize*.5f, aimLocation - userLocation, projectileDistance);
+		if (hits == null)
+			return null;
+
+		int hitIndex = 0;
+
+		IDamageable[] validHitTargets = new IDamageable[hits.Length];
+		RaycastHit2D lastHitTarget = new RaycastHit2D();
+
+		for (int i = 0; i < hits.Length; i++) {
+			if (!(hits[i].collider == cardUser.collider)) { // only run if not shooter
+				IDamageable validCheck = hits[i].collider.GetComponent<IDamageable>();
+				if (validCheck != null) {
+					lastHitTarget = hits[i];
+					validHitTargets[hitIndex++] = validCheck;
+					if (!validCheck.blocksDamage(damage, damageType)) { //if valid IDamagable blocks this damage stop here
+						break;
+					}
+				}
+			}
+		}
+
+		if(hitIndex == 0) {
+			displayRay(userLocation, Vector3.LerpUnclamped(userLocation, aimLocation, projectileDistance),projectileSize);
+			return null;
+		}
+
+		//this is will not look right if the hit target is vary small or
+		//the very edge of the cast hits a target
+		Vector2 displayRayEndpoint = lastHitTarget.centroid - userLocation;
+		displayRayEndpoint += displayRayEndpoint.normalized * projectileSize * 0.7f;
+		displayRayEndpoint += userLocation;
+
+		if (multiHit) {
+			Array.Resize(ref validHitTargets, hitIndex);
+			displayRay(userLocation, displayRayEndpoint, projectileSize);
+			return validHitTargets;
+		} else {
+			Array.Resize(ref validHitTargets, 1);
+			displayRay(userLocation, displayRayEndpoint, projectileSize);
+			return validHitTargets;
+		}
+	}
+
 	protected IDamageable raycastProjectile(Actor cardUser) {
-		Vector2 aimLocation = new Vector2();
-		ExecuteEvents.Execute<IGetAim>(cardUser.gameObject, null, (x, y) => x.getAim(out aimLocation));
-
-		Vector3 userLocation = cardUser.transform.position;
-
+		Vector2 aimLocation = cardUser.getAimLocation();
+		
+		Vector2 userLocation = cardUser.transform.position;
+		
 		RaycastHit2D[] hits = new RaycastHit2D[1]; 
-		int hitNumb = cardUser.collider.Raycast(aimLocation-(Vector2)userLocation, hits,20f); //TODO change aim location to relative direction
+		int hitNumb = cardUser.collider.Raycast(aimLocation-userLocation, hits, projectileDistance); 
 		if(hitNumb == 0) {
-			displayRay(userLocation, Vector3.LerpUnclamped(userLocation, aimLocation, 10f));
+			displayRay(userLocation, Vector3.LerpUnclamped(userLocation, aimLocation, projectileDistance), projectileSize);
 			return null;
 		}
 		IDamageable hitObject = hits[0].transform.GetComponent<IDamageable>();
-		displayRay(userLocation, hits[0].point);
+		displayRay(userLocation, hits[0].point, projectileSize);
 		return hitObject;
 	}
 	
-	protected void displayRay(Vector3 startLocation,Vector3 endLocation) {
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="startLocation"></param>
+	/// <param name="endLocation"></param>
+	protected void displayRay(Vector2 startLocation, Vector2 endLocation,float rayWidth) {
 		GameObject beamGO = CardPrefabResorceLoader.Instance.loadPrefab(getBeamPath(0));
 		BeamAnimation beam = UnityEngine.Object.Instantiate(beamGO).GetComponent<BeamAnimation>();
 		beam.setBeamLength(startLocation, endLocation);
 		beam.setBeamColor(Color.red);
 		beam.startBeamAnimation(2f);
-		
 	}
 
 	protected string[] hitscanFireAnimationNames = { "beam" };

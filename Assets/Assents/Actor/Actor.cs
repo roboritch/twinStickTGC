@@ -19,16 +19,16 @@ public class Actor : MonoBehaviour , IDamageable {
 	[SerializeField] private float health;
 	[SerializeField] private float invincibilityFrames_seconds = 2f;
 
-	private void healthInit() {
+	private void initHealth() {
 		health = health_MAX;
 	}
-
+	#region IDamagable
 	/// <summary>
 	/// 
 	/// </summary>
 	/// <param name="amount">amount of damage</param>
 	/// <returns>true if damage is taken</returns>
-	public bool takeDamage(float amount) {
+	public bool takeDamage(float amount, DamageTypes damageType) {
 		if (IsInvoking("setColor_Damaged") || IsInvoking("setColor_Default")) {
 			return false;
 		}
@@ -36,6 +36,13 @@ public class Actor : MonoBehaviour , IDamageable {
 		takeDamageGrapic_flashColor(.8f);
 		return true;
 	}
+
+	public bool blocksDamage(float amount, DamageTypes damageType) {
+		//TODO check for damage blocking effects
+		return false;
+	}
+	#endregion
+
 	
 
 	public new Collider2D collider;
@@ -112,13 +119,17 @@ public class Actor : MonoBehaviour , IDamageable {
 	
 	#endregion
 
+	void Awake() {
+		collider = GetComponent<Collider2D>();
+		initHealth();
+		initGrapics();
+		initEffects();
+		aimObject = GetComponent(typeof(IGetAim)) as IGetAim;
+	}
+
 	// Use this for initialization
 	void Start () {
-		collider = GetComponent<Collider2D>();
 		initButtonCallbacks();
-		healthInit();
-		initGrapics();
-		aimObject = GetComponent(typeof(IGetAim)) as IGetAim;
 	}
 	
 	// Update is called once per frame
@@ -135,6 +146,10 @@ public class Actor : MonoBehaviour , IDamageable {
 	/// aim of this object
 	/// </summary>
 	private IGetAim aimObject;
+	public IGetAim getActorAimCallback() {
+		return aimObject;
+	}
+
 	public Vector2 getNormalizedAim(Vector2 startPoint) {
 		if(aimObject == null) {
 			Debug.LogWarning("No aim in object!\n" + gameObject.GetInstanceID());

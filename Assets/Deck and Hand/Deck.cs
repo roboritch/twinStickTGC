@@ -79,8 +79,8 @@ public class Deck : MonoBehaviour {
 		cardTypesAndProbabilitys = new LinkedList<CardtypesAndProbabilities>();
 
 		for (int i = 0; i < 2; i++) {
-			addCardToDeck(typeof(HitscanBase));
-			addCardToDeck(typeof(ProjectileWeaponBase));
+			//addCardToDeck(typeof(HitscanBase));
+			//addCardToDeck(typeof(ProjectileWeaponBase));
 			addCardToDeck(typeof(AreaBase));
 		}
 	}

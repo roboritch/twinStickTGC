@@ -59,8 +59,9 @@ public class CardSlot : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if(countingDown)
-		updateTimer(true);
+		if (countingDown) {
+			updateTimer(true);
+		}
 	}
 
 	#region New Card Timer

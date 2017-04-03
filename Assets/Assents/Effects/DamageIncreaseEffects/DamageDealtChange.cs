@@ -21,6 +21,16 @@ public class DamageDealtChange : Effect {
 		return damageData;
 	}
 
+	/// <summary>
+	/// called when this is used to change the damage of somthing
+	/// </summary>
+	/// <returns></returns>
+	public bool damageChangeEffectUsed() {
+		if (--usesLeft <= 0)
+			return true;
+		else
+			return false;
+	}
 
 	public override void applyEffect(Actor applyTo) {
 		Debug.LogWarning("This effect cant be called this way! :" + GetType().Name);
@@ -41,7 +51,10 @@ public struct DamageIncreaseData {
 		damage0_Flag = false;
 	}
 
-	public readonly float amount;
+	/// <summary>
+	/// will be set to 0 if there is no base amount
+	/// </summary>
+	public float amount;
 	public readonly DamageTypes damageType;
 	public readonly bool directFromCard;
 	public bool damage0_Flag;

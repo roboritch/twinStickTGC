@@ -61,39 +61,39 @@ public class KeyEvents : Singleton<KeyEvents>{
 
 
 	#region setDefaultBindings
+	
 
 	/// <summary>
 	/// all default keys must be set here in lew of a key changing screen
 	/// </summary>probabilityMultiplyer_4Point
 	private void setDefaultBindings(){
-		currentActionBindings.mainAction = new KeyCode[] {KeyCode.E};
+		currentActionBindings.mainAction = new KeyCode[] {KeyCode.F9, KeyCode.E};
 		buttionCallbackFunctions.mainAction = emptyCallback;
 
-		currentActionBindings.moveUp = new KeyCode[] { KeyCode.W };
+		currentActionBindings.moveUp = new KeyCode[] { KeyCode.F10, KeyCode.W };
 		buttionCallbackFunctions.moveUp = emptyCallback;
 
-		currentActionBindings.moveDown = new KeyCode[] { KeyCode.S };
+		currentActionBindings.moveDown = new KeyCode[] { KeyCode.F10, KeyCode.S };
 		buttionCallbackFunctions.moveDown = emptyCallback;
 
-		currentActionBindings.moveLeft = new KeyCode[] { KeyCode.A };
+		currentActionBindings.moveLeft = new KeyCode[] { KeyCode.F10, KeyCode.A };
 		buttionCallbackFunctions.moveLeft = emptyCallback;
 
-		currentActionBindings.moveRight = new KeyCode[] { KeyCode.D };
+		currentActionBindings.moveRight = new KeyCode[] { KeyCode.F10, KeyCode.D };
 		buttionCallbackFunctions.moveRight = emptyCallback;
-
 
 		buttionCallbackFunctions.activateCard = new KeypressCallback[4];
 
-        currentActionBindings.activateCard1 = new KeyCode[] { KeyCode.Alpha1 };
+		currentActionBindings.activateCard1 = new KeyCode[] { KeyCode.F9, KeyCode.Alpha1 };
 		buttionCallbackFunctions.activateCard[0] = emptyCallback;
 
-		currentActionBindings.activateCard2 = new KeyCode[] { KeyCode.Alpha2 };
+		currentActionBindings.activateCard2 = new KeyCode[] { KeyCode.F9, KeyCode.Alpha2 };
 		buttionCallbackFunctions.activateCard[1] = emptyCallback;
 
-		currentActionBindings.activateCard3 = new KeyCode[] { KeyCode.Alpha3 };
+		currentActionBindings.activateCard3 = new KeyCode[] { KeyCode.F9, KeyCode.Alpha3 };
 		buttionCallbackFunctions.activateCard[2] = emptyCallback;
 
-		currentActionBindings.activateCard4 = new KeyCode[] { KeyCode.Alpha4 };
+		currentActionBindings.activateCard4 = new KeyCode[] { KeyCode.F9, KeyCode.Alpha4 };
 		buttionCallbackFunctions.activateCard[3] = emptyCallback;
 	}
 
@@ -148,6 +148,28 @@ public class KeyEvents : Singleton<KeyEvents>{
 		}
 	}
 
+	/// <summary>
+	///key callbacks as information for correctKeysPressed
+	/// F9  == button down
+	/// F10 == button held
+	/// F11 == button up
+	/// F12 == 2 keys, first held second down
+	/// </summary>
+	/// <param name="modifyer"></param>
+	/// <param name="inputCode"></param>
+	private bool getInputKeyInfo(KeyCode modifyer,KeyCode inputCode) {
+		switch (modifyer) {
+			case KeyCode.F9:
+				return Input.GetKeyDown(inputCode);
+			case KeyCode.F10:
+				return Input.GetKey(inputCode);
+			case KeyCode.F11:
+				return Input.GetKeyUp(inputCode);
+			default:
+				return false;
+
+		}
+	}
 
 	/// <summary>
 	/// checks to see if all the keys pressed.
@@ -155,31 +177,27 @@ public class KeyEvents : Singleton<KeyEvents>{
 	/// <returns><c>true</c>, if all keys pressed was corrected, <c>false</c> otherwise.</returns>
 	/// <param name="keys">Keys.</param>
 	private bool correctKeysPressed(KeyCode[] keys){
-		if(keys == null)
+		int firstKeyCode = 1; //key code 0 is extra info
+		if (keys == null || keys.Length <=1)
 			return false;
-		bool firstKeyCanBeHeld = false; //used for midifyers ctrl,shift ext (only supports one at a time)
-		if(keys[0] == default(KeyCode)){ // no key set
+		if(keys[firstKeyCode] == default(KeyCode)){ // no key set
 			return false;
-		} else if(keys[0] == KeyCode.LeftControl || keys[0] == KeyCode.RightControl || keys[0] == KeyCode.LeftAlt || keys[0] == KeyCode.RightAlt || keys[0] == KeyCode.LeftShift || keys[0] == KeyCode.RightShift){
-			firstKeyCanBeHeld = true;
 		}
 
-		foreach( KeyCode key in keys ){
-			if (!Input.GetKey(key)){ // TODO set peramiter to alow the specifying of key up,down or held
-				if(!firstKeyCanBeHeld){
-					return false;
-				} else if(!Input.GetKey(key)){
-					return false;
-				}
-			} else if(key == default(KeyCode)){
-				return true;
+		if(keys[0] == KeyCode.F12) {
+			if(getInputKeyInfo(KeyCode.F10,keys[1]) && getInputKeyInfo(KeyCode.F9, keys[2])) {
+				return true; // all keys required are down
 			}
-			firstKeyCanBeHeld = false;
 		}
-		return true;
 
+		if (getInputKeyInfo(keys[0], keys[1])) {
+			return true; // key required is in correct position
+		}
+		
+		return false; 
 	}
 
+	
 
 	#endregion
 

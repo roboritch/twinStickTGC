@@ -6,20 +6,36 @@ using UnityEngine;
 public class BeamAnimation : MonoBehaviour {
 	private SpriteRenderer SR;
 	private float spriteLayer = -0.07f;
-	private float spriteBoundsY;
 
-	public void setBeamLength(Vector3 startLocation, Vector3 endLocation) {
-		startLocation.z = spriteLayer;
-		endLocation.z = spriteLayer;
+	public void setBeamLength(Vector2 startLocation, Vector2 endLocation) {
+		Vector3 startLocation3D = startLocation;
+		Vector3 endLocation3D = endLocation;
+
+		startLocation3D.z = spriteLayer;
+		endLocation3D.z = spriteLayer;
 		//set location and look at end location
-		transform.position = startLocation;
+		transform.position = startLocation3D;
 		
-		transform.up = endLocation - transform.position; //look at end location
+        transform.up = endLocation3D - transform.position; //look at end location
 
-		float size = (endLocation - startLocation).magnitude;
+		float size = (endLocation3D - startLocation3D).magnitude;
 		Vector3 sizeVector = transform.localScale;
 		sizeVector.y = size;
 		transform.localScale = sizeVector;
+	}
+
+	/// <summary>
+	/// |-------------|
+	/// width of the beam (from start of sprit.x to end)
+	/// Mesure using empties if necasary
+	/// </summary>
+	[SerializeField]
+	private float currentWidth = 0.48f;
+	public void setBeamWidth(float wantendWidth) {
+		Vector3 newScale = transform.localScale;
+
+		newScale.x = wantendWidth/currentWidth;
+		transform.localScale = newScale;
 	}
 
 	public void setBeamColor(Color color) {
@@ -53,7 +69,6 @@ public class BeamAnimation : MonoBehaviour {
 	// Use this for initialization
 	void Awake () {
 		SR = GetComponent<SpriteRenderer>();
-		spriteBoundsY = SR.bounds.size.y;
 	}
 
 	void Start() {

@@ -6,7 +6,7 @@ using UnityEngine;
 public class DamageArea : MonoBehaviour {
 	private new Collider2D collider;
 
-	private bool countingDown = true;
+	private bool countingDown = false;
 	/// <summary>
 	/// start the coundown till this area damages all actors within it
 	/// </summary>
@@ -15,21 +15,33 @@ public class DamageArea : MonoBehaviour {
 	public void startCountDown(float damageTimeIn_seconds) {
 		timeTillDamage_seconds = damageTimeIn_seconds;
 		countingDown = true;
-		locationUpdateType = LocationUpdateType.None;
 	}
+	/// <summary>
+	/// use preset time in prefab 
+	/// </summary>
+	public void startCountDown() {
+		countingDown = true;
+	}
+
 
 	/// <summary>
 	/// defaults to instant
 	/// </summary>
-	private float timeTillDamage_seconds = 0f;
+	[SerializeField]
+	private float timeTillDamage_seconds;
+	[SerializeField]
+	private float timeOffset_seconds = 0f;
+	/// <summary>
+	/// the amount of damage set in the prefab
+	/// </summary>
 	public float damageAmount = 0f;
-
+	public DamageTypes damageType;
 
 	public GameObject damageAnimationPrefab;
 
 	private void damageActors() {
 		foreach (KeyValuePair<Collider2D,Actor> actor in actorsInArea) {
-			actor.Value.takeDamage(damageAmount);
+			actor.Value.takeDamage(damageAmount,damageType);
 		}
 	}
 
@@ -57,32 +69,7 @@ public class DamageArea : MonoBehaviour {
 		collider.isTrigger = true;
 	}
 
-	#region update location based on aim
-	private enum LocationUpdateType {
-		None,GivenLocation,DistanceFromLocation
-	}
 
-	private LocationUpdateType locationUpdateType = LocationUpdateType.None;
-	private IGetAim aimLocation;
-	private Transform startLocation;
-	private float distanceFromStartLocation;
-
-	[SerializeField]
-	private float spriteLayer;
-
-
-	void Update() {
-		if(locationUpdateType == LocationUpdateType.GivenLocation) {
-			Vector2 tempLoc;
-			aimLocation.getAim(out tempLoc);
-			Vector3 newLocation = tempLoc;
-			newLocation.z = spriteLayer;
-			transform.position = newLocation;
-		} else if(locationUpdateType == LocationUpdateType.GivenLocation) {
-
-		}
-	}
-	#endregion
 
 	void FixedUpdate () {
 		if(countingDown)

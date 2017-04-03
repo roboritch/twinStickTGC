@@ -16,8 +16,8 @@ public class ProjectileBase : MonoBehaviour {
 
 	protected new Collider2D collider;
 	protected new Rigidbody2D rigidbody;
-	private float damageAmount = 0f;
-
+	protected float damageAmount = 0f;
+	protected DamageTypes damageType;
 
 	/// <summary>
 	/// destoryes the projectile
@@ -29,12 +29,13 @@ public class ProjectileBase : MonoBehaviour {
 	protected void damageCollObject(Transform trans) {
 		IDamageable hitObject = trans.GetComponent<IDamageable>();
 		if (hitObject != null) {
-			hitObject.takeDamage(damageAmount);
+			hitObject.takeDamage(damageAmount,damageType);
 		}
 	}
 
-	public void setDamage(float damage) {
+	public void setDamage(float damage, DamageTypes damageType) {
 		damageAmount = damage;
+		this.damageType = damageType;
 	}
 
 	public void setVolocity(Vector2 velocity) {
