@@ -16,6 +16,7 @@ public class DamageAreaControls : MonoBehaviour {
 		return damageAreas;
 	}
 
+	private Actor damageSorce; //TODO give IDamagable damage sorce input
 	public void updateAreasDamageAmounts(Actor damageAreaUser, bool directFromCard) {
 		DamageIncreaseData data = damageAreaUser.effects.getDamageIcreaseAmounts(damageAmountForModifications, damageType, directFromCard);
         for (int i = 0; i < damageAreas.Length; i++) {
@@ -23,6 +24,8 @@ public class DamageAreaControls : MonoBehaviour {
 			damageAreas[i].damageAmount = data.getModifyedDamageAmount();
 			damageAreas[i].damageType = damageType;
 		}
+
+		damageSorce = damageAreaUser;
 	}
 
 	public void startDamageCountdowns(float timeTillDamage_seconds) {
@@ -50,6 +53,10 @@ public class DamageAreaControls : MonoBehaviour {
 	private Transform startLocation;
 	[SerializeField]
 	private float staticDistance;
+
+	public void disconectAim() {
+		locationUpdateType = LocationUpdateType.None;
+	}
 
 	public void setAimLocationCallbacks(Transform aimStartPorint, IGetAim aimCallback, LocationUpdateType type) {
 		startLocation = aimStartPorint;
@@ -130,5 +137,15 @@ public class DamageAreaControls : MonoBehaviour {
 	// Use this for initialization
 	void Awake () {
 		damageAreas = GetComponentsInChildren<DamageArea>(true);
+	}
+
+	void Start() {
+		InvokeRepeating("destoryWhenAllareasDone", 2f, 1f);
+	}
+
+	private void destoryWhenAllareasDone() {
+		if (transform.childCount == 0) {
+			Destroy(gameObject);
+		}
 	}
 }

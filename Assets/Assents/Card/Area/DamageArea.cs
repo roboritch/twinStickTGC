@@ -30,6 +30,8 @@ public class DamageArea : MonoBehaviour {
 	[SerializeField]
 	private float timeTillDamage_seconds;
 	[SerializeField]
+	private float timeTillDamagePointInDamageAnimation_seconds;
+	[SerializeField]
 	private float timeOffset_seconds = 0f;
 	/// <summary>
 	/// the amount of damage set in the prefab
@@ -70,17 +72,24 @@ public class DamageArea : MonoBehaviour {
 	}
 
 
-
+	private bool animationRuning = false;
 	void FixedUpdate () {
-		if(countingDown)
+		if (countingDown) {
 			if (timeTillDamage_seconds <= 0) {
-				damageActors();
 				if (damageAnimationPrefab != null) { //play damage animation
-					Instantiate(damageAnimationPrefab,transform.position, new Quaternion());
+					Instantiate(damageAnimationPrefab, transform.position, new Quaternion());
+					countingDown = false;
+					animationRuning = true;
 				}
-				UnityExtentionMethods.destoryAllChildren(transform);
 			} else {
 				timeTillDamage_seconds -= Time.fixedDeltaTime;
 			}
+		}else if (animationRuning) {
+			timeTillDamagePointInDamageAnimation_seconds -= Time.fixedDeltaTime;
+			if (timeTillDamagePointInDamageAnimation_seconds <= 0) {
+				damageActors();
+				UnityExtentionMethods.destoryAllChildren(transform);
+			}
+		}
 	}
 }

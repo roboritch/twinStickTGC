@@ -4,14 +4,9 @@ using UnityEngine;
 
 public class AnimateParticals : StateMachineBehaviour {
 
-	[SerializeField]
-	private Sprite lastAnvilFrame;
-
 	private SpriteRenderer sr;
 	// OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
 	override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
-		sr = animator.GetComponent<SpriteRenderer>();
-		sr.sprite = lastAnvilFrame;
 		ParticleSystem ps = animator.GetComponentInChildren<ParticleSystem>();
 		ps.Play();
 		animator.GetComponent<SpriteFlash>().flashSprite(ps.main.duration*.2f);

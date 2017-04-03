@@ -80,6 +80,7 @@ public class AreaBase : Card {
 			return false;
 		} else {
 			activateDamageArea(cardUser);
+			currentAreas.disconectAim();
 			currentAreas = null; //detatch the area from this card
 			return true;
 		}
