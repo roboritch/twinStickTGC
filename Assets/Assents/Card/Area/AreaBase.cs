@@ -57,6 +57,8 @@ public class AreaBase : Card {
 
 		currentAreas.updateAreasDamageAmounts(cardUser, true);
 		currentAreas.startDamageCountdowns();
+		currentAreas.disconectAim();
+		currentAreas = null; //detatch the area from this card
 	}
 
 	protected void destroyDamageArea() {
@@ -80,8 +82,6 @@ public class AreaBase : Card {
 			return false;
 		} else {
 			activateDamageArea(cardUser);
-			currentAreas.disconectAim();
-			currentAreas = null; //detatch the area from this card
 			return true;
 		}
 	}

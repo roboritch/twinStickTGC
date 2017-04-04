@@ -36,6 +36,7 @@ public class HitscanBase : Card {
 		//advanced 
 		float damageAmount = cardUser.effects.modifyDamage(baseDamage, damageType, true);
 		IDamageable[] hitObjects = raycastWideProjectile(cardUser, true, damageAmount);
+		if(hitObjects != null)
 		for (int i = 0; i < hitObjects.Length; i++) {
 			hitObjects[i].takeDamage(damageAmount,damageType);
 		}

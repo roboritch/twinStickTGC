@@ -18,9 +18,15 @@ public class Actor : MonoBehaviour , IDamageable {
 	[SerializeField] private float health_MIN = 0; //some cards may set this > 0 for a short time
 	[SerializeField] private float health;
 	[SerializeField] private float invincibilityFrames_seconds = 2f;
-
+	private HealthBarControler healthUI;
 	private void initHealth() {
 		health = health_MAX;
+		if (playerControled) {
+			GameObject healthDisplay = GameObject.FindGameObjectWithTag("HeathUI");
+			if (healthDisplay != null) {
+				healthUI = healthDisplay.GetComponent<HealthBarControler>();
+			}
+		}
 	}
 	#region IDamagable
 	/// <summary>
@@ -29,12 +35,23 @@ public class Actor : MonoBehaviour , IDamageable {
 	/// <param name="amount">amount of damage</param>
 	/// <returns>true if damage is taken</returns>
 	public bool takeDamage(float amount, DamageTypes damageType) {
-		if (IsInvoking("setColor_Damaged") || IsInvoking("setColor_Default")) {
-			return false;
-		}
 		health -= amount;
+		if(health < health_MIN) {
+			health = health_MIN;
+		}
+		if (health <= 0) {
+			actorDies();
+		}
 		takeDamageGrapic_flashColor(.8f);
+		if (healthUI != null) {
+			healthUI.updateHealthDispley(health_MAX, health);
+		}
 		return true;
+	}
+
+	private void actorDies() {
+		
+		UnityExtentionMethods.destoryAllChildren(transform);
 	}
 
 	public bool blocksDamage(float amount, DamageTypes damageType) {
@@ -59,17 +76,33 @@ public class Actor : MonoBehaviour , IDamageable {
 	private Color color_Default;
 	private SpriteRenderer image;
 
-	private void takeDamageGrapic_flashColor(float flashlength_seconds) {
-		setColor_Damaged();
-		Invoke("setColor_Default", flashlength_seconds);
+	private float flashLength = 0;
+	private void updateSpriteDamage() {
+		if (flashLength <= 0) {
+			setColor_Default();
+			return;
+		}
+		flashLength -= Time.deltaTime;
 	}
 
+	private void takeDamageGrapic_flashColor(float flashlength_seconds) {
+		setColor_Damaged();
+		flashLength = flashlength_seconds;
+	}
 
+	#region flashing in frames
 	private void takeDamageGrapic_invFrames(float flashDeration_seconds) {
 		InvokeRepeating("setColor_Damaged", 0, .3f);
 		InvokeRepeating("setColor_Default", .15f, .3f);
 		Invoke("endDamageGrapic", flashDeration_seconds);
 	}
+
+	private void endDamgeGrapic() {
+		CancelInvoke("setColor_Damaged");
+		CancelInvoke("setColor_Default");
+		setColor_Default();
+	}
+	#endregion
 
 	private void setColor_Damaged() {
 		image.color = color_Damaged;
@@ -79,11 +112,7 @@ public class Actor : MonoBehaviour , IDamageable {
 		image.color = color_Default; 
 	}
 
-	private void endDamgeGrapic() {
-		CancelInvoke("setColor_Damaged");
-		CancelInvoke("setColor_Default");
-		setColor_Default();
-	}
+
 
 	#endregion
 
@@ -110,9 +139,6 @@ public class Actor : MonoBehaviour , IDamageable {
 		effects = GetComponent<EffectsContainerComponent>();
 	}
 	
-	
-	
-
 	#endregion
 
 	#region Hand of Cards
@@ -134,7 +160,7 @@ public class Actor : MonoBehaviour , IDamageable {
 	
 	// Update is called once per frame
 	void Update () {
-		
+		updateSpriteDamage();
 	}
 
 	#region card helper functions

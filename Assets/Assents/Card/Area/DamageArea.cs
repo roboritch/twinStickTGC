@@ -53,7 +53,8 @@ public class DamageArea : MonoBehaviour {
 	void OnTriggerEnter2D(Collider2D coll) {
 		Actor actor = coll.GetComponent<Actor>();
 		if(actor != null) {
-			actorsInArea.Add(coll, actor);
+			if(!actorsInArea.ContainsKey(coll))
+				actorsInArea.Add(coll, actor);
 		}
 	}
 
@@ -80,6 +81,10 @@ public class DamageArea : MonoBehaviour {
 					Instantiate(damageAnimationPrefab, transform.position, new Quaternion());
 					countingDown = false;
 					animationRuning = true;
+					SpriteRenderer sr = GetComponent<SpriteRenderer>();
+					if(sr != null) {
+						sr.sprite = null;
+					}
 				}
 			} else {
 				timeTillDamage_seconds -= Time.fixedDeltaTime;

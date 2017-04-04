@@ -22,6 +22,15 @@ public class Hand : MonoBehaviour {
 	}
 
 	/// <summary>
+	/// used to prevent the player activating cards when dead
+	/// </summary>
+	public void removeKeyBindings() {
+		for (int i = 0; i < cardSlots.Length; i++) {
+			KeyEvents.Instance.buttionCallbackFunctions.activateCard[i] = KeyEvents.Instance.emptyCallback;
+		}
+	}
+
+	/// <summary>
 	/// Debug code for now
 	/// </summary>
 	private void drawInitalCardFromDeck() {
@@ -31,6 +40,12 @@ public class Hand : MonoBehaviour {
 				cardSlots[i].receiveCard((Card)Activator.CreateInstance(card));
 		}
 
+	}
+
+	public void clearHand() {
+		for (int i = 0; i < cardSlots.Length; i++) {
+			cardSlots[i].removeCard();
+		}
 	}
 
 	void Start() {

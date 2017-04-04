@@ -14,6 +14,10 @@ public class CardSlot : MonoBehaviour {
 		displayCardIcon();
 	}
 
+	public void removeCard() {
+		cardBeingHeld.destroyCard();
+		cardBeingHeld = null;
+	}
 
 	[SerializeField] private Sprite defaultSprite;
 	[SerializeField] private Sprite noCardsLeft;
