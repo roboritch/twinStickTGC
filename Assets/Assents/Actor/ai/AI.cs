@@ -26,7 +26,22 @@ public class AI : MonoBehaviour {
 	#region strafe code
 	[SerializeField]
 	private float strafeDistance = 4f;
+	/// <summary>
+	/// true for left, false for right relative to this actor
+	/// </summary>
+	private bool strafeDirection = true;
+	[SerializeField]
+	private float chanceOfStrafeDirectionChange_perSecond = 0.1f;
+
+	/// <summary>
+	/// when placed in Update the ai will strafe the selected enamy
+	/// </summary>
 	private void strafeEnamy() {
+		float rng = Random.Range(0, 1);
+		if(rng <= chanceOfStrafeDirectionChange_perSecond/Time.deltaTime) {
+			strafeDirection = !strafeDirection;
+		}
+
 		Vector2 enamyPosition = selectedEnamy.get2dPostion();
 		Vector2 AiPosition = actor.get2dPostion();
 
@@ -45,7 +60,12 @@ public class AI : MonoBehaviour {
 		float distanceFromWantedLocation = strafeStartDistance - (wantedLocation - AiPosition).magnitude ;
 		if(distanceFromWantedLocation > 0) {
 			Vector2 movePerpendicular = moveVolocity;
-			movePerpendicular.x = moveVolocity.y;
+			if (strafeDirection) {
+				movePerpendicular.x = moveVolocity.y;
+			}else {
+				movePerpendicular.x = -moveVolocity.y;
+			}
+
 			movePerpendicular.y = -moveVolocity.x;
 			moveVolocity = moveVolocity.normalized * (strafeStartDistance - distanceFromWantedLocation) + movePerpendicular.normalized * (distanceFromWantedLocation);
 		}
