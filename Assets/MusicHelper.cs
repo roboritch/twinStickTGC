@@ -16,6 +16,8 @@ public class MusicHelper : MonoBehaviour {
 	[SerializeField]
 	private bool loop;
 	[SerializeField]
+	private bool fadein;
+	[SerializeField]
 	private float currentTime;
 
 	// Use this for initialization
@@ -27,10 +29,32 @@ public class MusicHelper : MonoBehaviour {
 		player.pitch = pitchAndPlaybackSpeed;
 		player.time = startTime_seconds;
 		endTime_seconds = player.clip.length - endTime_secondsBeforeClipEnd;
+
+		if (fadein) {
+			player.time -= -5f;
+			if(player.time <= 0) {
+				player.time = 0f;
+			}
+			fadinEndTime_seconds = 4f;
+			fadeinEndVolume = player.volume;
+			player.volume = 0f;
+		}
+
 	}
-	
+
+	private float fadeinEndVolume;
+	private float currentFadeTime_seconds = 0f;
+	private float fadinEndTime_seconds;
 	// Update is called once per frame
 	void Update () {
+		if (fadein) {
+			currentFadeTime_seconds += Time.deltaTime;
+            player.volume = fadeinEndVolume * (currentFadeTime_seconds/fadinEndTime_seconds);
+			if(currentFadeTime_seconds > fadinEndTime_seconds) {
+				fadein = false;
+			}
+		}
+
 		if(loop)
 		if(player.time > endTime_seconds) { // VERY rough music looping
 			player.time = startTime_seconds; 
