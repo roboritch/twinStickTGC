@@ -30,7 +30,6 @@ public abstract class Card {
 #endif
 	#endregion
 
-
 	/// <summary>
 	/// image that apears in the hand
 	/// </summary>

@@ -7,21 +7,34 @@ using UnityEngine;
 [RequireComponent(typeof(Aim))]
 public class AI : MonoBehaviour {
 	private Actor actor;
+	private Actor getActor() {
+		return actor;
+	}
+
 	private Movment movmentControler;
 	private Aim aim;
 
-	private Actor selectedEnamy;
 	private void initAI() {
 		actor = GetComponent<Actor>();
 		movmentControler = GetComponent<Movment>();
 		aim = GetComponent<Aim>();
 
-		targetPlayer();
+		if(!manualTarget)
+		setTargetByTag("Player");
 	}
 
-	private void targetPlayer() {
+	#region AI Targeting
+	private Actor selectedEnamy;
+	public void setTargetByTag(string playerTag) {
 		selectedEnamy = GameObject.FindGameObjectWithTag("Player").GetComponent<Actor>();
 	}
+
+	private bool manualTarget = false;
+	public void setTargetManual(Actor target) {
+		selectedEnamy = target;
+		manualTarget = true;
+	}
+	#endregion
 
 	#region strafe code
 	[SerializeField]
