@@ -55,6 +55,10 @@ public class defaultTextHolder : MonoBehaviour{
 	#endregion
 	
 	#region text minipulation
+	/// <summary>
+	/// display some text without taking default text into account
+	/// </summary>
+	/// <param name="displayText"></param>
 	public void newText(string displayText){
 		textComponent.text = displayText;
 	}

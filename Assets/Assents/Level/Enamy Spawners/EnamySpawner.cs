@@ -5,7 +5,7 @@ using UnityEngine;
 public class EnamySpawner : MonoBehaviour {
 	[SerializeField]
 	protected GameObject enamyPrefab;
-	//TODO load premade enamy decks from xml
+	//TODO load premade enamy decks from xml rather than setting decks in prefabs
 
 
 

@@ -51,11 +51,13 @@ public abstract class Card {
 	static Card() {} //efforces order of static variable initalization in children
 	/// <summary>
 	/// probability this card is drawn over other cards
+	/// WARNING reflection (finding var by string name) is used on this var, DO NOT change its name
 	/// </summary>
 	public static readonly float probabiltyOfDraw;
 
 	/// <summary>
 	/// whether or not this card is removed on draw
+	/// WARNING reflection (finding var by name) is used on this var, DO NOT change its name
 	/// </summary>
 	public static readonly bool removeOnDraw;
 
