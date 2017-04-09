@@ -20,6 +20,10 @@ public static class SaveAndLoadXML{
 	/// <param name="savingFile">Saving file.</param>
 	/// <typeparam name="T">Struct type to save (Must be XML formated).</typeparam>
 	public static void saveXML<T>(string filePath, T savingFile){
+		if (File.Exists(filePath)) {
+			File.Delete(filePath);
+		}
+
 		FileStream stream = null;
 		try{
 			XmlSerializer serializer = new XmlSerializer(typeof(T));
@@ -43,7 +47,7 @@ public static class SaveAndLoadXML{
 	/// <typeparam name="T">Struct type</typeparam>
 	public static bool loadXML<T>(string filePath, out T fileOut){
 		fileOut = default(T);
-		if(File.Exists(filePath)){
+		if(!File.Exists(filePath)){
 			Debug.Log("no file with that name exists in the location\n" + filePath);
 			return false;
 		}

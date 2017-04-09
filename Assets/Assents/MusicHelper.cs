@@ -29,6 +29,7 @@ public class MusicHelper : MonoBehaviour {
 		player.pitch = pitchAndPlaybackSpeed;
 		player.time = startTime_seconds;
 		endTime_seconds = player.clip.length - endTime_secondsBeforeClipEnd;
+		musicTrackVolume = player.volume;
 
 		if (fadein) {
 			player.time -= -5f;
@@ -36,20 +37,34 @@ public class MusicHelper : MonoBehaviour {
 				player.time = 0f;
 			}
 			fadinEndTime_seconds = 4f;
-			fadeinEndVolume = player.volume;
+			musicTrackVolume = player.volume;
 			player.volume = 0f;
 		}
 
+		initVolumeCallback(); // must be called after music track volume is set
 	}
 
-	private float fadeinEndVolume;
+	#region Volume Callback
+
+	public void updateVolume(float newVolume) {
+		player.volume = newVolume * musicTrackVolume;
+	}
+	
+	private void initVolumeCallback() {
+		SoundLevels.Instance.setNewMusicCallback(this, updateVolume);
+	}
+
+	#endregion
+
+
+	private float musicTrackVolume = 1f; // defalut volume is 1
 	private float currentFadeTime_seconds = 0f;
 	private float fadinEndTime_seconds;
 	// Update is called once per frame
 	void Update () {
 		if (fadein) {
 			currentFadeTime_seconds += Time.deltaTime;
-            player.volume = fadeinEndVolume * (currentFadeTime_seconds/fadinEndTime_seconds);
+            player.volume = musicTrackVolume * (currentFadeTime_seconds/fadinEndTime_seconds);
 			if(currentFadeTime_seconds > fadinEndTime_seconds) {
 				fadein = false;
 			}

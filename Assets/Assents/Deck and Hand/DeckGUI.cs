@@ -16,8 +16,9 @@ public class DeckGUI : MonoBehaviour {
 		cardCountText.newText(deck.getCardsInDeck().ToString());
 	}
 
+	
 	// Use this for initialization
-	void Start() {
+	void Awake() {
 		if(deck == null) { // set if not specifyed in inspector
 			deck = GetComponent<Deck>();
 		}
