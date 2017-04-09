@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class PauseGameWorld : MonoBehaviour {
 
-	private float currentTimeScale;
+	private bool initalizing = true;
+	private float currentTimeScale = 1;
 
 	private void Pause() {
 		currentTimeScale = Time.timeScale;
@@ -21,12 +22,12 @@ public class PauseGameWorld : MonoBehaviour {
 	}
 
 	void OnEnable () {
+		if (initalizing) {
+			initalizing = false;
+			currentTimeScale = Time.timeScale;
+			return;
+		}
 		Pause();
-    }
-
-	//initalization (On Enable is called first)
-	void Start() {
-		unPause();
 	}
 
 	void OnDisable() {

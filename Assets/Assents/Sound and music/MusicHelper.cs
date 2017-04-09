@@ -45,9 +45,11 @@ public class MusicHelper : MonoBehaviour {
 	}
 
 	#region Volume Callback
+	float realVolume = 1;
 
 	public void updateVolume(float newVolume) {
-		player.volume = newVolume * musicTrackVolume;
+		realVolume = newVolume * musicTrackVolume;
+		player.volume = realVolume;
 	}
 	
 	private void initVolumeCallback() {
@@ -64,7 +66,7 @@ public class MusicHelper : MonoBehaviour {
 	void Update () {
 		if (fadein) {
 			currentFadeTime_seconds += Time.deltaTime;
-            player.volume = musicTrackVolume * (currentFadeTime_seconds/fadinEndTime_seconds);
+            player.volume = realVolume * (currentFadeTime_seconds/fadinEndTime_seconds);
 			if(currentFadeTime_seconds > fadinEndTime_seconds) {
 				fadein = false;
 			}

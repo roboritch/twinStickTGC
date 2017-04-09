@@ -12,7 +12,7 @@ public class SfxControler : MonoBehaviour {
 		sfxSorce.volume = baseSfxVolume * newVolume;
 	}
 
-	void Start () {
+	void Awake () {
 		sfxSorce = GetComponent<AudioSource>();
 		baseSfxVolume = sfxSorce.volume;
 		SoundLevels.Instance.setNewSfxCallback(this,updateSfxVolume);

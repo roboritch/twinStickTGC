@@ -24,7 +24,8 @@ public class PauseMenuHandler : Singleton<PauseMenuHandler> {
 
 	void Start() {
 		pauseMenu = GameObject.FindGameObjectWithTag("pauseMenu");
-		pauseMenu.SetActive(false);
+		if(pauseMenu != null)
+			pauseMenu.SetActive(false);
 	}
 	
 	// Update is called once per frame

@@ -42,7 +42,6 @@ public class SoundLevels : Singleton<SoundLevels> {
 	/// <param name="volumeCallbackMethod">method to call when volume is changed</param>
 	public void setNewMusicCallback(object callbackDestination, soundVolumeChange volumeCallbackMethod) {
 		musicChangeCallbacks.Add(callbackDestination, volumeCallbackMethod);
-		volumeCallbackMethod(musicVolume);
 	}
 
 	private void notifyMusicCallbacks() {
@@ -85,11 +84,15 @@ public class SoundLevels : Singleton<SoundLevels> {
 	#endregion
 	
 	// Use this for initialization
-	void Start () {
+	void Awake () {
 		loadSoundLevels();
-		saveSoundLevels();
 	}
 	
+	void Start() {
+		Invoke("notifyMusicCallbacks", 0.01f);
+		Invoke("notifySfxCallbacks", 0.01f);
+	}
+
 	// Update is called once per frame
 	void Update () {
 		
@@ -106,8 +109,8 @@ public class SoundLevels : Singleton<SoundLevels> {
 		SoundLevelsDiskSave loadedLevels;
 		bool fileExists = SaveAndLoadXML.loadXML(soundFilePath(), out loadedLevels);
 		if (fileExists) {
-			musicVolume = loadedLevels.musicLevel;
-			sfxVolume = loadedLevels.sfxLevel;
+			setMusicVolume(loadedLevels.musicLevel);
+			setSfxVolume(loadedLevels.sfxLevel);
 		}
 	}
 
@@ -116,6 +119,11 @@ public class SoundLevels : Singleton<SoundLevels> {
 		SaveAndLoadXML.saveXML(soundFilePath(), savingFile);
 	}
 	#endregion
+
+	new void OnDestroy() {
+		base.OnDestroy();
+		saveSoundLevels();
+	}
 }
 
 public struct SoundLevelsDiskSave {
