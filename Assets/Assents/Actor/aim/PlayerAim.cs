@@ -46,10 +46,10 @@ public class PlayerAim : Aim {
 	
 	// Update is called once per frame
 	void Update () {
+		updateCameraPos();
 		updateReticalPosition();
 		lookAtAimLocation();
-		updateCameraPos();
-    }
+	}
 
 
 }
