@@ -52,7 +52,7 @@ public class HitscanBase : Card {
 		Vector2 aimLocation = cardUser.getAimLocation();
 
 		Vector2 userLocation = cardUser.transform.position;
-		RaycastHit2D[] hits;
+        RaycastHit2D[] hits;
 		//orderd from lowest to highest distance
 		hits = Physics2D.CircleCastAll(userLocation, projectileSize*.5f, aimLocation - userLocation, projectileDistance);
 		if (hits == null)
@@ -69,7 +69,7 @@ public class HitscanBase : Card {
 				if (validCheck != null) {
 					lastHitTarget = hits[i];
 					validHitTargets[hitIndex++] = validCheck;
-					if (!validCheck.blocksDamage(damage, damageType)) { //if valid IDamagable blocks this damage stop here
+					if (validCheck.blocksDamage(damage, damageType)) { //if valid IDamagable blocks this damage stop here
 						break;
 					}
 				}
@@ -84,8 +84,13 @@ public class HitscanBase : Card {
 		//this is will not look right if the hit target is vary small or
 		//the very edge of the cast hits a target
 		Vector2 displayRayEndpoint = lastHitTarget.centroid - userLocation;
-		displayRayEndpoint += displayRayEndpoint.normalized * projectileSize * 0.7f;
-		displayRayEndpoint += userLocation;
+		if(displayRayEndpoint == new Vector2()) {
+			//set min enpoint
+			displayRayEndpoint = userLocation + (aimLocation - userLocation).normalized * 0.7f;
+		} else {
+			displayRayEndpoint += displayRayEndpoint.normalized * projectileSize * 0.7f;
+			displayRayEndpoint += userLocation;
+		}
 
 		if (multiHit) {
 			Array.Resize(ref validHitTargets, hitIndex);

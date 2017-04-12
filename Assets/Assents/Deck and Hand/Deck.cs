@@ -129,13 +129,13 @@ public class Deck : MonoBehaviour {
 	void Awake() {
 		cardTypesAndProbabilitys = new LinkedList<CardtypesAndProbabilities>();
 
-		int iterationNumber = 2;
-		int numberOfCardInstances = 3;
+		int iterationNumber = 3;
+		int numberOfCardInstances = 1;
 		System.Type[] cardsToAdd = new System.Type[iterationNumber * numberOfCardInstances];
 		for (int i = 0; i < iterationNumber; i++) {
 			cardsToAdd[i * numberOfCardInstances] = typeof(HitscanBase);
-			cardsToAdd[i * numberOfCardInstances + 1] = typeof(ProjectileWeaponBase);
-			cardsToAdd[i * numberOfCardInstances + 2] = typeof(AreaBase);
+			//cardsToAdd[i * numberOfCardInstances + 1] = typeof(ProjectileWeaponBase);
+			//cardsToAdd[i * numberOfCardInstances + 2] = typeof(AreaBase);
 		}
 		addCardsToDeck(cardsToAdd);
 

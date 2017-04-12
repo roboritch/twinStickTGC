@@ -1,4 +1,15 @@
 
-Card and Other Icons - game-icons.net
+Developers			- "Richard Greaves"
+					- "Vic Tsai"
+					- "Brian Matte"
 
-Music/SoundEffect - Main Music Waterflame "-RocketRace-" www.newgrounds.com/audio/listen/166467
+Music/SoundEffect	- Main Music "Waterflame" '-RocketRace-' www.newgrounds.com/audio/listen/166467 
+					- Falling sound "Richard Graves"
+
+GameIcons			- http://game-icons.net
+					- Sound waves	"Skoll"
+					- Health cross	"sbed"
+					- Sound			"Delapouite"
+					- Revolver		"Delapouite"
+					- Pistol		"John Colburn"
+					- Anvil			"Lorc"

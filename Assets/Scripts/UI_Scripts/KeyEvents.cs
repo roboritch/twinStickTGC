@@ -12,8 +12,8 @@ public delegate void KeypressCallback();
 /// </summary>
 public class KeyEvents : Singleton<KeyEvents>{
 	
-	[SerializeField] private string localFileName = "Generic Bindings";
-	[SerializeField] private string localFolderName = "Bindings";
+	[SerializeField] private string localFileName = "Generic Bindings.xml";
+	[SerializeField] private string localFolderName = "User Preferences";
 	private ActionBindings currentActionBindings;
 	[SerializeField]
 	private bool loadBindingsFromFile = false;

@@ -7,87 +7,88 @@ using UnityEngine;
 [RequireComponent(typeof(Aim))]
 public class AI : MonoBehaviour {
 	private Actor actor;
-	private Actor getActor() {
+	public Actor getActor() {
 		return actor;
 	}
 
-	private Movment movmentControler;
+	private Movment movementControler;
+	public Movment moveControler {
+		get {return movementControler;}
+	}
 	private Aim aim;
 
 	private void initAI() {
 		actor = GetComponent<Actor>();
-		movmentControler = GetComponent<Movment>();
+		movementControler = GetComponent<Movment>();
 		aim = GetComponent<Aim>();
 
-		if(!manualTarget)
-		setTargetByTag("Player");
+		if (!manualTarget)
+			setTargetByTag("Player");
 	}
 
 	#region AI Targeting
 	private Actor selectedEnamy;
+	/// <summary>
+	/// returns self if no enamy selected
+	/// </summary>
+	/// <returns></returns>
+	public Actor getSelectedEnamy() {
+		if(selectedEnamy == null) {
+			return actor;
+		}
+		return selectedEnamy;
+	}
+
 	public void setTargetByTag(string playerTag) {
 		selectedEnamy = GameObject.FindGameObjectWithTag("Player").GetComponent<Actor>();
 	}
 
 	private bool manualTarget = false;
+
+
 	public void setTargetManual(Actor target) {
 		selectedEnamy = target;
 		manualTarget = true;
 	}
 	#endregion
 
-	#region strafe code
+	#region Ai Movment Control Setup
+	private AIMovementBehaviour currentMoveBehavior;
 	[SerializeField]
-	private float strafeDistance = 4f;
-	/// <summary>
-	/// true for left, false for right relative to this actor
-	/// </summary>
-	private bool strafeDirection = true;
-	[SerializeField]
-	private float chanceOfStrafeDirectionChange_perSecond = 0.1f;
+	private AIMovementType moveType;
+	private void changeMovmentType(AIMovementType mType) {
+		moveType = mType;
 
-	/// <summary>
-	/// when placed in Update the ai will strafe the selected enamy
-	/// </summary>
-	private void strafeEnamy() {
-		float rng = Random.Range(0, 1);
-		if(rng <= chanceOfStrafeDirectionChange_perSecond/Time.deltaTime) {
-			strafeDirection = !strafeDirection;
+		switch (moveType) {
+			case AIMovementType.Still:
+				destroyCurrentMoveBehavior(null);
+				break;
+			case AIMovementType.Strafe:
+				destroyCurrentMoveBehavior(typeof(Strafe));
+				if(currentMoveBehavior == null) { // add comeponent if not already there
+					currentMoveBehavior = transform.GetOrAddComponent<Strafe>();
+				}
+				break;
+			case AIMovementType.Rush:
+				break;
+			case AIMovementType.GoTo:
+				break;
+			default:
+				break;
 		}
+	}
 
-		Vector2 enamyPosition = selectedEnamy.get2dPostion();
-		Vector2 AiPosition = actor.get2dPostion();
-
-		float wantedMoveSpeed = movmentControler.getMaxSpeed();
-		Vector2 moveVolocity = new Vector2();
-		Vector2 wantedLocation = new Vector2();
-
-
-		//vector from enamy to a perticular distance
-		wantedLocation = (AiPosition - enamyPosition).normalized * strafeDistance; 
-		wantedLocation += enamyPosition; //vector converted to world space
-
-		moveVolocity = (wantedLocation - AiPosition);
-		
-		float strafeStartDistance = 1f;
-		float distanceFromWantedLocation = strafeStartDistance - (wantedLocation - AiPosition).magnitude ;
-		if(distanceFromWantedLocation > 0) {
-			Vector2 movePerpendicular = moveVolocity;
-			if (strafeDirection) {
-				movePerpendicular.x = moveVolocity.y;
-			}else {
-				movePerpendicular.x = -moveVolocity.y;
-			}
-
-			movePerpendicular.y = -moveVolocity.x;
-			moveVolocity = moveVolocity.normalized * (strafeStartDistance - distanceFromWantedLocation) + movePerpendicular.normalized * (distanceFromWantedLocation);
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="saveIfThisType">set to be null if no saving is necasry</param>
+	private void destroyCurrentMoveBehavior(System.Type saveIfThisType) {
+		if(currentMoveBehavior != null) {
+			if(currentMoveBehavior.GetType() != saveIfThisType)
+				Destroy(currentMoveBehavior);
 		}
-		moveVolocity = moveVolocity.normalized * movmentControler.getMaxSpeed();
-		movmentControler.setWantedMovment(moveVolocity);
-
 	}
 	#endregion
-
 
 	// Use this for initialization
 	void Start () {
@@ -99,7 +100,15 @@ public class AI : MonoBehaviour {
 		if (selectedEnamy != null) { 
 			aim.setAim(selectedEnamy.get2dPostion()); //get selectedEnamy location
 			aim.lookAtAimLocation();
-			strafeEnamy();
 		}
 	}
+}
+
+public enum AIMovementType {
+	Still,
+	Strafe,
+	Rush,
+	GoTo,
+
+
 }
