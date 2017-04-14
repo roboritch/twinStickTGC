@@ -43,5 +43,6 @@ public enum EffectTypes {
 	preventCardPlaying,
 	modifyProjectileSpeed,
 	changeEquipment,
-	changeSpeed
+	changeSpeed,
+	damageOnContact
 }

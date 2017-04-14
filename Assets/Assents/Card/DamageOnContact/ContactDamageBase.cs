@@ -3,9 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ContactBase : Card {
+public class ContactDamageBase : Card {
 	#region Initalization of static members
-	static ContactBase() { } //insures these values are overwriten properly
+	static ContactDamageBase() { } //insures these values are overwriten properly
 	public new static readonly bool removeOnDraw = true;
 	public new static readonly float probabiltyOfDraw = 1f;
 	#endregion
@@ -18,23 +18,19 @@ public class ContactBase : Card {
 		return GetType().Name + "/";
 	}
 
-	public ContactBase() {
+	public ContactDamageBase() {
 		cardReloadTime_seconds = 5f;
 		cardResorceCost = 1f;
 		cardArt = CardPrefabResorceLoader.Instance.loadSprite(getIconPath());
 	}
 	#endregion
-
-
-
-
-
+	
 	public override void cacheResorces() {
-		throw new NotImplementedException();
+		//no prefabs to cache
 	}
 
 	public override void destroyCard() {
-		throw new NotImplementedException();
+		//nothing to do
 	}
 
 	public override void displayDescription(defaultTextHolder decriptionBox) {
@@ -42,16 +38,7 @@ public class ContactBase : Card {
 	}
 
 	public override bool useCard(Actor cardUser) {
-		throw new NotImplementedException();
-	}
-
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
+		cardUser.effects.addEffect(new DamageOnContactEffect(cardUser,1f,2f));
+		return true;
 	}
 }
