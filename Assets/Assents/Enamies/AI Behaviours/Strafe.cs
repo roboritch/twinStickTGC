@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class Strafe : AIMovementBehaviour {
 
-
 	#region strafe code
 	[SerializeField]
 	public float strafeDistance = 2f;

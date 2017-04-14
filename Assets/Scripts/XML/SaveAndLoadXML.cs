@@ -16,12 +16,23 @@ public static class SaveAndLoadXML{
 	/// <summary>
 	/// Saves the struct as an XML file.
 	/// </summary>
-	/// <param name="filePath">File path.</param>
+	/// <param name="filePath">File path, .xml will be apended to the end of this string</param>
 	/// <param name="savingFile">Saving file.</param>
 	/// <typeparam name="T">Struct type to save (Must be XML formated).</typeparam>
 	public static void saveXML<T>(string filePath, T savingFile){
+		filePath += ".xml";
 		if (File.Exists(filePath)) {
 			File.Delete(filePath);
+		} else {
+			//makes sure folder path exists
+			if (!Directory.Exists(filePath)) {
+				string fileDir = filePath;
+				while (!fileDir.EndsWith("/") && fileDir.Length != 0) {
+					fileDir = fileDir.Remove(fileDir.Length - 1);
+				}
+				Directory.CreateDirectory(fileDir);
+
+			}
 		}
 
 		FileStream stream = null;
@@ -46,6 +57,7 @@ public static class SaveAndLoadXML{
 	/// <param name="fileOut">File out.</param>
 	/// <typeparam name="T">Struct type</typeparam>
 	public static bool loadXML<T>(string filePath, out T fileOut){
+		filePath += ".xml"; 
 		fileOut = default(T);
 		if(!File.Exists(filePath)){
 			Debug.Log("no file with that name exists in the location\n" + filePath);
@@ -62,7 +74,7 @@ public static class SaveAndLoadXML{
 		} catch(Exception ex){
 			if(stream != null)
 				stream.Close();
-			Debug.LogError("struct load failed, error:\n" + ex);
+			Debug.LogWarning("struct load failed, error:\n" + ex);
 			return false;
 		}
 		return true;

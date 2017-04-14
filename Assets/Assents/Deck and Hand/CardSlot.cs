@@ -43,7 +43,7 @@ public class CardSlot : MonoBehaviour {
 	/// </summary>
 	public void activateCard() {
 		if(cardBeingHeld != null)
-		if(cardBeingHeld.useCard(hand.curretPlayer)) { //card activation succsess
+		if(cardBeingHeld.useCard(hand.handUser)) { //card activation succsess
 			startCountdown(cardBeingHeld.cardReloadTime_seconds);
 			displayDefaultSprite();
 			cardBeingHeld.destroyCard();
@@ -121,6 +121,8 @@ public class CardSlot : MonoBehaviour {
 	#region Grapics
 	private void initTimerGrapics() {
 		grapicSize = transform.GetChild(0).GetComponent<RectTransform>();
+		barSize = grapicSize.sizeDelta.x;
+
 		timerImage = transform.GetChild(0).GetComponent<Image>();
 	}
 

@@ -50,7 +50,6 @@ public class Actor : MonoBehaviour , IDamageable {
 	}
 
 	private void actorDies() {
-		
 		UnityExtentionMethods.destoryAllChildren(transform);
 	}
 

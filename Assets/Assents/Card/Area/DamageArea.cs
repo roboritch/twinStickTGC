@@ -43,6 +43,7 @@ public class DamageArea : MonoBehaviour {
 
 	private void damageActors() {
 		foreach (KeyValuePair<Collider2D,Actor> actor in actorsInArea) {
+			if(actor.Value != null)
 			actor.Value.takeDamage(damageAmount,damageType);
 		}
 	}

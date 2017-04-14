@@ -3,13 +3,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+//TODO seperate player and AI hands and crate a base class
+//TODO seperate visual and logic elements from these components
 /// <summary>
 /// holds refrencs to the current player and all posible actions
 /// sets key bidings for all card slots
 /// </summary>
 public class Hand : MonoBehaviour {
 
-	public Actor curretPlayer;
+	public Actor handUser;
 	public CardSlot[] cardSlots = new CardSlot[4];
 	public Deck deck;
 
@@ -49,6 +52,19 @@ public class Hand : MonoBehaviour {
 		}
 	}
 
+	//if player is not set in inspector try to find it
+	void Awake() {
+		if(handUser == null) {
+			handUser = GetComponent<Actor>();
+			if (handUser == null) {
+				GameObject player = GameObject.FindGameObjectWithTag("Player");
+				if(player != null) {
+					handUser = player.GetComponent<Actor>();
+				}
+			}
+		}
+	}
+
 	void Start() {
 		if(playerControled)
 			initKeyBindings();
@@ -59,6 +75,5 @@ public class Hand : MonoBehaviour {
 	void OnApplicationQuit() {
 		quiting = true;
 	}
-
 
 }

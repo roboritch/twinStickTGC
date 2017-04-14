@@ -13,6 +13,7 @@ public class SetRenderCamera : MonoBehaviour {
 		if (disableOnCreation) {
 			gameObject.SetActive(false);
 		}
-	}
+		GetComponent<Canvas>().enabled = true;
+    }
 	
 }
