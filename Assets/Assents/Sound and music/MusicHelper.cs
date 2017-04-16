@@ -56,6 +56,10 @@ public class MusicHelper : MonoBehaviour {
 		SoundLevels.Instance.setNewMusicCallback(this, updateVolume);
 	}
 
+	void OnDestroy() {
+		SoundLevels.Instance.removeMusicCallback(this);
+    }
+
 	#endregion
 
 

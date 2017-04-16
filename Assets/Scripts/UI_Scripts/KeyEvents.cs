@@ -12,12 +12,12 @@ public delegate void KeypressCallback();
 /// </summary>
 public class KeyEvents : Singleton<KeyEvents>{
 	
-	[SerializeField] private string localFileName = "Generic Bindings.xml";
+	[SerializeField] private string localFileName = "Generic Bindings";
 	[SerializeField] private string localFolderName = "User Preferences";
 	private ActionBindings currentActionBindings;
 	[SerializeField]
 	private bool loadBindingsFromFile = false;
-	void Start(){
+	void Awake(){
 		setDefaultBindings();
 		if(!Directory.Exists(appendToLocalPath(localFolderName)))
 			Directory.CreateDirectory(appendToLocalPath(localFolderName));
@@ -61,8 +61,6 @@ public class KeyEvents : Singleton<KeyEvents>{
 
 
 	#region setDefaultBindings
-	
-
 	/// <summary>
 	/// all default keys must be set here in lew of a key changing screen
 	/// </summary>probabilityMultiplyer_4Point
@@ -196,9 +194,6 @@ public class KeyEvents : Singleton<KeyEvents>{
 		
 		return false; 
 	}
-
-	
-
 	#endregion
 
 }

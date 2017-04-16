@@ -25,8 +25,8 @@ public class EffectsContainerComponent : MonoBehaviour {
 	}
 
 	/// <summary>
-	/// if an effect type must be a child of a perticular class
-	/// this method insurese there are no errors
+	/// if an effect type must be a child of a particular class
+	/// this method insures there are no errors
 	/// </summary>
 	/// <param name="effect"></param>
 	/// <param name="et"></param>
@@ -47,6 +47,8 @@ public class EffectsContainerComponent : MonoBehaviour {
 				break;
 			case EffectTypes.changeSpeed:
 				break;
+			case EffectTypes.damageOnContact:
+				return effect is DamageOnContactEffect;
 			default:
 				break;
 		}
@@ -56,11 +58,7 @@ public class EffectsContainerComponent : MonoBehaviour {
 	public void addEffect(Effect effect) {
 		varifyEffectType(effect, effect.getEffectType);
 		int effectIndex = (int)effect.getEffectType;
-		if (effect.canBeTriggered) {
-			effects[effectIndex].AddLast(effect);
-		} else {
-			Debug.LogWarning("not a valid effect");
-		}
+		effects[effectIndex].AddLast(effect);
 	}
 
 	public void addEffect(TimedEffect effect) {
@@ -74,11 +72,11 @@ public class EffectsContainerComponent : MonoBehaviour {
 	}
 
 	/// <summary>
-	/// gets a trimed array of all valid effects 
+	/// gets a timed array of all valid effects 
 	/// </summary>
 	/// <param name="effectType"></param>
 	/// <returns></returns>
-	public Effect[] getListOfEffectsOfType(EffectTypes effectType) {
+	public Effect[] getListOfTriggerableEffectsOfType(EffectTypes effectType) {
 
 		LinkedList<TimedEffect> listOfTimedEffects = timedAndTriggerdEffects[(int)effectType]; //list of all effects of that type
 		LinkedList<Effect> listOfEffects = effects[(int)effectType]; //list of all effects of that type
@@ -128,7 +126,7 @@ public class EffectsContainerComponent : MonoBehaviour {
 	}
 
 	public void triggerEffects(EffectTypes effectType,Actor actor) {
-		Effect[] list = getListOfEffectsOfType(effectType);
+		Effect[] list = getListOfTriggerableEffectsOfType(effectType);
 		for (int i = 0; i < list.Length; i++) {
 			list[i].applyEffect(actor);
 		}
@@ -136,7 +134,7 @@ public class EffectsContainerComponent : MonoBehaviour {
 
 	#region Specialized Effect Return Values
 	public float getNewProjectileSpeed(float initalProjectileSpeed) {
-		ProjectileSpeedModification[] projMods = Array.ConvertAll(getListOfEffectsOfType(EffectTypes.modifyProjectileSpeed), item => (ProjectileSpeedModification)item);
+		ProjectileSpeedModification[] projMods = Array.ConvertAll(getListOfTriggerableEffectsOfType(EffectTypes.modifyProjectileSpeed), item => (ProjectileSpeedModification)item);
 		float speedMultiplyer = 1f;
 		for (int i = 0; i < projMods.Length; i++) {
 			speedMultiplyer += projMods[i].getProjectileSpeedIncreseMultiplyer(initalProjectileSpeed);
@@ -145,9 +143,9 @@ public class EffectsContainerComponent : MonoBehaviour {
 	}
 
 
-	#region Damage Increses
+	#region Damage Increases
 	private DamageIncreaseData updateDamageIncreseData(DamageIncreaseData data) {
-		DamageDealtChange[] listOfEffects = Array.ConvertAll(getListOfEffectsOfType(EffectTypes.damageDealtChange), item => (DamageDealtChange)item);
+		DamageDealtChange[] listOfEffects = Array.ConvertAll(getListOfTriggerableEffectsOfType(EffectTypes.damageDealtChange), item => (DamageDealtChange)item);
 		for (int i = 0; i < listOfEffects.Length; i++) {
 			data = listOfEffects[i].damageChanges(data);
 			listOfEffects[i].damageChangeEffectUsed();
@@ -157,14 +155,14 @@ public class EffectsContainerComponent : MonoBehaviour {
 
 	/// <summary>
 	/// increases a damage amount by some value based on the Effects on this actor
-	/// this should be called whenever the damage of an attack is assigned (Prejectile created
-	/// area damage removed from player control), some modifyers can be changed
-	/// while the player has an item equiped
+	/// this should be called whenever the damage of an attack is assigned (Projectile created
+	/// area damage removed from player control), some modifiers can be changed
+	/// while the player has an item equipped
 	/// </summary>
 	/// <param name="amount">the base amount of damage to be dealt</param>
 	/// <param name="damageType">the type of damage being dealt</param>
-	/// <param name="fromCard">is the damage from a card or from equitment
-	/// used if one card increses the damge of another</param>
+	/// <param name="fromCard">false if damage is not set when card is used 
+	/// this prevents large spikes in damage from equipment</param>
 	/// <returns></returns>
 	public float modifyDamage(float amount, DamageTypes damageType, bool fromCard) {
 		DamageIncreaseData damageIncreaseData = new DamageIncreaseData(amount, damageType, fromCard);

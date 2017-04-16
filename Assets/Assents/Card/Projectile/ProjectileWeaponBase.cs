@@ -51,15 +51,15 @@ public class ProjectileWeaponBase : Card {
 		ProjectileBase projectile = instantiateProjectile(0);
 		projectile.transform.position = userPosition + aimVectorFromUser * projectileDistanceFromUser; //start projectile a little ways off of the user
 		projectile.setVolocity(aimVectorFromUser * getProjectileSpeed(cardUser));
-		projectile.setDamage(getProjectileDamage(cardUser),damageType);
+		projectile.setDamage(getProjectileDamage(cardUser),damageType,cardUser.Team);
 		projectile.setProjectileColor(Color.yellow);
-		projectile.setFireingPlayer(cardUser.collider);
+		projectile.setIgnoredColliders(new Collider2D[] { cardUser.collider });
 	}
 
 	protected ProjectileBase instantiateProjectile(int projectileType) {
 		GameObject projectile = CardPrefabResorceLoader.Instance.loadPrefab(getProjectilePath(0));
         if (projectile == null) { //debug helper null check
-			Debug.LogError("projectile prefab null, check resorce folder\n" + this.GetType().Name + "/" + projectilePrefabInformation[projectileType].prefabName);
+			Debug.LogError("projectile prefab null, check resource folder\n" + this.GetType().Name + "/" + projectilePrefabInformation[projectileType].prefabName);
 			return null;
 		}
 		projectile = UnityEngine.Object.Instantiate(projectile);

@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: d33513b0980aa764f9f4ac7fdc2a96e8
+timeCreated: 1492289954
+licenseType: Free
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences:
+  - animationPrefab: {fileID: 1574696026941162, guid: f0207f0995a941240949bad1cba95dde,
+      type: 2}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
