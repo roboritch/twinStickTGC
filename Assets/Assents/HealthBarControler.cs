@@ -18,12 +18,16 @@ public class HealthBarControler : MonoBehaviour {
 		float healthBarSize = currentHealth / maxHealth;
 		healthBarSize *= healthBarMaxSize; //get % of max size relative to player health
 		healthAmount.sizeDelta = new Vector2(healthBarSize,healthAmount.sizeDelta.y);
+		healthNumber.newText(currentHealth + "/" + maxHealth);
 	}
 
+	void Awake() {
+		initHealthDisplay();
+	}
 
 	// Use this for initialization
 	void Start () {
-		initHealthDisplay();
+		
 	}
 	
 	// Update is called once per frame

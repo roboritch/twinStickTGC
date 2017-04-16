@@ -38,7 +38,7 @@ public class HitscanBase : Card {
 		IDamageable[] hitObjects = raycastWideProjectile(cardUser, true, damageAmount);
 		if(hitObjects != null)
 		for (int i = 0; i < hitObjects.Length; i++) {
-			hitObjects[i].takeDamage(damageAmount,damageType);
+			hitObjects[i].takeDamage(damageAmount,damageType,cardUser.Team);
 		}
 	}
 	
@@ -67,6 +67,9 @@ public class HitscanBase : Card {
 			if (!(hits[i].collider == cardUser.collider)) { // only run if not shooter
 				IDamageable validCheck = hits[i].collider.GetComponent<IDamageable>();
 				if (validCheck != null) {
+					if (validCheck.ignoreDamage(cardUser.Team, damageType)) {
+						break;
+					}
 					lastHitTarget = hits[i];
 					validHitTargets[hitIndex++] = validCheck;
 					if (validCheck.blocksDamage(damage, damageType)) { //if valid IDamagable blocks this damage stop here

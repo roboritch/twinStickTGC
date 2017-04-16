@@ -6,6 +6,8 @@ public class SetRenderCamera : MonoBehaviour {
 
 	[SerializeField]
 	private bool disableOnCreation;
+	[SerializeField]
+	private bool destroyOnLoad = true;
 
 	// Use this for initialization
 	void Awake () {
@@ -14,6 +16,9 @@ public class SetRenderCamera : MonoBehaviour {
 			gameObject.SetActive(false);
 		}
 		GetComponent<Canvas>().enabled = true;
-    }
+		if(!destroyOnLoad)
+			DontDestroyOnLoad(gameObject);
+		PauseMenuHandler.Instance.setPauseMenu(gameObject);
+	}
 	
 }

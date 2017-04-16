@@ -8,7 +8,7 @@ public class DamageArea : MonoBehaviour {
 
 	private bool countingDown = false;
 	/// <summary>
-	/// start the coundown till this area damages all actors within it
+	/// start the countdown till this area damages all actors within it
 	/// </summary>
 	/// <param name="damageTimeIn_seconds">time in seconds till the area damages all actors in that area</param>
 	/// <param name="damage">damage done to any actors in area</param>
@@ -35,24 +35,26 @@ public class DamageArea : MonoBehaviour {
 	private float timeOffset_seconds = 0f;
 	/// <summary>
 	/// the amount of damage set in the prefab
+	/// or the amount set by the controls
 	/// </summary>
 	public float damageAmount = 0f;
 	public DamageTypes damageType;
+	public DamageSources team;
 
 	public GameObject damageAnimationPrefab;
 
 	private void damageActors() {
-		foreach (KeyValuePair<Collider2D,Actor> actor in actorsInArea) {
+		foreach (KeyValuePair<Collider2D, IDamageable> actor in actorsInArea) {
 			if(actor.Value != null)
-			actor.Value.takeDamage(damageAmount,damageType);
+				actor.Value.takeDamage(damageAmount,damageType,team);
 		}
 	}
 
-	private Dictionary<Collider2D, Actor> actorsInArea = new Dictionary<Collider2D, Actor>();
+	private Dictionary<Collider2D, IDamageable> actorsInArea = new Dictionary<Collider2D, IDamageable>();
 
 	//add actor to area
 	void OnTriggerEnter2D(Collider2D coll) {
-		Actor actor = coll.GetComponent<Actor>();
+		IDamageable actor = coll.GetComponent<IDamageable>();
 		if(actor != null) {
 			if(!actorsInArea.ContainsKey(coll))
 				actorsInArea.Add(coll, actor);
@@ -61,7 +63,7 @@ public class DamageArea : MonoBehaviour {
 
 	//remove actor from area
 	void OnTriggerExit2D(Collider2D coll) {
-		Actor actor = coll.GetComponent<Actor>();
+		IDamageable actor = coll.GetComponent<IDamageable>();
 		if (actor != null) {
 			actorsInArea.Remove(coll);
 		}

@@ -3,6 +3,7 @@ using System.Collections;
 using System.IO;
 using System.Xml.Serialization;
 using System;
+using System.Text;
 
 public static class SaveAndLoadXML{
 	/// <summary>
@@ -35,10 +36,11 @@ public static class SaveAndLoadXML{
 			}
 		}
 
-		FileStream stream = null;
-		try{
+		StreamWriter stream = null;
+
+        try {
 			XmlSerializer serializer = new XmlSerializer(typeof(T));
-			stream = new FileStream(filePath, FileMode.CreateNew);
+			stream = new StreamWriter(filePath, false, Encoding.UTF8);
 			// New grid info to disk here.
 			serializer.Serialize(stream, savingFile);
 			stream.Close();
@@ -64,11 +66,11 @@ public static class SaveAndLoadXML{
 			return false;
 		}
 			
-		FileStream stream = null;
+		StreamReader stream = null;
 
 		try{
 			XmlSerializer serializer = new XmlSerializer(typeof(T));
-			stream = new FileStream(filePath, FileMode.Open);
+			stream = new StreamReader(filePath, Encoding.UTF8);
 			fileOut = (T)serializer.Deserialize(stream);
 			stream.Close();
 		} catch(Exception ex){

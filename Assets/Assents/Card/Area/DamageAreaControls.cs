@@ -16,13 +16,14 @@ public class DamageAreaControls : MonoBehaviour {
 		return damageAreas;
 	}
 
-	private Actor damageSorce; //TODO give IDamagable damage sorce input
+	private Actor damageSorce; 
 	public void updateAreasDamageAmounts(Actor damageAreaUser, bool directFromCard) {
 		DamageIncreaseData data = damageAreaUser.effects.getDamageIcreaseAmounts(damageAmountForModifications, damageType, directFromCard);
         for (int i = 0; i < damageAreas.Length; i++) {
 			data.amount = damageAreas[i].damageAmount;
 			damageAreas[i].damageAmount = data.getModifyedDamageAmount();
 			damageAreas[i].damageType = damageType;
+			damageAreas[i].team = damageAreaUser.Team;
 		}
 
 		damageSorce = damageAreaUser;
@@ -86,6 +87,12 @@ public class DamageAreaControls : MonoBehaviour {
 	}
 
 	private void updateAreaLocationAndRotoation() {
+		if(startLocation == null) {
+			Debug.Log("actor controlling this area is dead or inactive, destroying area");
+			destroyAreas();
+			return;
+		}
+
 		Vector2 aimLocation;
 		Vector3 newLocation;
 		Vector3 rot;

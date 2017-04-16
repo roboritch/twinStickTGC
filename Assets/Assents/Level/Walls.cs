@@ -8,7 +8,11 @@ public class Walls : MonoBehaviour,IDamageable {
 		return true;
 	}
 
-	public bool takeDamage(float amount, DamageTypes damageType) {
+	public bool ignoreDamage(DamageSources damageSorce, DamageTypes damageType) {
+		return false;
+	}
+
+	public bool takeDamage(float amount, DamageTypes damageType, DamageSources damageSorce) {
 		return false;
 	}
 

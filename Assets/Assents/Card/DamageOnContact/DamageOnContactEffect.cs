@@ -3,11 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DamageOnContactEffect : TimedEffect {
+public class DamageOnContactEffect : Effect {
 
-	ContactDamageComponent contactDamageComp;
-
-
+	private ContactDamageComponent contactDamageComp;
+	
  	/// <summary>
 	/// called by any card to specify the actor 
 	/// using this card
@@ -17,22 +16,17 @@ public class DamageOnContactEffect : TimedEffect {
 	/// <param name="damageAmount"></param>
 	public DamageOnContactEffect(Actor actorUsingEffect,float maxDamageInterval_sec,float damageAmount) {
  		contactDamageComp = actorUsingEffect.gameObject.AddComponent<ContactDamageComponent>();
-		maxDamageIntervel_seconds = maxDamageInterval_sec;
-		damageIntervel_seconds = 0; //ready on effect added 
+		contactDamageComp.initDamage(actorUsingEffect, damageAmount, DamageTypes.physical_normal, maxDamageInterval_sec);
 	}
 
 	public override void applyEffect(Actor applyTo) {
-		//effect is alwayes active
+		//effect is always active
 	}
 
-	private float maxDamageIntervel_seconds;
-	private float damageIntervel_seconds;
-	public override bool incrmentTimer(float time_seconds) {
-		damageIntervel_seconds -= time_seconds;
-		return false;
-	}
-
+	/// <summary>
+	/// destroy the component attached to the object 
+	/// </summary>
 	public override void removeEffect() {
-		GameObject.Destroy(contactDamageComp);
+		UnityEngine.Object.Destroy(contactDamageComp);
 	}
 }

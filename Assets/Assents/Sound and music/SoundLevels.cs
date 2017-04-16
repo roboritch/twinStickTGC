@@ -42,6 +42,7 @@ public class SoundLevels : Singleton<SoundLevels> {
 	/// <param name="volumeCallbackMethod">method to call when volume is changed</param>
 	public void setNewMusicCallback(object callbackDestination, soundVolumeChange volumeCallbackMethod) {
 		musicChangeCallbacks.Add(callbackDestination, volumeCallbackMethod);
+		volumeCallbackMethod(musicVolume);
 	}
 
 	private void notifyMusicCallbacks() {
@@ -67,7 +68,8 @@ public class SoundLevels : Singleton<SoundLevels> {
 	/// <param name="volumeCallbackMethod">method to call when volume is changed</param>
 	public void setNewSfxCallback(object callbackDestination, soundVolumeChange volumeCallbackMethod) {
 		sfxChangeCallbacks.Add(callbackDestination, volumeCallbackMethod);
-	}
+		volumeCallbackMethod(getSfxVolume());
+    }
 
 	private void notifySfxCallbacks() {
 		foreach (var method in sfxChangeCallbacks) {

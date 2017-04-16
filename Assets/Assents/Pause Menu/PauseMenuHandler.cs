@@ -15,6 +15,14 @@ public class PauseMenuHandler : Singleton<PauseMenuHandler> {
 		isQuiting = true;
 	}
 
+	/// <summary>
+	/// the pause menu may call this on startup
+	/// </summary>
+	/// <param name="pm"></param>
+	public void setPauseMenu(GameObject pm) {
+		pauseMenu = pm;
+	}
+
 	private void openPauseMenu() {
 		if(pauseMenu == null) {
 			pauseMenu = Instantiate(pauseMenuPrefab);
@@ -30,7 +38,8 @@ public class PauseMenuHandler : Singleton<PauseMenuHandler> {
 	
 	// Update is called once per frame
 	void Update () {
-		if (Input.GetKeyUp(KeyCode.Escape)) {
+		//HACK only let pause menu show up if an actor
+		if (Input.GetKeyUp(KeyCode.Escape) && FindObjectOfType<Actor>() != null) {
 			openPauseMenu();
         }
 	}

@@ -43,7 +43,7 @@ public class CardSlot : MonoBehaviour {
 	/// </summary>
 	public void activateCard() {
 		if(cardBeingHeld != null)
-		if(cardBeingHeld.useCard(hand.handUser)) { //card activation succsess
+		if(cardBeingHeld.useCard(hand.handUser)) { //card activation success
 			startCountdown(cardBeingHeld.cardReloadTime_seconds);
 			displayDefaultSprite();
 			cardBeingHeld.destroyCard();
@@ -88,7 +88,7 @@ public class CardSlot : MonoBehaviour {
 	}
 
 	/// <summary>
-	/// updates countown
+	/// updates countdown
 	/// </summary>
 	/// <param name="frameUpdate">true if called in NewCardTimer's Update method, false otherwise</param>
 	private void updateTimer(bool frameUpdate) {
@@ -107,18 +107,20 @@ public class CardSlot : MonoBehaviour {
 	}
 
 	private void drawCard() {
-		Type card = hand.deck.drawCard();
-		if (card != null)
-			receiveCard((Card)Activator.CreateInstance(card));
-		else
+		Card card;
+		if (CardConstructor.constructCard(hand.deck.drawCard(), out card)) {
+			receiveCard(card);
+		} else {
+			Debug.LogWarning("no cards left in deck");
 			displayCardIcon();
+		}
 		resetTimerGrapics();
 		updateGrapic_Timer();
 	}
 	#endregion
 
 
-	#region Grapics
+	#region Graphics
 	private void initTimerGrapics() {
 		grapicSize = transform.GetChild(0).GetComponent<RectTransform>();
 		barSize = grapicSize.sizeDelta.x;

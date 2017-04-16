@@ -16,9 +16,10 @@ public class CardPrefabResorceLoader : Singleton<CardPrefabResorceLoader> {
 		Sprite sprite;
 		if (spriteResorces.TryGetValue(resorcePathname, out sprite)) {
 			return sprite;
-		} else { //get resorce from folder
+		} else { //get resource from folder
 			sprite = Resources.Load<Sprite>(resorcePathname + "icon");
 			if (sprite == null) {
+				Debug.LogWarning("no sprite found with that name");
 				return null;
 			}
 			spriteResorces.Add(resorcePathname, sprite);

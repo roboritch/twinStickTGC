@@ -35,4 +35,8 @@ public class SfxControler : MonoBehaviour {
 		pitchChange();
     }
 
+	void OnDestroy() {
+		SoundLevels.Instance.removeSfxCallback(this);
+    }
+
 }

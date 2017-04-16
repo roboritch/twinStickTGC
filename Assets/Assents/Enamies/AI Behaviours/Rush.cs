@@ -20,6 +20,6 @@ public class Rush : AIMovementBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		moveToEnamy(ai.getSelectedEnamy().get2dPostion(), ai.getActor().get2dPostion());
+		moveToEnamy(ai.getSelectedEnemy().get2dPostion(), ai.getActor().get2dPostion());
 	}
 }

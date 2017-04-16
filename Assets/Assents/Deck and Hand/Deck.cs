@@ -18,9 +18,9 @@ public class Deck : MonoBehaviour {
 	/// <summary>
 	/// this is a representation of all the cards in a players deck
 	/// </summary>
-	private LinkedList<CardtypesAndProbabilities> cardTypesAndProbabilitys;
+	private LinkedList<CardtypesAndProbabilities> cardTypesAndProbabilitys = new LinkedList<CardtypesAndProbabilities>();
 
-	private int drawFail = 0; // prevent recurshon inf loop
+	private int drawFail = 0; // prevent recursion inf loop
 	/// <summary>
 	/// draws a card from the deck if there is any
 	/// </summary>
@@ -67,12 +67,12 @@ public class Deck : MonoBehaviour {
 	/// </summary>
 	/// <param name="cardType">the class type of a card</param>
 	public void addCardToDeck(System.Type cardType) {
-		//look at c# refrence of Type for more info on how this works
+		//look at c# reference of Type for more info on how this works
 		addCardToDeck(cardType, (float)cardType.GetField("probabiltyOfDraw").GetValue(null), (bool)cardType.GetField("removeOnDraw").GetValue(null));
 	}
 
 	/// <summary>
-	/// add multuple cards to the deck (faster than adding each indv.)
+	/// add multiple cards to the deck (faster than adding each individually)
 	/// </summary>
 	/// <param name="cardType"></param>
 	public void addCardsToDeck(System.Type[] cardType) {
@@ -110,7 +110,7 @@ public class Deck : MonoBehaviour {
 		updateGUI = true;
 	}
 	/// <summary>
-	/// update the stored count of cards in the deck by a specifyed amount
+	/// update the stored count of cards in the deck by a specified amount
 	/// </summary>
 	/// <param name="cardChangeAmount"></param>
 	private void updateCardsInDeck(int cardChangeAmount) {
@@ -119,8 +119,12 @@ public class Deck : MonoBehaviour {
 		if (updateGUI) {
 			if(deckGUI == null) {
 				deckGUI = GetComponentInChildren<DeckGUI>();
-				if(deckGUI == null) {
-					Debug.LogError("No deck UI found for deck on " + name + ":" + gameObject.GetInstanceID());
+				if (deckGUI == null) {
+					GameObject guiObject = GameObject.Find("Deck GUI");
+					if (guiObject != null)
+						deckGUI = GameObject.Find("Deck GUI").GetComponent<DeckGUI>();
+					if (deckGUI == null)
+						Debug.LogError("No deck UI found for deck on " + name + ":" + transform.GetInstanceID());
 				}
 			} else {
 				deckGUI.updateDisplayInformation();
@@ -139,7 +143,7 @@ public class Deck : MonoBehaviour {
 		XmlDeck deck;
 		bool gotDeck = SaveAndLoadXML.loadXML(path,out deck);
 		if (!gotDeck) {
-			Debug.Log("no deck found with that name");
+			Debug.LogError(path);
 			return false;
 		}
 
@@ -185,7 +189,7 @@ public class Deck : MonoBehaviour {
 			deckSave.probabilityMultiplyer[i * numberOfCardInstances + 1] = ProjectileWeaponBase.probabiltyOfDraw;
 			deckSave.probabilityMultiplyer[i * numberOfCardInstances + 2] = AreaBase.probabiltyOfDraw;
 
-			//setting removend on draw to false for testing
+			//setting removed on draw to false for testing
 			deckSave.removedOnDraw[i * numberOfCardInstances] = false;
 			deckSave.removedOnDraw[i * numberOfCardInstances + 1] = false;
 			deckSave.removedOnDraw[i * numberOfCardInstances + 2] = false;
@@ -195,13 +199,14 @@ public class Deck : MonoBehaviour {
 	}
 
 	private void initalDeckLoad(string deckName) {
-		if (!File.Exists(SaveAndLoadXML.getBaseFilePath() + deckFolderLocation + deckName)) {
-			saveTestDeck();
-		}
+		//dev code to save a test deck
+		//if (!File.Exists(SaveAndLoadXML.getBaseFilePath() + deckFolderLocation + deckName)) {
+		//	saveTestDeck();
+		//}
 		if (loadDeckFromMemory(deckName) == false) {
-			//load simple deck to avoid errors
-			addCardToDeck(typeof(ProjectileWeaponBase));
-			addCardToDeck(typeof(ProjectileWeaponBase));
+			Debug.LogError("No deck found with name:" + deckName + "\n"
+				+ "Deck gameObject ID: " + GetInstanceID());
+			//add a card to the deck to avoid errors
 			addCardToDeck(typeof(ProjectileWeaponBase));
 		}
 	}
@@ -213,8 +218,7 @@ public class Deck : MonoBehaviour {
 
 	// called before start
 	void Awake() {
-		cardTypesAndProbabilitys = new LinkedList<CardtypesAndProbabilities>();
-		initalDeckLoad("testDeck");
+		initalDeckLoad(deckName);
 	}
 
 	// Use this for initialization

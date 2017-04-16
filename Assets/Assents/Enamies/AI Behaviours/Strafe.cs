@@ -64,6 +64,6 @@ public class Strafe : AIMovementBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		strafeEnamy(ai.getSelectedEnamy().get2dPostion(), ai.getActor().get2dPostion());
+		strafeEnamy(ai.getSelectedEnemy().get2dPostion(), ai.getActor().get2dPostion());
 	}
 }

@@ -9,7 +9,7 @@ using UnityEngine;
 [RequireComponent(typeof(EffectsContainerComponent))]
 public class Actor : MonoBehaviour , IDamageable {
 
-	#region modifyer delegates	
+	#region modifier delegates	
 	public delegate float floatModifyer(float input);
 	#endregion
 
@@ -25,7 +25,8 @@ public class Actor : MonoBehaviour , IDamageable {
 			GameObject healthDisplay = GameObject.FindGameObjectWithTag("HeathUI");
 			if (healthDisplay != null) {
 				healthUI = healthDisplay.GetComponent<HealthBarControler>();
-			}
+				healthUI.updateHealthDispley(health_MAX, health);
+            }
 		}
 	}
 	#region IDamagable
@@ -34,7 +35,10 @@ public class Actor : MonoBehaviour , IDamageable {
 	/// </summary>
 	/// <param name="amount">amount of damage</param>
 	/// <returns>true if damage is taken</returns>
-	public bool takeDamage(float amount, DamageTypes damageType) {
+	public bool takeDamage(float amount, DamageTypes damageType,DamageSources damageSorce) {
+		if(ignoreDamage(damageSorce, damageType)) {
+			return false;
+		}
 		health -= amount;
 		if(health < health_MIN) {
 			health = health_MIN;
@@ -57,9 +61,30 @@ public class Actor : MonoBehaviour , IDamageable {
 		//TODO check for damage blocking effects
 		return false;
 	}
+
+	//ignore 
+	[SerializeField]
+	private DamageSources team = DamageSources.none;
+	public DamageSources Team {
+		get { return team; }
+		set { team = value; }
+	}
+
+	/// <summary>
+	/// prevents teammatesFrom blocking attacks
+	/// </summary>
+	/// <param name="damageSorce"></param>
+	/// <param name="damageType"></param>
+	/// <returns></returns>
+	public bool ignoreDamage(DamageSources damageSorce, DamageTypes damageType) {
+		if((team & damageSorce) == damageSorce) {
+			return true;
+		}
+		return false;
+	}
 	#endregion
 
-	
+
 
 	public new Collider2D collider;
 	#endregion
@@ -70,7 +95,7 @@ public class Actor : MonoBehaviour , IDamageable {
 		color_Damaged = Color.red;
 	}
 
-	#region Damage Grapics 
+	#region Damage Graphics 
 	private Color color_Damaged;
 	private Color color_Default;
 	private SpriteRenderer image;
@@ -115,9 +140,9 @@ public class Actor : MonoBehaviour , IDamageable {
 
 	#endregion
 
-	//all conections to KeyEvents shoud be here and be disablable
+	//all connections to KeyEvents should be here and be disable
 	#region button callbacks
-	[SerializeField] private bool playerControled = true;
+	[SerializeField] private bool playerControled = false;
 	private void initButtonCallbacks() {
 		if (playerControled) { 
 			KeyEvents.Instance.buttionCallbackFunctions.mainAction += mainActionPressed;
@@ -177,7 +202,7 @@ public class Actor : MonoBehaviour , IDamageable {
 
 	public Vector2 getNormalizedAim(Vector2 startPoint) {
 		if(aimObject == null) {
-			Debug.LogWarning("No aim in object!\n" + gameObject.GetInstanceID());
+			Debug.LogWarning("No aim in object!\n" + transform.GetInstanceID());
 			return new Vector2();
 		}
 		Vector2 aimLocation;

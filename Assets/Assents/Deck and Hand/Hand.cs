@@ -60,6 +60,9 @@ public class Hand : MonoBehaviour {
 				GameObject player = GameObject.FindGameObjectWithTag("Player");
 				if(player != null) {
 					handUser = player.GetComponent<Actor>();
+					if(deck == null) {
+						deck = player.GetComponent<Deck>();
+					}
 				}
 			}
 		}

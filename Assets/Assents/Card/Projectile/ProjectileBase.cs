@@ -6,8 +6,8 @@ using UnityEngine;
 /// <summary>
 /// to use properly 
 /// base.Start()
-/// must be called by there repective MonoBehaviour methods
-/// base.OnCollisionEnter2D(coll) must be chenged to fit behaviour wanted
+/// must be called by there respective MonoBehaviour methods
+/// base.OnCollisionEnter2D(coll) must be changed to fit behavior wanted
 /// </summary>
 [RequireComponent(typeof(Collider2D))]
 [RequireComponent(typeof(Rigidbody2D))]
@@ -18,24 +18,44 @@ public class ProjectileBase : MonoBehaviour {
 	protected new Rigidbody2D rigidbody;
 	protected float damageAmount = 0f;
 	protected DamageTypes damageType;
+	protected DamageSources sourceTeam;
 
 	/// <summary>
-	/// destoryes the projectile
+	/// destroys the projectile
 	/// </summary>
 	protected void destroyProjectile() {
 		UnityExtentionMethods.destoryAllChildren(transform);
 	}
 
-	protected void damageCollObject(Transform trans) {
-		IDamageable hitObject = trans.GetComponent<IDamageable>();
+	/// <summary>
+	/// check if object is damageable 
+	/// </summary>
+	/// <param name="colider"></param>
+	protected void objectCollision(Collider2D colider) {
+		IDamageable hitObject = colider.GetComponent<IDamageable>();
 		if (hitObject != null) {
-			hitObject.takeDamage(damageAmount,damageType);
+			if(hitObject.ignoreDamage(sourceTeam, damageType)) {
+				//the object is not considered in calculations
+				//WARNING if the actors alliance changes while this projectile is still active
+				//it will not be able to find it
+				setIgnoredColliders(new Collider2D[] { colider });
+				return;
+			}
+			hitObject.takeDamage(damageAmount,damageType,sourceTeam);
+			destroyProjectile();
+		} else {
+			//the object is not considered in calculations as it is not damageable
+			//WARNING turning non damageable objects into damageable ones 
+			//will ignore this
+			setIgnoredColliders(new Collider2D[] { colider });
 		}
 	}
 
-	public void setDamage(float damage, DamageTypes damageType) {
+	#region Specify projectile properties
+	public void setDamage(float damage, DamageTypes damageType,DamageSources team) {
 		damageAmount = damage;
 		this.damageType = damageType;
+		sourceTeam = team;
 	}
 
 	public void setVolocity(Vector2 velocity) {
@@ -46,12 +66,19 @@ public class ProjectileBase : MonoBehaviour {
 	public void setProjectileColor(Color color) {
 		sprite.color = color;
 	}
+	#endregion
 
-
-    public void setFireingPlayer(Collider2D coll) {
-		Physics2D.IgnoreCollision(collider, coll, true);
+	/// <summary>
+	/// ignore future collisions with Colliders specified 
+	/// </summary>
+	/// <param name="coll">player firing the projectile</param>
+	public void setIgnoredColliders(Collider2D[] colliders) {
+		foreach (var coll in colliders) {
+			Physics2D.IgnoreCollision(collider, coll, true);
+		}
 	}
 
+	#region Projectile lifetime
 	private float projectileTimeLeft_seconds = 10f; //this should be fine for all but the slowest projectiles
 	public void setProjectileLifetime(float lifetime_seconds) {
 		projectileTimeLeft_seconds = lifetime_seconds;
@@ -63,6 +90,7 @@ public class ProjectileBase : MonoBehaviour {
 			destroyProjectile();
 		}
 	}
+	#endregion
 
 	#region mono methods
 	void Awake() {
@@ -72,12 +100,11 @@ public class ProjectileBase : MonoBehaviour {
 	}
 
 	/// <summary>
-	/// called when this projectile hits somthing
+	/// called when this projectile hits something
 	/// </summary>
-	/// <param name="coll">colision</param>
+	/// <param name="coll">collision</param>
 	void OnCollisionEnter2D(Collision2D coll) {
-		damageCollObject(coll.transform);
-		destroyProjectile();
+		objectCollision(coll.collider);
 	}
 
 	void Update() {
