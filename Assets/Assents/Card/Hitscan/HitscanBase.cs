@@ -27,7 +27,7 @@ public class HitscanBase : Card {
 	#endregion
 	protected float baseDamage = 5f;
 	protected DamageTypes damageType = DamageTypes.phyisical_diffuse;
-	protected float projectileSize = 2f;
+	protected float projectileSize = 1f;
 	protected float projectileDistance = 10f;
 
 	protected void fireGun(Actor cardUser) {
@@ -51,10 +51,13 @@ public class HitscanBase : Card {
 	protected IDamageable[] raycastWideProjectile(Actor cardUser,bool multiHit,float damage) {
 		Vector2 aimLocation = cardUser.getAimLocation();
 
+
 		Vector2 userLocation = cardUser.transform.position;
-        RaycastHit2D[] hits;
+		//increse inital distance to avoid colliding with back walls
+		userLocation += (aimLocation - userLocation).normalized * 0.5f;
+		RaycastHit2D[] hits;
 		//orderd from lowest to highest distance
-		hits = Physics2D.CircleCastAll(userLocation, projectileSize*.5f, aimLocation - userLocation, projectileDistance);
+		hits = Physics2D.CircleCastAll(userLocation , projectileSize*.5f, aimLocation - userLocation, projectileDistance);
 		if (hits == null)
 			return null;
 

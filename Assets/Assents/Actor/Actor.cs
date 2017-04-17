@@ -5,6 +5,7 @@ using UnityEngine;
 
 [RequireComponent(typeof(SpriteRenderer))]
 [RequireComponent(typeof(Collider2D))]
+[RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(Aim))]
 [RequireComponent(typeof(EffectsContainerComponent))]
 public class Actor : MonoBehaviour , IDamageable {
@@ -29,9 +30,10 @@ public class Actor : MonoBehaviour , IDamageable {
             }
 		}
 	}
+
 	#region IDamagable
 	/// <summary>
-	/// 
+	/// apply the specified damage to this Actor
 	/// </summary>
 	/// <param name="amount">amount of damage</param>
 	/// <returns>true if damage is taken</returns>
@@ -88,14 +90,14 @@ public class Actor : MonoBehaviour , IDamageable {
 
 	public new Collider2D collider;
 	#endregion
-
+	
+	#region Damage Graphics 
 	private void initGrapics() {
 		image = GetComponent<SpriteRenderer>();
 		color_Default = image.color;
 		color_Damaged = Color.red;
 	}
 
-	#region Damage Graphics 
 	private Color color_Damaged;
 	private Color color_Default;
 	private SpriteRenderer image;

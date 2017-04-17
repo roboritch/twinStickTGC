@@ -98,13 +98,13 @@ public class KeyEvents : Singleton<KeyEvents>{
 	#endregion
 
 	#region action delegates
-	/*	instructions to assigen a method to a KeypressCallback 
+	/*	instructions to assign a method to a KeypressCallback 
 		nameOfDelegateContainer += methodName;
-		the plus is necasary since multuple methods classes may want to work with the same callback
+		the plus is necessary since multiple methods classes may want to work with the same callback
 		*/
 	public delegateCallbacks buttionCallbackFunctions;
 	/// <summary>
-	/// used to prevent refrence errors in case no actions are set to a button
+	/// used to prevent reference errors in case no actions are set to a button
 	/// </summary>
 	public void emptyCallback() {
 		
@@ -112,10 +112,11 @@ public class KeyEvents : Singleton<KeyEvents>{
 
 	#endregion
 
-	//key events must be manualy placed in the update
+	//key events must be manually placed in the update
 	//can be done with delegets be this is easer to debug
 	//with all elements visible
 	#region button checks
+	//TODO put this in a dictionary
 	void Update(){
 		if (correctKeysPressed(currentActionBindings.mainAction)) {
 			buttionCallbackFunctions.mainAction();
