@@ -4,14 +4,14 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class AreaBase : Card {
-	#region Initalization of static members
-	static AreaBase() { } //insures these values are overwriten properly
+	#region Initialization of static members
+	static AreaBase() { } //insures these values are overwritten properly
 	public new static readonly bool removeOnDraw = true;
 	public new static readonly float probabiltyOfDraw = 1f;
 	#endregion
 
-	#region initalization of parent vars
-	// sprite is done via the unity inspecter by 
+	#region initialization of parent vars
+	// sprite is done via the unity inspector by 
 	// clicking on this script in the project assets window
 
 	protected string getIconPath() {
@@ -58,7 +58,7 @@ public class AreaBase : Card {
 		currentAreas.updateAreasDamageAmounts(cardUser, true);
 		currentAreas.startDamageCountdowns();
 		currentAreas.disconectAim();
-		currentAreas = null; //detatch the area from this card
+		currentAreas = null; //detach the area from this card
 	}
 
 	protected void destroyDamageArea() {
@@ -66,7 +66,7 @@ public class AreaBase : Card {
 			currentAreas.destroyAreas();
 	}
 
-	#region overide methods
+	#region override methods
 	public override void cacheResorces() {
 		CardPrefabResorceLoader.Instance.cashePrefab(getAreaPrefabPath());
 	}
