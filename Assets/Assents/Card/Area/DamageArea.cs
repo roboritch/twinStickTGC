@@ -62,8 +62,7 @@ public class DamageArea : MonoBehaviour {
 	/// list of all colliders currently in the area
 	/// </summary>
 	private Dictionary<int, IDamageable> actorsInArea = new Dictionary<int, IDamageable>();
-
-
+	
 	//add IDamageable object to area
 	void OnTriggerEnter2D(Collider2D coll) {
 		IDamageable actor = coll.GetComponent<IDamageable>();
