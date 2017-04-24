@@ -19,7 +19,7 @@ public class AreaBase : Card {
 	}
 
 	public AreaBase() {
-		cardReloadTime_seconds = 5f;
+		cardReloadTime_seconds = 2f;
 		cardResorceCost = 1f;
 		cardArt = CardPrefabResorceLoader.Instance.loadSprite(getIconPath());
 	}

@@ -39,35 +39,50 @@ public class DamageArea : MonoBehaviour {
 	/// </summary>
 	public float damageAmount = 0f;
 	public DamageTypes damageType;
-	public DamageSources team;
+	public DamageSources damageSorce;
 
 	public GameObject damageAnimationPrefab;
 
+
+	#region IDamageable finder and damage application 
 	private void damageActors() {
-		foreach (KeyValuePair<Collider2D, IDamageable> actor in actorsInArea) {
-			if(actor.Value != null)
-				actor.Value.takeDamage(damageAmount,damageType,team);
+		LinkedList<IDamageable> damageableObjectList = new LinkedList<IDamageable>();
+		//can't change values while iterating over dictionary (IDamageable ref changed if object is destroyed)
+		foreach(IDamageable damagableObject in actorsInArea.Values) {
+			damageableObjectList.AddLast(damagableObject);
 		}
+
+		foreach(IDamageable damagableObject in damageableObjectList) {
+			damagableObject.takeDamage(damageAmount, damageType, damageSorce);
+		}
+
 	}
 
-	private Dictionary<Collider2D, IDamageable> actorsInArea = new Dictionary<Collider2D, IDamageable>();
+	/// <summary>
+	/// list of all colliders currently in the area
+	/// </summary>
+	private Dictionary<int, IDamageable> actorsInArea = new Dictionary<int, IDamageable>();
 
-	//add actor to area
+
+	//add IDamageable object to area
 	void OnTriggerEnter2D(Collider2D coll) {
 		IDamageable actor = coll.GetComponent<IDamageable>();
 		if(actor != null) {
-			if(!actorsInArea.ContainsKey(coll))
-				actorsInArea.Add(coll, actor);
+			if(!actorsInArea.ContainsKey(coll.GetInstanceID()))
+				actorsInArea.Add(coll.GetInstanceID(), actor);
 		}
 	}
 
-	//remove actor from area
+	//remove IDamageable object from area list
 	void OnTriggerExit2D(Collider2D coll) {
 		IDamageable actor = coll.GetComponent<IDamageable>();
-		if (actor != null) {
-			actorsInArea.Remove(coll);
+		if(actor != null) {
+			actorsInArea.Remove(coll.GetInstanceID());
 		}
 	}
+	#endregion
+
+
 
 	// Use this for initialization
 	void Awake () {
