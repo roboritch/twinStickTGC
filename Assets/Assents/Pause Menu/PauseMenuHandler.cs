@@ -23,9 +23,20 @@ public class PauseMenuHandler : Singleton<PauseMenuHandler> {
 		pauseMenu = pm;
 	}
 
+	public bool pauseMenuExists() {
+		return pauseMenu != null;
+	}
+
+	/// <summary>
+	/// Open the pause menu or create i
+	/// </summary>
 	private void openPauseMenu() {
 		if(pauseMenu == null) {
-			pauseMenu = Instantiate(pauseMenuPrefab);
+			if(pauseMenuPrefab != null) {
+				pauseMenu = Instantiate(pauseMenuPrefab);
+			} else {
+				Debug.LogError("no pause menu found in " + transform.GetInstanceID());
+			}
 		}
 		pauseMenu.SetActive(true);
 	}

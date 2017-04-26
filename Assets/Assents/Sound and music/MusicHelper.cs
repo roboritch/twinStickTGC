@@ -57,13 +57,15 @@ public class MusicHelper : MonoBehaviour {
 	}
 
 	void OnDestroy() {
-		SoundLevels.Instance.removeMusicCallback(this);
-    }
+		if(SoundLevels.Exists()) {
+			SoundLevels.Instance.removeMusicCallback(this);
+		}
+	}
 
 	#endregion
 
 
-	private float musicTrackVolume = 1f; // defalut volume is 1
+	private float musicTrackVolume = 1f; // default volume is 1
 	private float currentFadeTime_seconds = 0f;
 	private float fadinEndTime_seconds;
 	// Update is called once per frame

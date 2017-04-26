@@ -23,7 +23,7 @@ public class DamageAreaControls : MonoBehaviour {
 			data.amount = damageAreas[i].damageAmount;
 			damageAreas[i].damageAmount = data.getModifyedDamageAmount();
 			damageAreas[i].damageType = damageType;
-			damageAreas[i].team = damageAreaUser.Team;
+			damageAreas[i].damageSorce = damageAreaUser.Team;
 		}
 
 		damageSorce = damageAreaUser;

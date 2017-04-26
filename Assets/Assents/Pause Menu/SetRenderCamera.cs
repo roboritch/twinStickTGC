@@ -18,7 +18,6 @@ public class SetRenderCamera : MonoBehaviour {
 		GetComponent<Canvas>().enabled = true;
 		if(!destroyOnLoad)
 			DontDestroyOnLoad(gameObject);
-		PauseMenuHandler.Instance.setPauseMenu(gameObject);
 	}
 	
 }

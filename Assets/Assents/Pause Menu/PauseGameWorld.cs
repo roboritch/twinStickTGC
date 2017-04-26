@@ -21,6 +21,16 @@ public class PauseGameWorld : MonoBehaviour {
 		transform.parent.gameObject.SetActive(false);
 	}
 
+	private void Awake() {
+		//WARNING this assumes PauseGameWorld transform is parented to a canvas
+		if(PauseMenuHandler.Instance.pauseMenuExists()) {
+			Debug.LogWarning("Pause menu already exists! \n destroying this one");
+			UnityExtentionMethods.destoryAllChildren(transform.parent);
+			return;
+		}
+		PauseMenuHandler.Instance.setPauseMenu(transform.parent.gameObject);
+	}
+
 	void OnEnable () {
 		if (initalizing) {
 			initalizing = false;

@@ -5,10 +5,19 @@ using UnityEngine;
 public class OnDestroyTrigger : MonoBehaviour {
 
 	[SerializeField]
-	private ShowOnTrigger objectToTrigger;
+	private MonoBehaviour objectToTrigger;
 	
 	void OnDestroy() {
-		if(PauseMenuHandler.Instance.isQuiting == false)
-			objectToTrigger.trigger();
+		if(objectToTrigger != null) {
+			if(objectToTrigger is ITriggerable) {
+				(objectToTrigger as ITriggerable).trigger();
+			} else {
+				Debug.LogWarning("tried to trigger non-Triggerable object " + transform.GetInstanceID() + "\n" +
+					"OnDestroyTrigger instance ID:" + this.GetInstanceID());
+			}
+		} else {
+			Debug.LogWarning("trigger object missing " + transform.GetInstanceID() + "\n" +
+					"OnDestroyTrigger instance ID:" + this.GetInstanceID());
+		}
 	}
 }

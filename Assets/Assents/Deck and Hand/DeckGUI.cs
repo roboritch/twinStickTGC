@@ -16,12 +16,20 @@ public class DeckGUI : MonoBehaviour {
 		cardCountText.newText(deck.getCardsInDeck().ToString());
 	}
 
-	
+
 	// Use this for initialization
 	void Awake() {
 		if(deck == null) { // set if not specifyed in inspector
-			deck = GetComponent<Deck>();
+			GameObject player = GameObject.FindGameObjectWithTag("Player");
+			if(player != null) {
+				if(deck == null) {
+					deck = player.GetComponent<Deck>();
+				} else {
+					Debug.LogError("Player Deck not found!");
+				}
+			}
+			cardCountText = GetComponentInChildren<defaultTextHolder>();
 		}
-		cardCountText = GetComponentInChildren<defaultTextHolder>();
 	}
 }
+

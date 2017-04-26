@@ -36,7 +36,9 @@ public class SfxControler : MonoBehaviour {
     }
 
 	void OnDestroy() {
-		SoundLevels.Instance.removeSfxCallback(this);
-    }
+		if(SoundLevels.Exists()){
+			SoundLevels.Instance.removeSfxCallback(this);
+		}
+	}
 
 }

@@ -57,6 +57,10 @@ public class Actor : MonoBehaviour , IDamageable {
 
 	private void actorDies() {
 		UnityExtentionMethods.destoryAllChildren(transform);
+		//TAG: level analytics
+		if(team != DamageSources.player1) {
+			LevelAnalytics.Instance.enemyDestroyed();
+		}
 	}
 
 	public bool blocksDamage(float amount, DamageTypes damageType) {
@@ -85,8 +89,6 @@ public class Actor : MonoBehaviour , IDamageable {
 		return false;
 	}
 	#endregion
-
-
 
 	public new Collider2D collider;
 	#endregion

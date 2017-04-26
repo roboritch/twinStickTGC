@@ -5,19 +5,13 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 
 public class HitscanBase : Card {
-	#region Initalization of static members
-	static HitscanBase() { } //insures these values are overwriten properly
+	#region Initialization of static members
+	static HitscanBase() { } //insures these values are overwritten properly
 	public new static readonly bool removeOnDraw = true;
 	public new static readonly float probabiltyOfDraw = 1f;
 	#endregion
 
-	#region initalization of parent vars
-	// sprite is done via the unity inspecter by 
-	// clicking on this script in the project assets window
-
-	protected string getIconPath() {
-		return GetType().Name + "/";
-    }
+	#region initialization of parent vars
 
 	public HitscanBase() { 
 		cardReloadTime_seconds = 5f;
@@ -42,9 +36,9 @@ public class HitscanBase : Card {
 		}
 	}
 	
-	//TODO adv: have ray slip past corners rather than stopping when part of the ray hits an impasible target
+	//TODO adv: have ray slip past corners rather than stopping when part of the ray hits an impassible target
 	/// <summary>
-	/// returns all IDamageble objects hit in order of distance acending
+	/// returns all IDamageble objects hit in order of distance ascending
 	/// </summary>
 	/// <param name="cardUser"></param>
 	/// <returns></returns>
@@ -53,10 +47,10 @@ public class HitscanBase : Card {
 
 
 		Vector2 userLocation = cardUser.transform.position;
-		//increse inital distance to avoid colliding with back walls
+		//increase initial distance to avoid colliding with back walls
 		userLocation += (aimLocation - userLocation).normalized * 0.5f;
 		RaycastHit2D[] hits;
-		//orderd from lowest to highest distance
+		//ordered from lowest to highest distance
 		hits = Physics2D.CircleCastAll(userLocation , projectileSize*.5f, aimLocation - userLocation, projectileDistance);
 		if (hits == null)
 			return null;
@@ -91,7 +85,7 @@ public class HitscanBase : Card {
 		//the very edge of the cast hits a target
 		Vector2 displayRayEndpoint = lastHitTarget.centroid - userLocation;
 		if(displayRayEndpoint == new Vector2()) {
-			//set min enpoint
+			//set min endpoint
 			displayRayEndpoint = userLocation + (aimLocation - userLocation).normalized * 0.7f;
 		} else {
 			displayRayEndpoint += displayRayEndpoint.normalized * projectileSize * 0.7f;

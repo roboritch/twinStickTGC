@@ -4,17 +4,17 @@ using UnityEngine;
 
 public abstract class Card {
 	//this section of code should be placed at the start of all new cards 
-	//to initalize the cards values
-	#region card children initalization code
+	//to initialize the cards values
+	#region card children initialization code
 #if false
-	#region Initalization of static members
-	static CardName() { } //insures these values are overwriten properly
+	#region Initialization of static members
+	static CardName() { } //insures these values are overwritten properly
 	public new static readonly bool removeOnDraw = true;
 	public new static readonly float probabiltyOfDraw = 1f;
 	#endregion
 
-	#region initalization of parent vars
-	// sprite is done via the unity inspecter by 
+	#region initialization of parent vars
+	// sprite is done via the unity inspector by 
 	// clicking on this script in the project assets window
 
 	protected string getIconPath() {
@@ -31,7 +31,15 @@ public abstract class Card {
 	#endregion
 
 	/// <summary>
-	/// image that apears in the hand
+	/// this returns the class type name (of the current highest class child)
+	/// </summary>
+	/// <returns></returns>
+	protected string getIconPath() {
+		return GetType().Name + "/";
+	}
+
+	/// <summary>
+	/// image that appears in the hand
 	/// </summary>
 	public Sprite cardArt;
 
@@ -41,13 +49,13 @@ public abstract class Card {
 	public float cardReloadTime_seconds;
 
 	/// <summary>
-	/// amount of resorces this card uses
+	/// amount of resources this card uses
 	/// </summary>
 	public float cardResorceCost;
 
-	//These variables must be avalible before an instance of this class is created
-	#region Required Inital Vars
-	static Card() {} //efforces order of static variable initalization in children
+	//These variables must be available before an instance of this class is created
+	#region Required Initial Vars
+	static Card() {} //enforces order of static variable initialization in children
 	/// <summary>
 	/// probability this card is drawn over other cards
 	/// WARNING reflection (finding var by string name) is used on this var, DO NOT change its name
@@ -61,7 +69,7 @@ public abstract class Card {
 	public static readonly bool removeOnDraw;
 
 
-	//this var is not finalized, it should probobly be stored in a text file
+	//this var is not finalized, it should probably be stored in a text file
 	/// <summary>
 	/// description of what the card does
 	/// </summary>
