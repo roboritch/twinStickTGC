@@ -86,8 +86,6 @@ public class Actor : MonoBehaviour , IDamageable {
 	}
 	#endregion
 
-
-
 	public new Collider2D collider;
 	#endregion
 	

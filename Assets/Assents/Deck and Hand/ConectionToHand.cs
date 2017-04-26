@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// notifyes the hand of any important effects on the player (not to be used for npc or remote players)
+/// notifies the hand of any important effects on the player (not to be used for npc or remote players)
 /// </summary>
 public class ConectionToHand : MonoBehaviour {
 

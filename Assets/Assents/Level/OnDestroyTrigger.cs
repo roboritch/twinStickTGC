@@ -8,7 +8,8 @@ public class OnDestroyTrigger : MonoBehaviour {
 	private ShowOnTrigger objectToTrigger;
 	
 	void OnDestroy() {
-		if(PauseMenuHandler.Instance.isQuiting == false)
+		if(PauseMenuHandler.Instance.isQuiting == false && objectToTrigger != null) {
 			objectToTrigger.trigger();
+		}
 	}
 }

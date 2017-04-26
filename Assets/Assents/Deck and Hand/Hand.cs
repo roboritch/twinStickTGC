@@ -38,6 +38,7 @@ public class Hand : MonoBehaviour {
 	/// Debug code for now
 	/// </summary>
 	private void drawInitalCardFromDeck() {
+		if(deck != null)
 		for (int i = 0; i < 3; i++) {
 			System.Type card = deck.drawCard();
 			if(card != null)
@@ -66,6 +67,10 @@ public class Hand : MonoBehaviour {
 				}
 			}
 		}
+	}
+
+	void tryGetHandUser() {
+		
 	}
 
 	void Start() {
