@@ -4,13 +4,14 @@ using UnityEngine;
 
 public class CardPrefabResorceLoader : Singleton<CardPrefabResorceLoader> {
 
+	//TODO look up ways to improve this (not sure how good folder structure is
 	#region Card Icon loading
 	private Dictionary<string, Sprite> spriteResorces = new Dictionary<string, Sprite>();
 
 	/// <summary>
-	/// naming convention for icon to be in CardClassName/
+	/// load the sprite from a dictionary of sprite resources 
 	/// </summary>
-	/// <param name="resorcePathname">CardClassName/ should be input here</param>
+	/// <param name="resorcePathname">CardClassName + / should be input here</param>
 	/// <returns></returns>
 	public Sprite loadSprite(string resorcePathname) {
 		Sprite sprite;
@@ -29,7 +30,6 @@ public class CardPrefabResorceLoader : Singleton<CardPrefabResorceLoader> {
 
 	#endregion
 
-
 	#region Prefab loading
 	/// <summary>
 	/// key is pathname
@@ -38,15 +38,15 @@ public class CardPrefabResorceLoader : Singleton<CardPrefabResorceLoader> {
 	private Dictionary<string, GameObject> prefabResorces = new Dictionary<string, GameObject>();
 
 	/// <summary>
-	/// load a resorce from disk and store it in ram for reuse (automatic)
+	/// load a resource from disk and store it in ram for reuse (automatic)
 	/// </summary>
-	/// <param name="resorcePathname">the path to the resorce</param>
-	/// <returns>uninstateated Prefab of GameObject, null if resorce not found</returns>
+	/// <param name="resorcePathname">the path to the resource</param>
+	/// <returns>uninstantiated Prefab of GameObject, null if resource not found</returns>
 	public GameObject loadPrefab(string resorcePathname) {
 		GameObject prefab;
 		if (prefabResorces.TryGetValue(resorcePathname,out prefab)) {
 			return prefab;
-		} else { //get resorce from folder
+		} else { //get resource from folder
 			prefab = Resources.Load<GameObject>(resorcePathname);
 			if (prefab == null) {
 				return null;
@@ -57,7 +57,7 @@ public class CardPrefabResorceLoader : Singleton<CardPrefabResorceLoader> {
 	}
 
 	/// <summary>
-	/// 
+	/// cache a prefab from the resource folder to the prefabResorces Dictionary 
 	/// </summary>
 	/// <param name="resorcePathname"></param>
 	/// <returns></returns>

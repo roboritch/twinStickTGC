@@ -14,10 +14,6 @@ public class AreaBase : Card {
 	// sprite is done via the unity inspector by 
 	// clicking on this script in the project assets window
 
-	protected string getIconPath() {
-		return GetType().Name + "/";
-	}
-
 	public AreaBase() {
 		cardReloadTime_seconds = 2f;
 		cardResorceCost = 1f;

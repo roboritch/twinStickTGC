@@ -4,19 +4,13 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class ProjectileWeaponBase : Card {
-	#region Initalization of static members
-	static ProjectileWeaponBase() { } //insures these values are overwriten properly
+	#region Initialization of static members
+	static ProjectileWeaponBase() { } //insures these values are overwritten properly
 	public new static readonly bool removeOnDraw = true;
 	public new static readonly float probabiltyOfDraw = 1f;
 	#endregion
 
-	#region initalization of parent vars
-	// sprite is done via the unity inspecter by 
-	// clicking on this script in the project assets window
-
-	protected string getIconPath() {
-		return GetType().Name + "/";
-	}
+	#region initialization of parent vars
 
 	public ProjectileWeaponBase() {
 		cardReloadTime_seconds = 5f;
@@ -93,7 +87,7 @@ public class ProjectileWeaponBase : Card {
 	}
 
 	public override void destroyCard() {
-		//nothing neads to be done
+		//nothing needs to be done
 	}
 	#endregion
 }
