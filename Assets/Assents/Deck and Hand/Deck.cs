@@ -10,7 +10,7 @@ public class Deck : MonoBehaviour {
 	//typeof(IMyInterface).IsAssignableFrom(typeof(MyType)) 
 	
 	/// <summary>
-	/// the sum of all probability multiplyers in the deck
+	/// the sum of all probability multipliers in the deck
 	/// this must be updated when cards are added and removed from the deck
 	/// </summary>
 	private float totalProbabilityNumber = 0;
@@ -199,7 +199,7 @@ public class Deck : MonoBehaviour {
 	}
 
 	private void initalDeckLoad(string deckName) {
-		//dev code to save a test deck
+		//Dev code to save a test deck
 		//if (!File.Exists(SaveAndLoadXML.getBaseFilePath() + deckFolderLocation + deckName)) {
 		//	saveTestDeck();
 		//}

@@ -3,7 +3,7 @@ using System.Collections;
 
 public static class UnityExtentionMethods{
 	/// <summary>
-	/// Destories all children and the selected object.
+	/// Destroys all children and the selected object.
 	/// </summary>
 	/// <param name="nextTransform">Next transform.</param>
 	public static void destoryAllChildren(Transform nextTransform){

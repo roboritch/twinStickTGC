@@ -18,7 +18,6 @@ public class SoundLevels : Singleton<SoundLevels> {
 		return sfxVolume;
 	}
 
-
 	public void setMusicVolume(float volume) {
 		musicVolume = volume;
 		notifyMusicCallbacks();
@@ -52,14 +51,14 @@ public class SoundLevels : Singleton<SoundLevels> {
 	}
 
 	/// <summary>
-	/// this can be automated by checking if obj refrenced no longer exists
+	/// this can be automated by checking if obj referenced no longer exists
 	/// </summary>
 	public void removeMusicCallback(object callbackDestination) {
 		musicChangeCallbacks.Remove(callbackDestination);
 	}
 	#endregion
 
-	#region Sfx Callbacks
+	#region SFX Callbacks
 	private Dictionary<object, soundVolumeChange> sfxChangeCallbacks = new Dictionary<object, soundVolumeChange>(10);
 	/// <summary>
 	/// this method should only be called once for one object
@@ -78,7 +77,7 @@ public class SoundLevels : Singleton<SoundLevels> {
 	}
 
 	/// <summary>
-	/// this can be automated by checking if obj refrenced no longer exists
+	/// this can be automated by checking if obj referenced no longer exists
 	/// </summary>
 	public void removeSfxCallback(object callbackDestination) {
 		sfxChangeCallbacks.Remove(callbackDestination);

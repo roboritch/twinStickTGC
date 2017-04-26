@@ -63,6 +63,8 @@ public class Hand : MonoBehaviour {
 					handUser = player.GetComponent<Actor>();
 					if(deck == null) {
 						deck = player.GetComponent<Deck>();
+					} else {
+						Debug.LogError("Player Deck not found!");
 					}
 				}
 			}
