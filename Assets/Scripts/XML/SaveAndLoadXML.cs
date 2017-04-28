@@ -1,34 +1,35 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 using System.Xml.Serialization;
 using System;
 using System.Text;
 
-public static class SaveAndLoadXML{
+public static class SaveAndLoadXML {
 	/// <summary>
 	/// Gets the base file path (game path with / ending).
 	/// </summary>
 	/// <returns>The base file path.</returns>
-	public static string getBaseFilePath(){
+	public static string getBaseFilePath() {
 		return Application.dataPath + "/";
 	}
 
 	/// <summary>
 	/// Saves the struct as an XML file.
 	/// </summary>
-	/// <param name="filePath">File path, .xml will be apended to the end of this string</param>
+	/// <param name="filePath">File path, .xml will be appended to the end of this string</param>
 	/// <param name="savingFile">Saving file.</param>
 	/// <typeparam name="T">Struct type to save (Must be XML formated).</typeparam>
-	public static void saveXML<T>(string filePath, T savingFile){
+	public static void saveXML<T>(string filePath, T savingFile) {
 		filePath += ".xml";
-		if (File.Exists(filePath)) {
+		if(File.Exists(filePath)) {
 			File.Delete(filePath);
 		} else {
 			//makes sure folder path exists
-			if (!Directory.Exists(filePath)) {
+			if(!Directory.Exists(filePath)) {
 				string fileDir = filePath;
-				while (!fileDir.EndsWith("/") && fileDir.Length != 0) {
+				while(!fileDir.EndsWith("/") && fileDir.Length != 0) {
 					fileDir = fileDir.Remove(fileDir.Length - 1);
 				}
 				Directory.CreateDirectory(fileDir);
@@ -38,13 +39,13 @@ public static class SaveAndLoadXML{
 
 		StreamWriter stream = null;
 
-        try {
+		try {
 			XmlSerializer serializer = new XmlSerializer(typeof(T));
 			stream = new StreamWriter(filePath, false, Encoding.UTF8);
 			// New grid info to disk here.
 			serializer.Serialize(stream, savingFile);
 			stream.Close();
-		} catch(Exception ex){
+		} catch(Exception ex) {
 			Debug.LogError(ex.ToString());
 			if(stream != null)
 				stream.Close();
@@ -58,22 +59,22 @@ public static class SaveAndLoadXML{
 	/// <param name="filePath">File path with file name.</param>
 	/// <param name="fileOut">File out.</param>
 	/// <typeparam name="T">Struct type</typeparam>
-	public static bool loadXML<T>(string filePath, out T fileOut){
-		filePath += ".xml"; 
+	public static bool loadXML<T>(string filePath, out T fileOut) {
+		filePath += ".xml";
 		fileOut = default(T);
-		if(!File.Exists(filePath)){
+		if(!File.Exists(filePath)) {
 			Debug.Log("no file with that name exists in the location\n" + filePath);
 			return false;
 		}
-			
+
 		StreamReader stream = null;
 
-		try{
+		try {
 			XmlSerializer serializer = new XmlSerializer(typeof(T));
 			stream = new StreamReader(filePath, Encoding.UTF8);
 			fileOut = (T)serializer.Deserialize(stream);
 			stream.Close();
-		} catch(Exception ex){
+		} catch(Exception ex) {
 			if(stream != null)
 				stream.Close();
 			Debug.LogWarning("struct load failed, error:\n" + ex);
@@ -81,8 +82,7 @@ public static class SaveAndLoadXML{
 		}
 		return true;
 	}
-
-
+}
 
 	#region example xml
 	[Serializable]
@@ -109,4 +109,4 @@ public static class SaveAndLoadXML{
 	}
 	#endregion
 
-}
+

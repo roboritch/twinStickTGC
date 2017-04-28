@@ -149,7 +149,7 @@ public class Actor : MonoBehaviour , IDamageable {
 	[SerializeField] private bool playerControled = false;
 	private void initButtonCallbacks() {
 		if (playerControled) { 
-			KeyEvents.Instance.buttionCallbackFunctions.mainAction += mainActionPressed;
+			KeyEvents.Instance.buttonCallbackFunctions.mainAction += mainActionPressed;
 		}
 	}
 

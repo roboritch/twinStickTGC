@@ -19,9 +19,11 @@ public class ProjectileBase : MonoBehaviour {
 	protected float damageAmount = 0f;
 	protected DamageTypes damageType;
 	protected DamageSources sourceTeam;
+	protected Effect[] effectsApplyedOnContact;
+
 
 	/// <summary>
-	/// destroys the projectile
+	/// destroys the projectile along with it's children
 	/// </summary>
 	protected void destroyProjectile() {
 		UnityExtentionMethods.destoryAllChildren(transform);
@@ -35,18 +37,14 @@ public class ProjectileBase : MonoBehaviour {
 		IDamageable hitObject = colider.GetComponent<IDamageable>();
 		if (hitObject != null) {
 			if(hitObject.ignoreDamage(sourceTeam, damageType)) {
-				//the object is not considered in calculations
-				//WARNING if the actors alliance changes while this projectile is still active
-				//it will not be able to find it
-				setIgnoredColliders(new Collider2D[] { colider });
 				return;
 			}
 			hitObject.takeDamage(damageAmount,damageType,sourceTeam);
 			destroyProjectile();
 		} else {
 			//the object is not considered in calculations as it is not damageable
-			//WARNING turning non damageable objects into damageable ones 
-			//will ignore this
+			/*WARNING turning non damageable objects into damageable ones 
+			will ignore this objects collider*/
 			setIgnoredColliders(new Collider2D[] { colider });
 		}
 	}
@@ -73,7 +71,7 @@ public class ProjectileBase : MonoBehaviour {
 	/// </summary>
 	/// <param name="coll">player firing the projectile</param>
 	public void setIgnoredColliders(Collider2D[] colliders) {
-		foreach (var coll in colliders) {
+		foreach (Collider2D coll in colliders) {
 			Physics2D.IgnoreCollision(collider, coll, true);
 		}
 	}
@@ -111,4 +109,18 @@ public class ProjectileBase : MonoBehaviour {
 		checkLifetime();
 	}
 	#endregion
+}
+
+public struct projectileStats {
+	public projectileStats(string name, float speed, float damage,DamageTypes damageType) {
+		prefabName = name;
+		this.speed = speed;
+		this.damage = damage;
+		this.damageType = damageType;
+	}
+
+	public string prefabName;
+	public float speed;
+	public float damage;
+	public DamageTypes damageType;
 }
