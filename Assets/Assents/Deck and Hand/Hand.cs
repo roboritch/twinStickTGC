@@ -20,7 +20,7 @@ public class Hand : MonoBehaviour {
 	private bool playerControled;
 	private void initKeyBindings() {
 		for (int i = 0; i < cardSlots.Length; i++) {
-			KeyEvents.Instance.buttonCallbackFunctions.activateCard[i] += cardSlots[i].activateCard;
+			KeyEvents.Instance.setCallback("card" + (i+1), cardSlots[i].activateCard);
 		}
 	}
 
@@ -30,8 +30,8 @@ public class Hand : MonoBehaviour {
 	public void removeKeyBindings() {
 		if(!quiting) //prevents null errors on quit
 		for (int i = 0; i < cardSlots.Length; i++) {
-			KeyEvents.Instance.buttonCallbackFunctions.activateCard[i] = KeyEvents.Instance.emptyCallback;
-		}
+				KeyEvents.Instance.removeCallback("card" + (i + 1), cardSlots[i].activateCard);
+			}
 	}
 
 	/// <summary>

@@ -17,10 +17,10 @@ public class Movment : MonoBehaviour {
 	[SerializeField] private bool playerControled;
 	private void initKeyCallBacks() {
 		if (playerControled) {
-			KeyEvents.Instance.buttonCallbackFunctions.moveUp += moveUp;
-			KeyEvents.Instance.buttonCallbackFunctions.moveDown += moveDown;
-			KeyEvents.Instance.buttonCallbackFunctions.moveLeft += moveLeft;
-			KeyEvents.Instance.buttonCallbackFunctions.moveRight += moveRight;
+			KeyEvents.Instance.setCallback("moveUp", moveUp);
+			KeyEvents.Instance.setCallback("moveDown", moveDown);
+			KeyEvents.Instance.setCallback("moveLeft", moveLeft);
+			KeyEvents.Instance.setCallback("moveRight", moveRight);
 		}
 	}
 

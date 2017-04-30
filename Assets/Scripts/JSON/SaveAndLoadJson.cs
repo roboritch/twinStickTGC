@@ -7,6 +7,14 @@ using System.IO;
 public static class SaveAndLoadJson {
 
 	/// <summary>
+	/// Gets the base file path (game path with / ending).
+	/// </summary>
+	/// <returns>The base file path.</returns>
+	public static string getBaseFilePath() {
+		return Application.dataPath + "/";
+	}
+
+	/// <summary>
 	/// save a struct using json
 	/// notice: any structs contained in K must be set as [System.Serializable] 
 	/// </summary>
