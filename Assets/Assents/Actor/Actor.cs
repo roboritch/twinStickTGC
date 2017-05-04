@@ -167,6 +167,10 @@ public class Actor : MonoBehaviour , IDamageable {
 		effects = GetComponent<EffectsContainerComponent>();
 	}
 	
+	public bool addEffect(Effect effect) {
+		effects.addEffect(effect);
+		return true;
+	}
 	#endregion
 
 	#region Hand of Cards

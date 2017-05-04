@@ -2,13 +2,13 @@
 using System.Collections;
 using System;
 
-public class ProjectileSpeedModification : TimedEffect {
+public abstract class ProjectileSpeedModification : TimedEffect {
 	public override void applyEffect(Actor applyTo) {
 		Debug.LogWarning("This effect cant be called this way! :" + GetType().Name);
 	}
 
 	/// <summary>
-	/// increse of 50% = an increse multipyer of 0.5f
+	/// increase of 50% = an increase multiplier of 0.5f
 	/// </summary>
 	protected float increseMultiplyer = 0f;
 	public virtual float getProjectileSpeedIncreseMultiplyer(float baseSpeed) {

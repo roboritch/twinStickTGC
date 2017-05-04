@@ -4,7 +4,6 @@ using UnityEngine;
 
 public static class S_ProjectileCreationHelper {
 
-
 	public static void projectile(Actor cardUser,float distanceFromUser, ProjectileBase preInstateatedProjectile, projectileStats stats) {
 		Vector2 userPosition = cardUser.get2dPostion(); //this can be changed to a muzzle location
 		Vector2 projectileSize = new Vector2(0.4f, 0.4f);

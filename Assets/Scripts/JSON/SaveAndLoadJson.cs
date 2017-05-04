@@ -14,6 +14,16 @@ public static class SaveAndLoadJson {
 		return Application.dataPath + "/";
 	}
 
+	public static string getBaseFilePath(string folderPath) {
+		return Application.dataPath + "/" + folderPath;
+	}
+
+	public static string getBaseFilePath(string folderPath, string fileName) {
+		return Application.dataPath + "/" + folderPath + "/" + fileName;
+	}
+
+
+
 	/// <summary>
 	/// save a struct using json
 	/// notice: any structs contained in K must be set as [System.Serializable] 

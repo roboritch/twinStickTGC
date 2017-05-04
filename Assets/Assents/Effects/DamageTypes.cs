@@ -28,7 +28,7 @@ public enum DamageTypes {
 	/// </summary>
 	heat = 32,
 	/// <summary>
-	/// NOT ice hitting the enamy, extream cold causeing damage
+	/// NOT ice hitting the enemy, it is extreme cold causing damage
 	/// </summary>
 	cold = 64,
 	elelectric = 128,

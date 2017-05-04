@@ -6,23 +6,50 @@ public class DamageDealtChange : Effect {
 
 	protected DamageTypes effectsDamageTypes;
 
-	DamageDealtChange(int numberOfUses,DamageTypes damageTypesEffected,float changeDamageMultiplication, float changeDamageAddition,bool zeroDamage) {
+	public DamageDealtChange() {
+		canBeTriggered = true;
+	}
+
+	public DamageDealtChange(int numberOfUses,DamageTypes damageTypesEffected,float damageMultiplicationChange, float damageAdditonChange, bool damageSetTo0,bool onlyWorksOnCards) {
 		canBeTriggered = true;
 		effectType = EffectTypes.damageDealtChange;
 		usesLeft = numberOfUses;
 		effectsDamageTypes = damageTypesEffected;
+		this.damageAdditonChange = damageAdditonChange;
+		this.damageMultiplicationChange = damageMultiplicationChange;
+		this.damageSetTo0 = damageSetTo0;
+		this.damageTypesEffected = damageTypesEffected;
+		this.onlyWorksOnCards = onlyWorksOnCards;
 	}
 
-	protected float damageAdditonChange;
-	protected float damageMultiplicationChange;
+	#region effect properties
+	protected readonly int numberOfEffectProperties = 5;
+
+	protected DamageTypes damageTypesEffected = DamageTypes.none;
+	protected float damageAdditonChange = 0;
+	protected float damageMultiplicationChange = 0;
+
+	protected bool onlyWorksOnCards = true;
+	protected bool damageSetTo0 = true;
+	#endregion
+
+
 	public DamageIncreaseData damageChanges(DamageIncreaseData damageData) {
-		damageData.damageAddition += damageAdditonChange;
-		damageData.damageMultiplication *= damageMultiplicationChange;
+		if(damageSetTo0) {
+			damageData.damage0_Flag = true;
+			return damageData;
+		}
+
+		//check if the damage type is effected by this instance
+		if((damageData.damageType & damageTypesEffected) != 0){
+			damageData.damageAddition += damageAdditonChange;
+			damageData.damageMultiplication *= damageMultiplicationChange;
+		}
 		return damageData;
 	}
 
 	/// <summary>
-	/// called when this is used to change the damage of somthing
+	/// called when this is used to change the damage of something
 	/// </summary>
 	/// <returns></returns>
 	public bool damageChangeEffectUsed() {
@@ -38,6 +65,43 @@ public class DamageDealtChange : Effect {
 
 	public override void removeEffect() {
 		//nothing to do for this effect
+	}
+
+	public override void setEffectProperties(EffectProperties properties) {
+		damageTypesEffected = (DamageTypes)properties.value[0];
+		damageAdditonChange = (float)properties.value[1];
+		damageMultiplicationChange = (float)properties.value[2];
+		onlyWorksOnCards = (bool)properties.value[3];
+		damageSetTo0 = (bool)properties.value[4];
+	}
+
+	public override EffectProperties getEffectPropertiesStructure(bool forGUI) {
+		EffectProperties properties = new EffectProperties(GetType().Name, numberOfEffectProperties, forGUI);
+		if(forGUI) {
+			properties.valueTypeName[0] = typeof(DamageTypes).Name;
+			properties.propertyName[0] = "damageTypesEffected";
+
+			properties.valueTypeName[1] = typeof(float).Name;
+			properties.propertyName[1] = "damageAdditonChange";
+
+			properties.valueTypeName[2] = typeof(float).Name;
+			properties.propertyName[2] = "damageMultiplicationChange";
+
+			properties.valueTypeName[3] = typeof(bool).Name;
+			properties.propertyName[3] = "onlyWorksOnCards";
+
+			properties.valueTypeName[4] = typeof(bool).Name;
+			properties.propertyName[4] = "damageSetTo0";
+
+		}
+		properties.value[0] = default(DamageTypes);
+		properties.value[1] = default(float);
+		properties.value[2] = default(float);
+		properties.value[3] = default(bool);
+		properties.value[4] = default(bool);
+
+
+		return properties;
 	}
 }
 

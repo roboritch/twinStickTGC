@@ -16,10 +16,21 @@ public class ProjectileBase : MonoBehaviour {
 
 	protected new Collider2D collider;
 	protected new Rigidbody2D rigidbody;
-	protected float damageAmount = 0f;
-	protected DamageTypes damageType;
 	protected DamageSources sourceTeam;
-	protected Effect[] effectsApplyedOnContact;
+
+
+	#region inspector properties
+	[SerializeField]
+	[Range(0,100f)]
+	protected float projectileTimeLeft_seconds = 10f;
+	[SerializeField]
+	protected float damageAmount = 0f;
+	[SerializeField] protected float speed = 1f;
+	[SerializeField] protected DamageTypes damageType = DamageTypes.phyisical_pearcing;
+	[SerializeField] public EffectProperties[] effectsApplyedOnContact;
+	
+	
+	#endregion
 
 
 	/// <summary>
@@ -39,7 +50,17 @@ public class ProjectileBase : MonoBehaviour {
 			if(hitObject.ignoreDamage(sourceTeam, damageType)) {
 				return;
 			}
+			//damage hit object
 			hitObject.takeDamage(damageAmount,damageType,sourceTeam);
+			//apply effects to object
+			if(effectsApplyedOnContact != null)
+			foreach(EffectProperties effect in effectsApplyedOnContact) {
+				Effect effectInsance = (Effect)System.Activator.CreateInstance(System.Type.GetType(effect.effectClassName),effect.value);
+				effectInsance.setEffectProperties(effect);
+				hitObject.addEffect(effectInsance);
+			}
+
+
 			destroyProjectile();
 		} else {
 			//the object is not considered in calculations as it is not damageable
@@ -77,7 +98,6 @@ public class ProjectileBase : MonoBehaviour {
 	}
 
 	#region Projectile lifetime
-	private float projectileTimeLeft_seconds = 10f; //this should be fine for all but the slowest projectiles
 	public void setProjectileLifetime(float lifetime_seconds) {
 		projectileTimeLeft_seconds = lifetime_seconds;
 	}

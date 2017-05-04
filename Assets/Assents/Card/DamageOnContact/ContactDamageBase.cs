@@ -34,7 +34,13 @@ public class ContactDamageBase : Card {
 	}
 
 	public override bool useCard(Actor cardUser) {
-		cardUser.effects.addEffect(new DamageOnContactEffect(cardUser,1f,2f));
+		DamageOnContactEffect effect = new DamageOnContactEffect(cardUser);
+		//this is a legacy implementation that should be removed 
+		EffectProperties properties = effect.getEffectPropertiesStructure(false);
+		properties.value[0] = 1f;
+		properties.value[1] = 2f;
+		effect.setEffectProperties(properties);
+		cardUser.effects.addEffect(effect);
 		return true;
 	}
 }
