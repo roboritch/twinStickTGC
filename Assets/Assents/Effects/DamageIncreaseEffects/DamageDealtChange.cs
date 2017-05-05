@@ -68,11 +68,11 @@ public class DamageDealtChange : Effect {
 	}
 
 	public override void setEffectProperties(EffectProperties properties) {
-		damageTypesEffected = (DamageTypes)properties.value[0];
-		damageAdditonChange = (float)properties.value[1];
-		damageMultiplicationChange = (float)properties.value[2];
-		onlyWorksOnCards = (bool)properties.value[3];
-		damageSetTo0 = (bool)properties.value[4];
+		damageTypesEffected = (DamageTypes)Enum.Parse(typeof(DamageTypes),properties.value[0]);
+		damageAdditonChange = float.Parse(properties.value[1]);
+		damageMultiplicationChange = float.Parse(properties.value[2]);
+		onlyWorksOnCards = bool.Parse(properties.value[3]);
+		damageSetTo0 = bool.Parse(properties.value[4]);
 	}
 
 	public override EffectProperties getEffectPropertiesStructure(bool forGUI) {
@@ -94,12 +94,12 @@ public class DamageDealtChange : Effect {
 			properties.propertyName[4] = "damageSetTo0";
 
 		}
-		properties.value[0] = default(DamageTypes);
-		properties.value[1] = default(float);
-		properties.value[2] = default(float);
-		properties.value[3] = default(bool);
-		properties.value[4] = default(bool);
 
+		properties.value[0] = default(DamageTypes).ToString();
+		properties.value[1] = default(float).ToString();
+		properties.value[2] = default(float).ToString();
+		properties.value[3] = default(bool).ToString();
+		properties.value[4] = default(bool).ToString();
 
 		return properties;
 	}

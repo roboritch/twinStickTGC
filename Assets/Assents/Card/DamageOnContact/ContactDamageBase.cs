@@ -37,8 +37,8 @@ public class ContactDamageBase : Card {
 		DamageOnContactEffect effect = new DamageOnContactEffect(cardUser);
 		//this is a legacy implementation that should be removed 
 		EffectProperties properties = effect.getEffectPropertiesStructure(false);
-		properties.value[0] = 1f;
-		properties.value[1] = 2f;
+		properties.value[0] = 1f.ToString();
+		properties.value[1] = 2f.ToString();
 		effect.setEffectProperties(properties);
 		cardUser.effects.addEffect(effect);
 		return true;

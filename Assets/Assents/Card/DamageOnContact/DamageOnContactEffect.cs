@@ -54,14 +54,15 @@ public class DamageOnContactEffect : Effect {
 			properties.propertyName[1] = "damageAmount";
 
 		}
-		properties.value[0] = default(float);
-		properties.value[1] = default(float);
+
+		properties.value[0] = default(float).ToString();
+		properties.value[1] = default(float).ToString();
 
 		return properties;
 	}
 
 	public override void setEffectProperties(EffectProperties properties) {
-		maxDamageInterval_sec = (float)properties.value[0];
-		damageAmount = (float)properties.value[1];
+		maxDamageInterval_sec = float.Parse(properties.value[0]);
+		damageAmount = float.Parse(properties.value[1]);
 	}
 }

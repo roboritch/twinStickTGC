@@ -47,10 +47,12 @@ public abstract class Effect {
 	/// the structure of the struct must be gotten from getEffectPropertiestructer
 	/// use the below python script to set the values from the 
 	/// required variables (reads the clipboard)
+	/// does not work for enums, use Variable = (E)Enum.Parse(typeof(E),properties.value[property number]);
 	/// </summary>
 	/// <param name="properties"></param>
 	public abstract void setEffectProperties(EffectProperties properties);
-	/*from tkinter import Tk
+	/*
+from tkinter import Tk
 import re
 reader = Tk()
 s = reader.clipboard_get()
@@ -70,7 +72,7 @@ lines = []
 for ln in s:
     ln = ln.split()
     ln = ln[1:2+1] #only  the var type and var name are wanted
-    set1 = ln[1] + ' = (' + ln[0] + ') properties.value['+ str(numb) +'];'
+    set1 = ln[1] + ' = ' + ln[0] + '.Parse(properties.value['+ str(numb) +']);'
     numb += 1
     lines.append(set1 + '\n')
 final = ''.join(lines)
@@ -86,7 +88,8 @@ reader.clipboard_append(final)
 	/// <param name="forGUI">add extra info not needed at runtime</param>
 	/// <returns></returns>
 	public abstract EffectProperties getEffectPropertiesStructure(bool forGUI);
-	/* from tkinter import Tk
+	/* 
+from tkinter import Tk
 import re
 reader = Tk()
 s = reader.clipboard_get()
@@ -96,7 +99,7 @@ s = s.split('\n')
 while s.__contains__(''):
     s.remove('')
 for subst in s:
-    if '//' in subst[:6]
+    if '//' in subst[:6]:
         s.remove(subst)
 set1 = ''
 set2 = ''
@@ -109,7 +112,7 @@ for ln in s:
     ln = ln[1:2+1] #only  the var type and var name are wanted
     set1 = 'properties.valueTypeName[' + str(numb) + '] = typeof(' + ln[0] + ').Name;'
     set2 = 'properties.propertyName[' + str(numb) + '] = "' + ln[1] + '";'
-    set3.append('properties.value[' + str(numb) + '] = default(' + ln[0] +');\n')
+    set3.append('properties.value[' + str(numb) + '] = default(' + ln[0] +').ToString();\n')
     numb += 1
     lines.append(set1 + '\n' + set2 + '\n\n')
 final = 'EffectProperties properties = new EffectProperties(GetType().Name,'
@@ -143,16 +146,20 @@ public struct EffectProperties{
 			valueTypeName = null;
 		}
 
-		value = new object[numberOfProperties];
+		value = new string[numberOfProperties];
 		
 	}
-	
+	/// <summary>
+	/// the class name of the effect
+	/// </summary>
 	public string effectClassName;
 
+	///the name of the property variable
 	public string[] propertyName;
-	//used by the gui to decide what element is used to set this value
+	///used by the gui to decide what element is used to set this value
 	public string[] valueTypeName;
-	public object[] value;
+	///values are converted using parse and ToString() methods
+	public string[] value;
 }
 
 

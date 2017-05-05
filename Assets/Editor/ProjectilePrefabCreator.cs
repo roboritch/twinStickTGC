@@ -58,14 +58,14 @@ public class ProjectilePrefabCreator : EditorWindow {
 			for(int x = 0; x < possibleEffectsList[i].propertyName.Length; x++) {
 				string prameTypeName = possibleEffectsList[i].valueTypeName[x];
 				if(prameTypeName == typeof(int).Name) {
-					possibleEffectsList[i].value[x] = EditorGUILayout.IntField(possibleEffectsList[i].propertyName[x], (int)possibleEffectsList[i].value[x]);
+					possibleEffectsList[i].value[x] = EditorGUILayout.IntField(possibleEffectsList[i].propertyName[x], int.Parse(possibleEffectsList[i].value[x])).ToString();
 				} else if(prameTypeName == typeof(float).Name) {
-					possibleEffectsList[i].value[x] = EditorGUILayout.FloatField(possibleEffectsList[i].propertyName[x], (float)possibleEffectsList[i].value[x]);
+					possibleEffectsList[i].value[x] = EditorGUILayout.FloatField(possibleEffectsList[i].propertyName[x], float.Parse(possibleEffectsList[i].value[x])).ToString();
 				} else if(prameTypeName == typeof(bool).Name) {
-					possibleEffectsList[i].value[x] = EditorGUILayout.Toggle(possibleEffectsList[i].propertyName[x], (bool)possibleEffectsList[i].value[x]);
-				} else if(Assembly.GetExecutingAssembly().GetType(prameTypeName).IsEnum) {
-					Enum enumValue =  (Enum)Enum.ToObject(Assembly.GetExecutingAssembly().GetType(prameTypeName),possibleEffectsList[i].value[x]);
-					possibleEffectsList[i].value[x] = EditorGUILayout.EnumPopup(prameTypeName, enumValue);
+					possibleEffectsList[i].value[x] = EditorGUILayout.Toggle(possibleEffectsList[i].propertyName[x], bool.Parse(possibleEffectsList[i].value[x])).ToString();
+				} else if(GetEnumType(prameTypeName).IsEnum) {
+					Enum enumValue =  (Enum)Enum.ToObject(GetEnumType(prameTypeName), possibleEffectsList[i].value[x]);
+					possibleEffectsList[i].value[x] = EditorGUILayout.EnumPopup(prameTypeName, enumValue).ToString();
 				}
 			}
 		}
@@ -113,6 +113,17 @@ public class ProjectilePrefabCreator : EditorWindow {
 		return path;
 	}
 
+	//https://stackoverflow.com/questions/25404237/how-to-get-enum-type-by-specifying-its-name-in-string
+	public static Type GetEnumType(string enumName) {
+		foreach(var assembly in AppDomain.CurrentDomain.GetAssemblies()) {
+			var type = assembly.GetType(enumName);
+			if(type == null)
+				continue;
+			if(type.IsEnum)
+				return type;
+		}
+		return null;
+	}
 }
 
 public static class ReflectiveEnumerator {
@@ -140,7 +151,6 @@ public struct EffectsList {
 	}
 	public List<EffectProperties> effectProperties;
 }
-
 
 /*AutocompleteSearch example for effect finding
 public class AutocompleteSearch : MonoBehaviour {

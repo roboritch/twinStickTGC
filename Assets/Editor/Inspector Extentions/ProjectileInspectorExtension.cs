@@ -53,19 +53,33 @@ public class ProjectileInspectorExtension : Editor {
 		//TODO save and load serialized version of effects to the target
 		//use this http://answers.unity3d.com/questions/610303/unity-systemobject-serialization.html
 		foreach(EffectProperties effectValues in myTarget.effectsApplyedOnContact) {
-			EditorGUILayout.LabelField(effectValues.effectClassName + " values");
-			for(int x = 0; x < effectValues.propertyName.Length; x++) {
+		
+				EditorGUILayout.LabelField(effectValues.effectClassName + " values");
+				for(int x = 0; x < effectValues.propertyName.Length; x++) {
 				string prameTypeName = effectValues.valueTypeName[x];
-				if(prameTypeName == typeof(int).Name) {
-					effectValues.value[x] = EditorGUILayout.IntField(effectValues.propertyName[x], (int)effectValues.value[x]);
-				} else if(prameTypeName == typeof(float).Name) {
-					effectValues.value[x] = EditorGUILayout.FloatField(effectValues.propertyName[x], (float)effectValues.value[x]);
-				} else if(prameTypeName == typeof(bool).Name) {
-					effectValues.value[x] = EditorGUILayout.Toggle(effectValues.propertyName[x], (bool)effectValues.value[x]);
-				} else if(GetEnumType(prameTypeName).IsEnum) {
-					//TODO see if menu has flags and change inspecter selection type
-					Enum enumValue = (Enum)Enum.ToObject(GetEnumType(prameTypeName), effectValues.value[x]);
-					effectValues.value[x] = EditorGUILayout.EnumPopup(prameTypeName, enumValue);
+				try {
+					if(prameTypeName == typeof(int).Name) {
+						effectValues.value[x] = EditorGUILayout.IntField(effectValues.propertyName[x], int.Parse(effectValues.value[x])).ToString("G");
+					} else if(prameTypeName == typeof(float).Name) {
+						effectValues.value[x] = EditorGUILayout.FloatField(effectValues.propertyName[x], float.Parse(effectValues.value[x])).ToString("G");
+					} else if(prameTypeName == typeof(bool).Name) {
+						effectValues.value[x] = EditorGUILayout.Toggle(effectValues.propertyName[x], bool.Parse(effectValues.value[x])).ToString();
+					} else if(GetEnumType(prameTypeName).IsEnum) {
+						//TODO see if menu has flags and change inspector selection type
+						Enum enumValue = (Enum)Enum.ToObject(GetEnumType(prameTypeName), effectValues.value[x]);
+						effectValues.value[x] = EditorGUILayout.EnumPopup(prameTypeName, enumValue).ToString();
+					}
+				} catch(Exception) {
+					Debug.Log("not a valid value for this effect pram, reseting");
+					if(prameTypeName == typeof(int).Name) {
+						effectValues.value[x] = "0";
+					} else if(prameTypeName == typeof(float).Name) {
+						effectValues.value[x] = "0.0";
+					} else if(prameTypeName == typeof(bool).Name) {
+						effectValues.value[x] = "False";
+					} else if(GetEnumType(prameTypeName).IsEnum) {
+						effectValues.value[x] = Enum.GetNames(GetEnumType(prameTypeName))[0];
+					}
 				}
 			}
 		}

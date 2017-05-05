@@ -101,6 +101,9 @@ MonoBehaviour:
     valueTypeName:
     - Single
     - Single
+    value:
+    - 2
+    - 1
 --- !u!212 &212463911296670640
 SpriteRenderer:
   m_ObjectHideFlags: 1

@@ -23,6 +23,44 @@ public static class SaveAndLoadJson {
 	}
 
 
+	/// <summary>
+	/// save a struct to a string 
+	/// this can also be used for primitive types
+	/// </summary>
+	/// <typeparam name="K"></typeparam>
+	/// <param name="obj"></param>
+	/// <param name="json"></param>
+	/// <returns></returns>
+	public static bool saveStructToString<K>(K obj, out string json) {
+		try {
+			json = JsonUtility.ToJson(obj);
+		} catch(System.Exception) {
+			Debug.LogError("struct save failed ");
+			json = "{ }";
+			return false;
+		}
+		return true;
+	}
+
+	/// <summary>
+	/// load a struct from a string
+	/// the type of the object must be known by the calling method
+	/// </summary>
+	/// <typeparam name="K"></typeparam>
+	/// <param name="obj"></param>
+	/// <param name="json"></param>
+	/// <returns></returns>
+	public static bool loadStructToString<K>(out K obj, string json) {
+		try {
+			obj = JsonUtility.FromJson<K>(json);
+		} catch(System.Exception) {
+			Debug.LogError("struct load failed");
+			obj = default(K);
+			return false;
+		}
+		return true;
+	}
+
 
 	/// <summary>
 	/// save a struct using json

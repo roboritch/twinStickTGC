@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -128,6 +129,25 @@ public class ProjectileBase : MonoBehaviour {
 	void Update() {
 		checkLifetime();
 	}
+	#endregion
+
+	#region extra serialization 
+	//[SerializeField, HideInInspector]
+	//private string[] S_effectsApplyedOnContact;
+
+	//void ISerializationCallbackReceiver.OnBeforeSerialize() { 
+	//	S_effectsApplyedOnContact = new string[effectsApplyedOnContact.Length];
+	//	for(int i = 0; i < effectsApplyedOnContact.Length; i++) {
+	//		SaveAndLoadJson.saveStructToString(effectsApplyedOnContact[i], out S_effectsApplyedOnContact[i]);
+	//	}
+	//}
+
+	//void ISerializationCallbackReceiver.OnAfterDeserialize() {
+	//	effectsApplyedOnContact = new EffectProperties[S_effectsApplyedOnContact.Length];
+	//	for(int i = 0; i < S_effectsApplyedOnContact.Length; i++) {
+	//		SaveAndLoadJson.loadStructToString(out effectsApplyedOnContact[i], S_effectsApplyedOnContact[i]);
+	//	}
+	//}
 	#endregion
 }
 
