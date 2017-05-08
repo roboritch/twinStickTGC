@@ -1,11 +1,7 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 
 [Flags]
 public enum DamageTypes {
-	none = 0,
 	/// <summary>
 	/// bast waves and large gusts of wind
 	/// </summary>
@@ -39,5 +35,6 @@ public enum DamageTypes {
 	/// <summary>
 	/// Pure magic
 	/// </summary>
-	arcanine = 512
+	arcanine = 512,
+	nullElm = 512*2
 }

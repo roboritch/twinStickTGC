@@ -22,7 +22,11 @@ public static class SaveAndLoadJson {
 		return Application.dataPath + "/" + folderPath + "/" + fileName;
 	}
 
+	public static string getResourcePath(string folderAndItemInResource) {
+		return Application.dataPath + "/" + "Resources/" + folderAndItemInResource;
+	}
 
+	#region save load string
 	/// <summary>
 	/// save a struct to a string 
 	/// this can also be used for primitive types
@@ -49,8 +53,8 @@ public static class SaveAndLoadJson {
 	/// <typeparam name="K"></typeparam>
 	/// <param name="obj"></param>
 	/// <param name="json"></param>
-	/// <returns></returns>
-	public static bool loadStructToString<K>(out K obj, string json) {
+	/// <returns>true on load success</returns>
+	public static bool loadStructFromString<K>(out K obj, string json) {
 		try {
 			obj = JsonUtility.FromJson<K>(json);
 		} catch(System.Exception) {
@@ -60,8 +64,9 @@ public static class SaveAndLoadJson {
 		}
 		return true;
 	}
+	#endregion
 
-
+	#region save load Struct
 	/// <summary>
 	/// save a struct using json
 	/// notice: any structs contained in K must be set as [System.Serializable] 
@@ -81,6 +86,17 @@ public static class SaveAndLoadJson {
 		return true;
 	}
 
+	public static bool saveStruct<K>(string path, K obj,bool humanReadable) {
+		try {
+			File.WriteAllText(path, JsonUtility.ToJson(obj,humanReadable));
+		} catch(System.Exception) {
+			Debug.LogError("struct save failed " + path);
+			return false;
+		}
+
+		return true;
+	}
+
 	public static bool loadStruct<K>(string path,out K obj) {
 		try {
 			obj = JsonUtility.FromJson<K>(File.ReadAllText(path));
@@ -92,7 +108,9 @@ public static class SaveAndLoadJson {
 
 		return true;
 	}
+	#endregion
 
+	#region Save Load Dictionary
 	/// <summary>
 	/// save a dictionary with a struct as Value (making struct work)
 	/// does not save hash values or ordering
@@ -157,7 +175,7 @@ public static class SaveAndLoadJson {
 
 		return true;
 	}
-
+	#endregion
 
 
 	[System.Serializable]
@@ -181,7 +199,4 @@ public static class SaveAndLoadJson {
 		/// </summary>
 		public string[] jsonValue;
 	}
-
-
-
 }

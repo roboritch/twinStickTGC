@@ -24,14 +24,44 @@ public class ProjectileBase : MonoBehaviour {
 	[SerializeField]
 	[Range(0,100f)]
 	protected float projectileTimeLeft_seconds = 10f;
-	[SerializeField]
-	protected float damageAmount = 0f;
+	[SerializeField] protected float damageAmount = 0f;
 	[SerializeField] protected float speed = 1f;
 	[SerializeField] protected DamageTypes damageType = DamageTypes.phyisical_pearcing;
 	[SerializeField] public EffectProperties[] effectsApplyedOnContact;
-	
-	
 	#endregion
+
+	#region projectile creation get and set
+	public float getBaseDamage() {
+		return damageAmount;
+	}
+
+	public float getBaseSpeed() {
+		return speed;
+	}
+
+	public DamageTypes getDamageType() {
+		return damageType;
+	}
+
+	//set methods to update properties with the using actors effects
+	public void setDamage(float damage, DamageTypes damageType, DamageSources team) {
+		damageAmount = damage;
+		this.damageType = damageType;
+		sourceTeam = team;
+	}
+
+	public void setVolocity(Vector2 velocity) {
+		rigidbody.velocity = velocity;
+	}
+
+	private SpriteRenderer sprite;
+	public void setProjectileColor(Color color) {
+		sprite.color = color;
+	}
+	#endregion
+
+
+
 
 
 	/// <summary>
@@ -61,7 +91,6 @@ public class ProjectileBase : MonoBehaviour {
 				hitObject.addEffect(effectInsance);
 			}
 
-
 			destroyProjectile();
 		} else {
 			//the object is not considered in calculations as it is not damageable
@@ -71,22 +100,6 @@ public class ProjectileBase : MonoBehaviour {
 		}
 	}
 
-	#region Specify projectile properties
-	public void setDamage(float damage, DamageTypes damageType,DamageSources team) {
-		damageAmount = damage;
-		this.damageType = damageType;
-		sourceTeam = team;
-	}
-
-	public void setVolocity(Vector2 velocity) {
-		rigidbody.velocity = velocity;
-	}
-
-	private SpriteRenderer sprite;
-	public void setProjectileColor(Color color) {
-		sprite.color = color;
-	}
-	#endregion
 
 	/// <summary>
 	/// ignore future collisions with Colliders specified 
@@ -151,8 +164,8 @@ public class ProjectileBase : MonoBehaviour {
 	#endregion
 }
 
-public struct projectileStats {
-	public projectileStats(string name, float speed, float damage,DamageTypes damageType) {
+public struct ProjectileStats {
+	public ProjectileStats(string name, float speed, float damage,DamageTypes damageType) {
 		prefabName = name;
 		this.speed = speed;
 		this.damage = damage;

@@ -25,7 +25,7 @@ public class DamageDealtChange : Effect {
 	#region effect properties
 	protected readonly int numberOfEffectProperties = 5;
 
-	protected DamageTypes damageTypesEffected = DamageTypes.none;
+	protected DamageTypes damageTypesEffected = DamageTypes.nullElm;
 	protected float damageAdditonChange = 0;
 	protected float damageMultiplicationChange = 0;
 

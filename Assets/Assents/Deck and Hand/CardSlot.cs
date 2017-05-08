@@ -24,7 +24,7 @@ public class CardSlot : MonoBehaviour {
 
 	public void displayCardIcon() {
 		if (cardBeingHeld != null)
-			image.sprite = cardBeingHeld.cardArt;
+			image.sprite = CardPrefabResorceLoader.Instance.loadSprite(cardBeingHeld.basicAttrabutes.cardIconPath);
 		else
 			image.sprite = noCardsLeft;
 	}
@@ -44,7 +44,7 @@ public class CardSlot : MonoBehaviour {
 	public void activateCard() {
 		if(cardBeingHeld != null)
 		if(cardBeingHeld.useCard(hand.handUser)) { //card activation success
-			startCountdown(cardBeingHeld.cardReloadTime_seconds);
+			startCountdown(cardBeingHeld.basicAttrabutes.cardReloadTime_seconds);
 			displayDefaultSprite();
 			cardBeingHeld.destroyCard();
 			cardBeingHeld = null;

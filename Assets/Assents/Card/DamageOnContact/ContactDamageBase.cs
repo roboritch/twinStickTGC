@@ -14,10 +14,8 @@ public class ContactDamageBase : Card {
 	// sprite is done via the unity inspector by 
 	// clicking on this script in the project assets window
 
-	public ContactDamageBase() {
-		cardReloadTime_seconds = 5f;
-		cardResorceCost = 1f;
-		cardArt = CardPrefabResorceLoader.Instance.loadSprite(getIconPath());
+	public ContactDamageBase() : base(){
+
 	}
 	#endregion
 	
@@ -29,9 +27,6 @@ public class ContactDamageBase : Card {
 		//nothing to do
 	}
 
-	public override void displayDescription(defaultTextHolder decriptionBox) {
-		throw new NotImplementedException();
-	}
 
 	public override bool useCard(Actor cardUser) {
 		DamageOnContactEffect effect = new DamageOnContactEffect(cardUser);

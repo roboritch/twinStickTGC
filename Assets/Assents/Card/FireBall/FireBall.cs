@@ -14,9 +14,7 @@ public class FireBall : ProjectileWeaponBase {
 	// clicking on this script in the project assets window
 
 	public FireBall() {
-		cardReloadTime_seconds = 5f;
-		cardResorceCost = 1f;
-		cardArt = CardPrefabResorceLoader.Instance.loadSprite(getIconPath());
+
 	}
 
 	#endregion

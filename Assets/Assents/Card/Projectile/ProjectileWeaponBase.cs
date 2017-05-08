@@ -12,10 +12,8 @@ public class ProjectileWeaponBase : Card {
 
 	#region initialization of parent vars
 
-	public ProjectileWeaponBase() {
-		cardReloadTime_seconds = 5f;
-		cardResorceCost = 1f;
-		cardArt = CardPrefabResorceLoader.Instance.loadSprite(getIconPath());
+	public ProjectileWeaponBase() : base(){
+
 	}
 
 	#endregion
@@ -24,9 +22,9 @@ public class ProjectileWeaponBase : Card {
 	protected float projectileDistanceFromUser = .3f;
 
 	private ProjectileBase instantiateProjectile() {
-		GameObject projectile = CardPrefabResorceLoader.Instance.loadPrefab(getProjectilePath(0));
+		GameObject projectile = CardPrefabResorceLoader.Instance.loadPrefab(getProjectilePath());
 		if(projectile == null) { //debug helper null check
-			Debug.LogError("projectile prefab null, check resource folder\n" + this.GetType().Name + "/" + projectilePrefabInformation[0].prefabName);
+			Debug.LogError("projectile prefab null, check resource folder\n" + getProjectilePath());
 			return null;
 		}
 		projectile = UnityEngine.Object.Instantiate(projectile);
@@ -34,29 +32,19 @@ public class ProjectileWeaponBase : Card {
 		return instantiatedProjectile;
 	}
 
-	/// <summary>
-	/// the names of all your projectile prefabs
-	/// </summary>
-	protected projectileStats[] projectilePrefabInformation = { new projectileStats("projectile",5f,5f, DamageTypes.phyisical_pearcing) };
-
-	protected string getProjectilePath(int prefabIndex) {
-		return this.GetType().Name + "/" + projectilePrefabInformation[prefabIndex].prefabName;
+	protected string getProjectilePath() {
+		return GetType().Name + "/" + "Projectile";
 	}
 		
 	#region override vars
-	public override void displayDescription(defaultTextHolder decriptionBox) {
-		throw new NotImplementedException();
-	}
 	
 	public override bool useCard(Actor cardUser) {
-		S_ProjectileCreationHelper.projectile(cardUser, projectileDistanceFromUser,instantiateProjectile() ,projectilePrefabInformation[0]);
+		S_ProjectileCreationHelper.projectile(cardUser, projectileDistanceFromUser,instantiateProjectile());
 		return true;
 	}
 
 	public override void cacheResorces() {
-		for (int i = 0; i < projectilePrefabInformation.Length; i++) {
-			CardPrefabResorceLoader.Instance.cashePrefab(getProjectilePath(i));
-		}
+		CardPrefabResorceLoader.Instance.cashePrefab(getProjectilePath());
 	}
 
 	public override void destroyCard() {
