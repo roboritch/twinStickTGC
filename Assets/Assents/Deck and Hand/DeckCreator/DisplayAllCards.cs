@@ -18,7 +18,7 @@ public class DisplayAllCards : MonoBehaviour {
 			if(card.GetType().Name.Contains("Base_")) {
 				continue;
 			}
-			Instantiate(cardDisplayPrefab, transform);
+			Instantiate(cardDisplayPrefab, transform).GetComponent<CardDisplayController>().setCardDisplay(card);
 		}
 
 	}

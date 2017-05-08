@@ -25,8 +25,9 @@ public abstract class Card {
 
 	public Card() {
 		if(CardAttributeLoader.LoadBasicCardAttributesFromJsonInResorceFolder(getCardResorceFolderPath(), out basicAttrabutes)) {
-			//any extra error handling can be put here
+			
 		}
+		Debug.Log(basicAttrabutes.ToString());
 	}
 
 	/// <summary>

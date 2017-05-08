@@ -457,6 +457,7 @@ MonoBehaviour:
   cardName: {fileID: 114084555391038196}
   description: {fileID: 114713195922375940}
   cardReloadTime: {fileID: 114548367303888756}
+  cardsAlowedInDeck: {fileID: 114616461591430692}
 --- !u!114 &114239453247839576
 MonoBehaviour:
   m_ObjectHideFlags: 1

@@ -49,6 +49,7 @@ public class CardDisplayController : MonoBehaviour {
 		displayCardDrawProbability();
 		displayCardName();
 		displayCardDescription();
+		displayCardReloadTime();
 		displayCardsAlowedInDeck();
 
 	}
@@ -98,7 +99,7 @@ public class CardDisplayController : MonoBehaviour {
 	}
 
 	private void displayCardReloadTime() {
-		cardReloadTime.text = cardRepresented.basicAttrabutes.cardReloadTime_seconds.ToString();
+		cardReloadTime.text = cardRepresented.basicAttrabutes.cardReloadTime_seconds.ToString() + "s";
 	}
 
 	private void displayCardsAlowedInDeck() {
