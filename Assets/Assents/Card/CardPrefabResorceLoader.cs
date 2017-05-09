@@ -54,8 +54,6 @@ public class CardPrefabResorceLoader : Singleton<CardPrefabResorceLoader> {
 	}
 	#endregion
 
-
-
 	#region Prefab loading
 	/// <summary>
 	/// key is pathname
@@ -99,4 +97,18 @@ public class CardPrefabResorceLoader : Singleton<CardPrefabResorceLoader> {
 		return true;
 	}
 	#endregion
+
+	public void preLoadAllCards() {
+		IEnumerable<Card> allCards = ReflectiveEnumerator.GetEnumerableOfType<Card>();
+		foreach(Card card in allCards) {
+			//card base classes with this class name are not real cards and should be ignored
+			if(card.GetType().Name.Contains("Base_")) {
+				continue;
+			}
+			//this method will call this class to cash all resources the card requires to function
+			card.cacheResorces();
+		}
+	}
+
+
 }

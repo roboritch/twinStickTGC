@@ -33,7 +33,7 @@ public class AreaBase : Card {
 	}
 	
 	protected string getAreaPrefabPath() {
-		return this.GetType().Name + "/" + "DamageArea";
+		return getCardResorceFolderPath() + "DamageArea";
 	}
 
 	protected bool actorSelectingArea = false;
@@ -62,7 +62,9 @@ public class AreaBase : Card {
 
 	#region override methods
 	public override void cacheResorces() {
+		base.cacheResorces();
 		CardPrefabResorceLoader.Instance.cashePrefab(getAreaPrefabPath());
+		CardPrefabResorceLoader.Instance.cashePrefab(getCardResorceFolderPath() + "AnvilAnimation");
 	}
 
 	public override bool useCard(Actor cardUser) {

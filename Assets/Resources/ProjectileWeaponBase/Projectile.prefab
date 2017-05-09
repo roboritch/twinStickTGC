@@ -186,8 +186,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   projectileTimeLeft_seconds: 10
-  damageAmount: 0
-  speed: 1
+  damageAmount: 3
+  speed: 2
   damageType: 4
   effectsApplyedOnContact: []
 --- !u!212 &212508298199272414
@@ -223,7 +223,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 39bed730d3094fc439c8f8d1efbbca0d, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 0.95233274, b: 0.30882353, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0

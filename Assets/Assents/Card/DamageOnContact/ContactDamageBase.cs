@@ -20,7 +20,7 @@ public class ContactDamageBase : Card {
 	#endregion
 	
 	public override void cacheResorces() {
-		//no prefabs to cache
+		
 	}
 
 	public override void destroyCard() {

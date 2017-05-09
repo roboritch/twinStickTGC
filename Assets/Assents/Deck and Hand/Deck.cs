@@ -68,7 +68,7 @@ public class Deck : MonoBehaviour {
 	/// <param name="cardType">the class type of a card</param>
 	public void addCardToDeck(System.Type cardType) {
 		//look at c# reference of Type for more info on how this works
-		addCardToDeck(cardType, (float)cardType.GetField("probabiltyOfDraw").GetValue(null), (bool)cardType.GetField("removeOnDraw").GetValue(null));
+		addCardToDeck(cardType);
 	}
 
 	/// <summary>

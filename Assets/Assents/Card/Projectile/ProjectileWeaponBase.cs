@@ -33,7 +33,7 @@ public class ProjectileWeaponBase : Card {
 	}
 
 	protected string getProjectilePath() {
-		return GetType().Name + "/" + "Projectile";
+		return getCardResorceFolderPath() + "Projectile";
 	}
 		
 	#region override vars

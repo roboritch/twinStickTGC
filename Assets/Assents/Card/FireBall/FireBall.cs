@@ -18,7 +18,6 @@ public class FireBall : ProjectileWeaponBase {
 	}
 
 	#endregion
-
-
+	
 
 }

@@ -36,24 +36,43 @@ public class CardDisplayController : MonoBehaviour {
 
 	#endregion
 
+
+	public void addCardToDeck() {
+		deckList.addCardToDeck(cardRepresented);
+	}
+
+	public void removeCardFromDeck() {
+		throw new NotImplementedException();
+	}
+
 	private Card cardRepresented;
-	public void setCardDisplay(Card card) {
+	public Card getCardRepresented() {
+		return cardRepresented;
+	}
+
+	[SerializeField]
+	private bool forDeckList;
+	private DeckList deckList;
+	public void setCardDisplay(Card card,DeckList deckList) {
 		// TODO create elemental icons
 		//ElementalIcon.sprite = getElamentalIcon
 		cardRepresented = card;
-		displayCardElements();
-		displayCardIcon();
-		displayCardArt();
-		displayCardType();
-		displayCardCost();
-		displayCardDrawProbability();
+		this.deckList = deckList;
+		if(!forDeckList) {
+			displayCardElements();
+			displayCardArt();
+			displayCardType();
+			displayCardCost();
+			displayCardDrawProbability();
+			displayCardDescription();
+			displayCardReloadTime();
+			displayCardsAlowedInDeck();
+		}
 		displayCardName();
-		displayCardDescription();
-		displayCardReloadTime();
-		displayCardsAlowedInDeck();
-
+		displayCardIcon();
 	}
 
+	#region display methods
 	private void displayCardElements() {
 
 	}
@@ -104,5 +123,18 @@ public class CardDisplayController : MonoBehaviour {
 
 	private void displayCardsAlowedInDeck() {
 		cardsAlowedInDeck.text = cardRepresented.basicAttrabutes.numberOfCardAllowedInDeck.ToString();
+	}
+	#endregion
+
+}
+
+public class CardDisplayControllerSort_cost : IComparer<CardDisplayController> {
+	int IComparer<CardDisplayController>.Compare(CardDisplayController x, CardDisplayController y) {
+		float result = x.getCardRepresented().basicAttrabutes.cardResorceCost - y.getCardRepresented().basicAttrabutes.cardResorceCost;
+
+		if(result >= 0f)
+			return 1;   //x > y
+		else
+			return -1;
 	}
 }

@@ -7,6 +7,9 @@ public class DisplayAllCards : MonoBehaviour {
 	[SerializeField]
 	private GameObject cardDisplayPrefab;
 
+	[SerializeField]
+	private DeckList deckList;
+
 	private void InitCardSelector() {
 		for(int i = 0; i < transform.childCount; i++) {
 			UnityExtentionMethods.destoryAllChildren(transform.GetChild(i));
@@ -18,7 +21,7 @@ public class DisplayAllCards : MonoBehaviour {
 			if(card.GetType().Name.Contains("Base_")) {
 				continue;
 			}
-			Instantiate(cardDisplayPrefab, transform).GetComponent<CardDisplayController>().setCardDisplay(card);
+			Instantiate(cardDisplayPrefab, transform).GetComponent<CardDisplayController>().setCardDisplay(card,deckList);
 		}
 
 	}

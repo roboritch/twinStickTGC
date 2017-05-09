@@ -23,8 +23,9 @@ GameObject:
   - component: {fileID: 114066931287181968}
   - component: {fileID: 114306512689408926}
   - component: {fileID: 114523046732283586}
+  - component: {fileID: 114085913214417228}
   m_Layer: 5
-  m_Name: DeckInScrollView
+  m_Name: DeckListElement
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -41,7 +42,7 @@ GameObject:
   - component: {fileID: 222691381386213346}
   - component: {fileID: 114972136690614604}
   m_Layer: 5
-  m_Name: Image
+  m_Name: CardIcon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -58,7 +59,7 @@ GameObject:
   - component: {fileID: 222433374852432814}
   - component: {fileID: 114523738575864262}
   m_Layer: 5
-  m_Name: Text
+  m_Name: CardName
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -91,6 +92,28 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
+--- !u!114 &114085913214417228
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1453499494699892}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4ed2ad1213573304ca6e9b72a2a54c51, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  elementalIcon: {fileID: 0}
+  cardIcon: {fileID: 114972136690614604}
+  cardArt: {fileID: 0}
+  cardType: {fileID: 0}
+  cardCost: {fileID: 0}
+  cardProbability: {fileID: 0}
+  cardName: {fileID: 114523738575864262}
+  description: {fileID: 0}
+  cardReloadTime: {fileID: 0}
+  cardsAlowedInDeck: {fileID: 0}
+  forDeckList: 1
 --- !u!114 &114306512689408926
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -176,13 +199,15 @@ MonoBehaviour:
     m_BestFit: 0
     m_MinSize: 2
     m_MaxSize: 40
-    m_Alignment: 0
+    m_Alignment: 4
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: New Text
+  m_Text: '000000000000000
+
+    000000000000000'
 --- !u!114 &114972136690614604
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -243,8 +268,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: 122.69957, y: -0.000024795998}
-  m_SizeDelta: {x: 205, y: 70}
+  m_AnchoredPosition: {x: 104.75, y: -0.000024795998}
+  m_SizeDelta: {x: 210, y: 70}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224895862734736552
 RectTransform:

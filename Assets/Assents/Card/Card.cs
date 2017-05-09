@@ -57,7 +57,11 @@ public abstract class Card {
 	/// <summary>
 	/// All on disk assents required for the card are loaded into memory
 	/// </summary>
-	public abstract void cacheResorces();
+	public virtual void cacheResorces() {
+		CardPrefabResorceLoader.Instance.loadSprite(basicAttrabutes.cardIconPath);
+		CardPrefabResorceLoader.Instance.loadSprite(basicAttrabutes.cardArtPath);
+		CardPrefabResorceLoader.Instance.loadTextAsset(basicAttrabutes.cardDescriptionPath);
+	}
 
 	/// <summary>
 	/// called when something requires the card to be removed from the CardSlot
