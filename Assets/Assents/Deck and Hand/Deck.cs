@@ -18,7 +18,7 @@ public class Deck : MonoBehaviour {
 	/// <summary>
 	/// this is a representation of all the cards in a players deck
 	/// </summary>
-	private LinkedList<CardtypesAndProbabilities> cardTypesAndProbabilitys = new LinkedList<CardtypesAndProbabilities>();
+	private LinkedList<CardtypesAndProbabilities> cardTypesAndProbabilities = new LinkedList<CardtypesAndProbabilities>();
 
 	private int drawFail = 0; // prevent recursion inf loop
 	/// <summary>
@@ -26,19 +26,26 @@ public class Deck : MonoBehaviour {
 	/// </summary>
 	/// <returns>a card from the deck, NULL if empty</returns>
 	public System.Type drawCard() {
-		if(cardTypesAndProbabilitys.Count == 0) {
+		if(cardTypesAndProbabilities.Count == 0) {
 			Debug.Log("deck is empty");
 			return null;
 		}
 
 		float rndNum = Random.Range(0, totalProbabilityNumber); 
 		float probNumber = 0;
-		foreach (var item in cardTypesAndProbabilitys) {
-			probNumber += item.probabilityMultiplyer;
+		//calculate which card is drawn based on total probability numbers in deck
+		//this of the random number as a slider and each card as a bar of variable length
+		// example
+		// |    #2      |     |     |   |
+		// 0  rand     5     6     7  7.5        5 > 2 so card  1 is chosen
+		foreach(CardtypesAndProbabilities cardsToDraw in cardTypesAndProbabilities) {
+			//add the current cards probability of being drawn to the total
+			probNumber += cardsToDraw.cardAttributes.probabilityOfDraw;
 			if(probNumber > rndNum) {
-				if (item.removedOnDraw)
-					removeCardFromDeck(item);
-				return item.cardType;
+				//check to see if card is removed from deck
+				if (cardsToDraw.cardAttributes.removeOnDraw)
+					removeCardFromDeck(cardsToDraw);
+				return cardsToDraw.cardType;
 			}
 		}
 
@@ -50,17 +57,11 @@ public class Deck : MonoBehaviour {
 	}
 
 	private void removeCardFromDeck(CardtypesAndProbabilities card) {
-		cardTypesAndProbabilitys.Remove(card);
-		totalProbabilityNumber -= card.probabilityMultiplyer;
+		cardTypesAndProbabilities.Remove(card);
+		totalProbabilityNumber -= card.cardAttributes.probabilityOfDraw;
 		updateCardsInDeck(-1);
     }
 	#region Add Card or Cards to deck
-
-	public void addCardToDeck(System.Type cardType, float probabilityMultiplyer, bool cardRemovedOnDraw) {
-		cardTypesAndProbabilitys.AddLast(new CardtypesAndProbabilities(cardType, probabilityMultiplyer, cardRemovedOnDraw));
-		totalProbabilityNumber += probabilityMultiplyer;
-		updateCardsInDeck(1);
-	}
 
 	/// <summary>
 	/// probabilityMultiplyer and cardRemovedOnDraw elements are gotten from card type
@@ -76,19 +77,28 @@ public class Deck : MonoBehaviour {
 	/// </summary>
 	/// <param name="cardType"></param>
 	public void addCardsToDeck(System.Type[] cardType) {
-		float[] probabilityMult = new float[cardType.Length];
-		bool[] cardRemovedOnDraw = new bool[cardType.Length];
+		BasicCardAttributes[] baseAttributes = new BasicCardAttributes[cardType.Length];
+		
 		for (int i = 0; i < cardType.Length; i++) {
-			probabilityMult[i] = (float)cardType[i].GetField("probabiltyOfDraw").GetValue(null);
-			cardRemovedOnDraw[i] = (bool)cardType[i].GetField("removeOnDraw").GetValue(null);
+			if(SaveAndLoadJson.loadStruct(SaveAndLoadJson.getResourcePath(cardType[i].Name), out baseAttributes[i])) {
+				//load the error handling card
+				SaveAndLoadJson.loadStruct(SaveAndLoadJson.getResourcePath("_Basic"), out baseAttributes[i]);
+			}
 		}
-		addCardsToDeck(cardType, probabilityMult, cardRemovedOnDraw);
+		
+		addCardsToDeck(cardType, baseAttributes);
 	}
 
-	public void addCardsToDeck(System.Type[] cardType, float[] probabilityMultiplyer, bool[] cardRemovedOnDraw) {
+	/// <summary>
+	/// add several cards to deck
+	/// cardAttributes is used before attributes stored on disk
+	/// </summary>
+	/// <param name="cardType"></param>
+	/// <param name="cardAttributes"></param>
+	public void addCardsToDeck(System.Type[] cardType, BasicCardAttributes[] cardAttributes) {
 		for (int i = 0; i < cardType.Length; i++) {
-			cardTypesAndProbabilitys.AddLast(new CardtypesAndProbabilities(cardType[i], probabilityMultiplyer[i], cardRemovedOnDraw[i]));
-			totalProbabilityNumber += probabilityMultiplyer[i];
+			cardTypesAndProbabilities.AddLast(new CardtypesAndProbabilities(cardType[i], cardAttributes[i]));
+			totalProbabilityNumber += cardAttributes[i].probabilityOfDraw;
 		}
 		updateCardsInDeck(cardType.Length);
 	}
@@ -132,7 +142,103 @@ public class Deck : MonoBehaviour {
 		}
 	}
 	#region Deck load and save from disk
-	private readonly string deckFolderLocation = "DeckSaves/";
+	public static readonly string playerDecks = "Player Decks/";
+	public static readonly string baddyDecks = "Baddy Decks/";
+
+	private bool loadDeckFromMemory(string deckName) {
+		JsonDeck deck;
+		bool loadSuccess = false;
+		if(playerDeck) {
+			loadSuccess = SaveAndLoadJson.loadStruct(SaveAndLoadJson.getResourcePath(playerDecks + deckName),out deck);
+		} else {
+			loadSuccess = SaveAndLoadJson.loadStruct(SaveAndLoadJson.getResourcePath(baddyDecks + deckName), out deck);
+		}
+		if(!loadSuccess) {
+			SaveAndLoadJson.loadStruct(SaveAndLoadJson.getResourcePath(playerDecks + "errorDeck"), out deck);
+		}
+
+
+		return true;
+	}
+
+
+
+	private void initalDeckLoad(string deckName) {
+		//Dev code to save a test deck
+		//if (!File.Exists(SaveAndLoadXML.getBaseFilePath() + deckFolderLocation + deckName)) {
+		//	saveTestDeck();
+		//}
+		if (loadDeckFromMemory(deckName) == false) {
+			Debug.LogError("No deck found with name:" + deckName + "\n"
+				+ "Deck gameObject ID: " + GetInstanceID());
+			//add a card to the deck to avoid errors
+			addCardToDeck(typeof(ProjectileWeaponBase));
+		}
+	}
+
+	#endregion
+
+	[SerializeField]
+	private string deckName = "testDeck";
+	[SerializeField]
+	private bool playerDeck = true;
+
+	// called before start
+	void Awake() {
+		initalDeckLoad(deckName);
+	}
+
+	// Use this for initialization
+	void Start() {
+		
+    }
+	
+	// Update is called once per frame
+	void Update () {
+		
+	}
+}
+
+[System.Serializable]
+public struct JsonDeck {
+
+	public JsonDeck(string[] cardNames, BasicCardAttributes[] cardBaseAttributes) {
+		cardTypeName = cardNames;
+		this.cardBaseAttributes = cardBaseAttributes;
+	}
+
+	public string[] cardTypeName;
+	//it is possible that some base attributes are changed by the deck creator
+	public BasicCardAttributes[] cardBaseAttributes;
+}
+
+[System.Obsolete("Json is now the method used to save and load decks")]
+public struct XmlDeck {
+	[XmlArrayItemAttribute("drawRemovalChecks")]
+	[XmlArrayAttribute("removedOnDraw")]
+	public bool[] removedOnDraw;
+	[XmlArrayItemAttribute("deck")]
+	[XmlArrayAttribute("card")]
+	public string[] cardTypeName;
+	[XmlArrayItemAttribute("drawProbMultiplyers")]
+	[XmlArrayAttribute("drawProbMultiplyer")]
+	public float[] probabilityMultiplyer;
+}
+
+public struct CardtypesAndProbabilities {
+	
+	public CardtypesAndProbabilities(System.Type cardType,BasicCardAttributes atr) {
+		this.cardType = cardType;
+		cardAttributes = atr;
+
+	}
+
+	public System.Type cardType;
+	public BasicCardAttributes cardAttributes;
+}
+
+//xml implementations
+#if false
 	/// <summary>
 	/// 
 	/// </summary>
@@ -164,11 +270,12 @@ public class Deck : MonoBehaviour {
 		return true;
 	}
 
-	private void saveDeckToXml(string deckName, XmlDeck deck) {
+		private void saveDeckToXml(string deckName, XmlDeck deck) {
 		string path = SaveAndLoadXML.getBaseFilePath() + deckFolderLocation + deckName;
 		SaveAndLoadXML.saveXML(path, deck);
 	}
 
+	
 	/// <summary>
 	/// save a test deck in an xml
 	/// </summary>
@@ -198,63 +305,4 @@ public class Deck : MonoBehaviour {
 		saveDeckToXml("testDeck", deckSave);
 	}
 
-	private void initalDeckLoad(string deckName) {
-		//Dev code to save a test deck
-		//if (!File.Exists(SaveAndLoadXML.getBaseFilePath() + deckFolderLocation + deckName)) {
-		//	saveTestDeck();
-		//}
-		if (loadDeckFromMemory(deckName) == false) {
-			Debug.LogError("No deck found with name:" + deckName + "\n"
-				+ "Deck gameObject ID: " + GetInstanceID());
-			//add a card to the deck to avoid errors
-			addCardToDeck(typeof(ProjectileWeaponBase));
-		}
-	}
-
-	#endregion
-
-	[SerializeField]
-	private string deckName = "testDeck";
-
-	// called before start
-	void Awake() {
-		initalDeckLoad(deckName);
-	}
-
-	// Use this for initialization
-	void Start() {
-		
-    }
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
-}
-
-public struct XmlDeck {
-	[XmlArrayItemAttribute("drawRemovalChecks")]
-	[XmlArrayAttribute("removedOnDraw")]
-	public bool[] removedOnDraw;
-	[XmlArrayItemAttribute("deck")]
-	[XmlArrayAttribute("card")]
-	public string[] cardTypeName;
-	[XmlArrayItemAttribute("drawProbMultiplyers")]
-	[XmlArrayAttribute("drawProbMultiplyer")]
-	public float[] probabilityMultiplyer;
-}
-
-public struct CardtypesAndProbabilities {
-	
-	public CardtypesAndProbabilities(System.Type cardType, float probabilityMultiplyer,bool removedOnDraw) {
-		this.cardType = cardType;
-		this.probabilityMultiplyer = probabilityMultiplyer;
-		this.removedOnDraw = removedOnDraw;
-    }
-	[XmlElement("removedOnDraw")]
-	public bool removedOnDraw;
-	[XmlElement("card")]
-	public System.Type cardType;
-	[XmlElement("probability of draw multiplyer")]
-	public float probabilityMultiplyer;
-}
+#endif

@@ -14,14 +14,30 @@ public static class SaveAndLoadJson {
 		return Application.dataPath + "/";
 	}
 
+	/// <summary>
+	/// Application.dataPath + "/" + folderPath + "/"
+	/// </summary>
+	/// <param name="folderPath"></param>
+	/// <returns></returns>
 	public static string getBaseFilePath(string folderPath) {
-		return Application.dataPath + "/" + folderPath;
+		return Application.dataPath + "/" + folderPath + "/";
 	}
 
+	/// <summary>
+	/// Application.dataPath + "/" + folderPath + "/"
+	/// </summary>
+	/// <param name="folderPath"></param>
+	/// <param name="fileName"></param>
+	/// <returns></returns>
 	public static string getBaseFilePath(string folderPath, string fileName) {
 		return Application.dataPath + "/" + folderPath + "/" + fileName;
 	}
 
+	/// <summary>
+	///  Application.dataPath + "/" + "Resources/" + folderAndItemInResource
+	/// </summary>
+	/// <param name="folderAndItemInResource"></param>
+	/// <returns></returns>
 	public static string getResourcePath(string folderAndItemInResource) {
 		return Application.dataPath + "/" + "Resources/" + folderAndItemInResource;
 	}
@@ -76,6 +92,7 @@ public static class SaveAndLoadJson {
 	/// <param name="obj"></param>
 	/// <returns></returns>
 	public static bool saveStruct<K>(string path, K obj) {
+		path += ".json";
 		try {
 			File.WriteAllText(path, JsonUtility.ToJson(obj));
 		} catch(System.Exception) {
@@ -87,6 +104,7 @@ public static class SaveAndLoadJson {
 	}
 
 	public static bool saveStruct<K>(string path, K obj,bool humanReadable) {
+		path += ".json";
 		try {
 			File.WriteAllText(path, JsonUtility.ToJson(obj,humanReadable));
 		} catch(System.Exception) {
@@ -98,6 +116,7 @@ public static class SaveAndLoadJson {
 	}
 
 	public static bool loadStruct<K>(string path,out K obj) {
+		path += ".json";
 		try {
 			obj = JsonUtility.FromJson<K>(File.ReadAllText(path));
 		} catch(System.Exception) {
@@ -151,6 +170,7 @@ public static class SaveAndLoadJson {
 	/// <param name="dic"></param>
 	/// <returns></returns>
 	public static bool LoadDictionary<K,V>(string path, out Dictionary<K, V> dic) {
+		path += ".json";
 		DictonaryWraper dw;
 		try {
 			string json = File.ReadAllText(path);

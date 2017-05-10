@@ -98,7 +98,7 @@ public class SetCardBaseStats : EditorWindow {
 
 			//string printer = "";
 			//SaveAndLoadJson.saveStructToString(cardAttrabutes,out printer);
-			if(SaveAndLoadJson.saveStruct(SaveAndLoadJson.getResourcePath(cardFilePath + "CardAttr.json"), cardAttrabutes)) {
+			if(SaveAndLoadJson.saveStruct(SaveAndLoadJson.getResourcePath(cardFilePath + "CardAttr"), cardAttrabutes)) {
 				timeLeftOnScreen_sec = timeOnScreenMax_sec;
 			}
 			AssetDatabase.Refresh();

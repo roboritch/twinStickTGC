@@ -2,8 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Linq;
+using System;
 
 public class DeckList : MonoBehaviour {
+
+	[SerializeField]
+	private InputField deckName;
 
 	[SerializeField]
 	private GameObject deckListPrefab;
@@ -28,7 +33,60 @@ public class DeckList : MonoBehaviour {
 	}
 
 	public void removeCardFromDeck(CardDisplayController cardDisplay) {
+		listOfCards.Remove(cardDisplay);
+		UnityExtentionMethods.destoryAllChildren(cardDisplay.transform);
+	}
 
+	public void clearDeck() {
+		foreach(CardDisplayController cardDisplayer in listOfCards) {
+			UnityExtentionMethods.destoryAllChildren(cardDisplayer.transform);
+		}
+	}
+
+	public void saveDeck() {
+		string[] cardClassNames = new string[listOfCards.Count];
+		BasicCardAttributes[] cardsAttributes= new BasicCardAttributes[listOfCards.Count];
+		Card c;
+		int index = 0;
+		foreach(CardDisplayController item in listOfCards) { 
+			c = item.getCardRepresented();
+			cardClassNames[index] = c.GetType().Name;
+			cardsAttributes[index++] = c.basicAttrabutes;
+		}
+		
+		JsonDeck deckSave = new JsonDeck(cardClassNames, cardsAttributes);
+		SaveAndLoadJson.saveStruct(SaveAndLoadJson.getResourcePath(Deck.playerDecks + deckName.text), deckSave);
+	}
+
+	public void loadDeck(string deckName) {
+		clearDeck();
+
+		//TODO add confirmation screen when loading/exiting deck editor
+
+		JsonDeck deckLoad;
+		if(SaveAndLoadJson.loadStruct(SaveAndLoadJson.getResourcePath(Deck.playerDecks + deckName), out deckLoad) == false) {
+			Debug.LogError("selected deck does not exist");
+			return;
+		}
+
+		Card c = null;
+		object obj;
+		for(int i = 0; i < deckLoad.cardTypeName.Length; i++) {
+			obj = Activator.CreateInstance(Type.GetType(deckLoad.cardTypeName[i]));
+			if(obj != null) {
+				if(obj is Card) {
+					c = (Card)obj;
+					c.basicAttrabutes = deckLoad.cardBaseAttributes[i];
+					addCardToDeck(c);
+					continue;
+				}
+			}
+			Debug.LogError("card " + deckLoad.cardTypeName[i]+ " could not be loaded\n" +
+				"check that the card class with that name exists");
+		}
+		
+
+		
 	}
 
 	private void orderList_cost() {
@@ -47,7 +105,5 @@ public class DeckList : MonoBehaviour {
 			UnityExtentionMethods.destoryAllChildren(cardListDisplay.GetChild(i));
 		}
 	}
-
-
 
 }

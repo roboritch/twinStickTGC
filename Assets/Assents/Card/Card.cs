@@ -98,9 +98,9 @@ public static class CardAttributeLoader{
 	}
 }
 
-
+//WARING this struct should not contain references of any kind (including arrays) 
 //WARNING MAJOR WARN If this is changed all cards json files must be updated
-[Serializable]
+[System.Serializable]
 public struct BasicCardAttributes {
 	/// <summary>
 	/// helper to load vars from json more easily 

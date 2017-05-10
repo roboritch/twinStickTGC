@@ -6,11 +6,14 @@ using UnityEngine.UI;
 [RequireComponent(typeof(Dropdown))]
 public class LoadDecks : MonoBehaviour {
 
+	[SerializeField]
+	private DeckList decklist;
+
 	private Dropdown dropdown;
 	private TextAsset[] decks;
 
-	public void selectNewDeck(int deckValue) {
-
+	public void loadSelectedDeck() {
+		decklist.loadDeck(decks[dropdown.value].name); 
 	}
 
 	private void Awake() {

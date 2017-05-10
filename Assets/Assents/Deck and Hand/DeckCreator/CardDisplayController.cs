@@ -42,7 +42,7 @@ public class CardDisplayController : MonoBehaviour {
 	}
 
 	public void removeCardFromDeck() {
-		throw new NotImplementedException();
+		deckList.removeCardFromDeck(this);
 	}
 
 	private Card cardRepresented;
@@ -51,7 +51,7 @@ public class CardDisplayController : MonoBehaviour {
 	}
 
 	[SerializeField]
-	private bool forDeckList;
+	private bool forDeckList = false;
 	private DeckList deckList;
 	public void setCardDisplay(Card card,DeckList deckList) {
 		// TODO create elemental icons
