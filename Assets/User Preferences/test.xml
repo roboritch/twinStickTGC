@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<object name="" type="TK0" assembly="">
+  <!-- Data section : Don't edit any attributes ! -->
+  <properties />
+  <!-- TypeDictionary : Don't edit anything in this section at all ! -->
+  <typedictionary name="" type="System.Collections.Hashtable" assembly="mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <items>
+      <item>
+        <properties>
+          <property name="Key" type="System.String" assembly="mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">TK0</property>
+          <property name="Value" type="Yaowi.Common.Serialization.TypeInfo" assembly="Assembly-CSharp, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+            <properties>
+              <property name="TypeName" type="System.String" assembly="mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">System.Int32</property>
+              <property name="AssemblyName" type="System.String" assembly="mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</property>
+            </properties>
+          </property>
+        </properties>
+      </item>
+    </items>
+  </typedictionary>
+</object>

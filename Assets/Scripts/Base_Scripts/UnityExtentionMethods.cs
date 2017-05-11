@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System;
 
 public static class UnityExtentionMethods{
 	/// <summary>
@@ -12,6 +13,5 @@ public static class UnityExtentionMethods{
 		}
 		MonoBehaviour.Destroy(nextTransform.gameObject);
 	}
-
 
 }

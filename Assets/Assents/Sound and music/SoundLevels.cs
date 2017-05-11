@@ -99,16 +99,16 @@ public class SoundLevels : Singleton<SoundLevels> {
 		
 	}
 
-	#region xml saving for sound levels
+	#region json saving for sound levels
 	private string soundFilePath() {
-		return SaveAndLoadXML.getBaseFilePath() + folderName + "/" + fileName;
+		return SaveAndLoadJson.getBaseFilePath() + folderName + "/" + fileName;
     }
 
-	private string fileName = "Sound Levels.xml";
+	private string fileName = "SoundLevels";
 	private string folderName = "User Preferences";
 	private void loadSoundLevels() {
 		SoundLevelsDiskSave loadedLevels;
-		bool fileExists = SaveAndLoadXML.loadXML(soundFilePath(), out loadedLevels);
+		bool fileExists = SaveAndLoadJson.loadStruct(soundFilePath(), out loadedLevels);
 		if (fileExists) {
 			setMusicVolume(loadedLevels.musicLevel);
 			setSfxVolume(loadedLevels.sfxLevel);
@@ -117,7 +117,7 @@ public class SoundLevels : Singleton<SoundLevels> {
 
 	private void saveSoundLevels() {
 		SoundLevelsDiskSave savingFile = new SoundLevelsDiskSave(musicVolume, sfxVolume);
-		SaveAndLoadXML.saveXML(soundFilePath(), savingFile);
+		SaveAndLoadJson.saveStruct(soundFilePath(), savingFile);
 	}
 	#endregion
 
@@ -127,6 +127,7 @@ public class SoundLevels : Singleton<SoundLevels> {
 	}
 }
 
+[System.Serializable]
 public struct SoundLevelsDiskSave {
 	public SoundLevelsDiskSave(float music,float sfx) {
 		musicLevel = music;

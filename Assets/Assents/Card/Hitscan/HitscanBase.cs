@@ -13,10 +13,8 @@ public class HitscanBase : Card {
 
 	#region initialization of parent vars
 
-	public HitscanBase() { 
-		cardReloadTime_seconds = 5f;
-		cardResorceCost = 1f;
-		cardArt = CardPrefabResorceLoader.Instance.loadSprite(getIconPath());
+	public HitscanBase() : base(){ 
+
     }
 	#endregion
 	protected float baseDamage = 5f;
@@ -138,9 +136,6 @@ public class HitscanBase : Card {
 	}
 
 	#region override vars
-	public override void displayDescription(defaultTextHolder decriptionBox) {
-		throw new NotImplementedException();
-	}
 
 	public override bool useCard(Actor cardUser) {
 		fireGun(cardUser);

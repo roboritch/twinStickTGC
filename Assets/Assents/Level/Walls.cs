@@ -16,6 +16,10 @@ public class Walls : MonoBehaviour,IDamageable {
 		return false;
 	}
 
+	public bool addEffect(Effect effect) {
+		return false;
+	}
+
 	// Use this for initialization
 	void Start () {
 		

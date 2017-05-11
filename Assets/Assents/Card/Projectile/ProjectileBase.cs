@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -16,43 +17,34 @@ public class ProjectileBase : MonoBehaviour {
 
 	protected new Collider2D collider;
 	protected new Rigidbody2D rigidbody;
-	protected float damageAmount = 0f;
-	protected DamageTypes damageType;
 	protected DamageSources sourceTeam;
 
-	/// <summary>
-	/// destroys the projectile
-	/// </summary>
-	protected void destroyProjectile() {
-		UnityExtentionMethods.destoryAllChildren(transform);
+
+	#region inspector properties
+	[SerializeField]
+	[Range(0,100f)]
+	protected float projectileTimeLeft_seconds = 10f;
+	[SerializeField] protected float damageAmount = 0f;
+	[SerializeField] protected float speed = 1f;
+	[SerializeField] protected DamageTypes damageType = DamageTypes.phyisical_pearcing;
+	[SerializeField] public EffectProperties[] effectsApplyedOnContact;
+	#endregion
+
+	#region projectile creation get and set
+	public float getBaseDamage() {
+		return damageAmount;
 	}
 
-	/// <summary>
-	/// check if object is damageable 
-	/// </summary>
-	/// <param name="colider"></param>
-	protected void objectCollision(Collider2D colider) {
-		IDamageable hitObject = colider.GetComponent<IDamageable>();
-		if (hitObject != null) {
-			if(hitObject.ignoreDamage(sourceTeam, damageType)) {
-				//the object is not considered in calculations
-				//WARNING if the actors alliance changes while this projectile is still active
-				//it will not be able to find it
-				setIgnoredColliders(new Collider2D[] { colider });
-				return;
-			}
-			hitObject.takeDamage(damageAmount,damageType,sourceTeam);
-			destroyProjectile();
-		} else {
-			//the object is not considered in calculations as it is not damageable
-			//WARNING turning non damageable objects into damageable ones 
-			//will ignore this
-			setIgnoredColliders(new Collider2D[] { colider });
-		}
+	public float getBaseSpeed() {
+		return speed;
 	}
 
-	#region Specify projectile properties
-	public void setDamage(float damage, DamageTypes damageType,DamageSources team) {
+	public DamageTypes getDamageType() {
+		return damageType;
+	}
+
+	//set methods to update properties with the using actors effects
+	public void setDamage(float damage, DamageTypes damageType, DamageSources team) {
 		damageAmount = damage;
 		this.damageType = damageType;
 		sourceTeam = team;
@@ -68,18 +60,58 @@ public class ProjectileBase : MonoBehaviour {
 	}
 	#endregion
 
+
+
+
+
+	/// <summary>
+	/// destroys the projectile along with it's children
+	/// </summary>
+	protected void destroyProjectile() {
+		UnityExtentionMethods.destoryAllChildren(transform);
+	}
+
+	/// <summary>
+	/// check if object is damageable 
+	/// </summary>
+	/// <param name="colider"></param>
+	protected void objectCollision(Collider2D colider) {
+		IDamageable hitObject = colider.GetComponent<IDamageable>();
+		if (hitObject != null) {
+			if(hitObject.ignoreDamage(sourceTeam, damageType)) {
+				return;
+			}
+			//damage hit object
+			hitObject.takeDamage(damageAmount,damageType,sourceTeam);
+			//apply effects to object
+			if(effectsApplyedOnContact != null)
+			foreach(EffectProperties effect in effectsApplyedOnContact) {
+				Effect effectInsance = (Effect)System.Activator.CreateInstance(System.Type.GetType(effect.effectClassName));
+				effectInsance.setEffectProperties(effect);
+				hitObject.addEffect(effectInsance);
+			}
+
+			destroyProjectile();
+		} else {
+			//the object is not considered in calculations as it is not damageable
+			/*WARNING turning non damageable objects into damageable ones 
+			will ignore this objects collider*/
+			setIgnoredColliders(new Collider2D[] { colider });
+		}
+	}
+
+
 	/// <summary>
 	/// ignore future collisions with Colliders specified 
 	/// </summary>
 	/// <param name="coll">player firing the projectile</param>
 	public void setIgnoredColliders(Collider2D[] colliders) {
-		foreach (var coll in colliders) {
+		foreach (Collider2D coll in colliders) {
 			Physics2D.IgnoreCollision(collider, coll, true);
 		}
 	}
 
 	#region Projectile lifetime
-	private float projectileTimeLeft_seconds = 10f; //this should be fine for all but the slowest projectiles
 	public void setProjectileLifetime(float lifetime_seconds) {
 		projectileTimeLeft_seconds = lifetime_seconds;
 	}
@@ -111,4 +143,37 @@ public class ProjectileBase : MonoBehaviour {
 		checkLifetime();
 	}
 	#endregion
+
+	#region extra serialization 
+	//[SerializeField, HideInInspector]
+	//private string[] S_effectsApplyedOnContact;
+
+	//void ISerializationCallbackReceiver.OnBeforeSerialize() { 
+	//	S_effectsApplyedOnContact = new string[effectsApplyedOnContact.Length];
+	//	for(int i = 0; i < effectsApplyedOnContact.Length; i++) {
+	//		SaveAndLoadJson.saveStructToString(effectsApplyedOnContact[i], out S_effectsApplyedOnContact[i]);
+	//	}
+	//}
+
+	//void ISerializationCallbackReceiver.OnAfterDeserialize() {
+	//	effectsApplyedOnContact = new EffectProperties[S_effectsApplyedOnContact.Length];
+	//	for(int i = 0; i < S_effectsApplyedOnContact.Length; i++) {
+	//		SaveAndLoadJson.loadStructToString(out effectsApplyedOnContact[i], S_effectsApplyedOnContact[i]);
+	//	}
+	//}
+	#endregion
+}
+
+public struct ProjectileStats {
+	public ProjectileStats(string name, float speed, float damage,DamageTypes damageType) {
+		prefabName = name;
+		this.speed = speed;
+		this.damage = damage;
+		this.damageType = damageType;
+	}
+
+	public string prefabName;
+	public float speed;
+	public float damage;
+	public DamageTypes damageType;
 }

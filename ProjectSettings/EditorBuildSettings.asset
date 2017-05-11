@@ -7,10 +7,13 @@ EditorBuildSettings:
   m_Scenes:
   - enabled: 1
     path: Assets/mainMenu.unity
-    guid: 00000000000000000000000000000000
+    guid: 880a5e60c4d4ea548b6c39ace0173e5b
   - enabled: 1
     path: Assets/testScene.unity
-    guid: 00000000000000000000000000000000
+    guid: ade816e975a8ddf4e97b3b3b81954a51
   - enabled: 1
     path: Assets/Level 1.unity
+    guid: 96cffb62a7bd2a148bf0c18bf53a5555
+  - enabled: 1
+    path: Assets/DeckCreator.unity
     guid: 00000000000000000000000000000000

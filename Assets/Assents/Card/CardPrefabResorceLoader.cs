@@ -12,13 +12,13 @@ public class CardPrefabResorceLoader : Singleton<CardPrefabResorceLoader> {
 	/// load the sprite from a dictionary of sprite resources 
 	/// </summary>
 	/// <param name="resorcePathname">CardClassName + / should be input here</param>
-	/// <returns></returns>
+	/// <returns>returns null if sprite not found</returns>
 	public Sprite loadSprite(string resorcePathname) {
 		Sprite sprite;
 		if (spriteResorces.TryGetValue(resorcePathname, out sprite)) {
 			return sprite;
 		} else { //get resource from folder
-			sprite = Resources.Load<Sprite>(resorcePathname + "icon");
+			sprite = Resources.Load<Sprite>(resorcePathname);
 			if (sprite == null) {
 				Debug.LogWarning("no sprite found with that name");
 				return null;
@@ -27,7 +27,31 @@ public class CardPrefabResorceLoader : Singleton<CardPrefabResorceLoader> {
 			return sprite;
 		}
 	}
+	#endregion
 
+	#region text loading 
+	private Dictionary<string, TextAsset> textResorces = new Dictionary<string, TextAsset>();
+
+	/// <summary>
+	/// load any text asset from the resource folder
+	/// </summary>
+	/// <param name="resorcePathname">CardClassName + / should be input here</param>
+	/// <param name="fileName"></param>
+	/// <returns></returns>
+	public TextAsset loadTextAsset(string resorcePathname) {
+		TextAsset textAsset;
+		if(textResorces.TryGetValue(resorcePathname, out textAsset)) {
+			return textAsset;
+		} else { //get resource from folder
+			textAsset = Resources.Load<TextAsset>(resorcePathname);
+			if(textAsset == null) {
+				Debug.LogWarning("no text asset found with that name");
+				return null;
+			}
+			textResorces.Add(resorcePathname, textAsset);
+			return textAsset;
+		}
+	}
 	#endregion
 
 	#region Prefab loading
@@ -73,4 +97,18 @@ public class CardPrefabResorceLoader : Singleton<CardPrefabResorceLoader> {
 		return true;
 	}
 	#endregion
+
+	public void preLoadAllCards() {
+		IEnumerable<Card> allCards = ReflectiveEnumerator.GetEnumerableOfType<Card>();
+		foreach(Card card in allCards) {
+			//card base classes with this class name are not real cards and should be ignored
+			if(card.GetType().Name.Contains("Base_")) {
+				continue;
+			}
+			//this method will call this class to cash all resources the card requires to function
+			card.cacheResorces();
+		}
+	}
+
+
 }
