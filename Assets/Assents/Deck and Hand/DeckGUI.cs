@@ -28,8 +28,8 @@ public class DeckGUI : MonoBehaviour {
 					Debug.LogError("Player Deck not found!");
 				}
 			}
-			cardCountText = GetComponentInChildren<defaultTextHolder>();
 		}
+		cardCountText = GetComponentInChildren<defaultTextHolder>();
 	}
 }
 

@@ -1,9 +1,12 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using System.Xml.Serialization;
 using UnityEngine;
+using System.Threading;
+
 
 public class Deck : MonoBehaviour {
 	//use this code to check types for special card draw information from interfaces
@@ -31,7 +34,7 @@ public class Deck : MonoBehaviour {
 			return null;
 		}
 
-		float rndNum = Random.Range(0, totalProbabilityNumber); 
+		float rndNum = UnityEngine.Random.Range(0, totalProbabilityNumber); 
 		float probNumber = 0;
 		//calculate which card is drawn based on total probability numbers in deck
 		//this of the random number as a slider and each card as a bar of variable length
@@ -142,23 +145,36 @@ public class Deck : MonoBehaviour {
 		}
 	}
 	#region Deck load and save from disk
-	public static readonly string playerDecks = "Player Decks/";
-	public static readonly string baddyDecks = "Baddy Decks/";
+	/// <summary>
+	/// "Player Decks/"
+	/// </summary>
+	public static readonly string playerDecks = "Player Decks";
+	/// <summary>
+	/// "Baddy Decks/"
+	/// </summary>
+	public static readonly string baddyDecks = "Baddy Decks";
 
 	private bool loadDeckFromMemory(string deckName) {
 		JsonDeck deck;
 		bool loadSuccess = false;
 		if(playerDeck) {
-			loadSuccess = SaveAndLoadJson.loadStruct(SaveAndLoadJson.getResourcePath(playerDecks + deckName),out deck);
+			loadSuccess = SaveAndLoadJson.loadStruct(SaveAndLoadJson.getBaseFilePath(playerDecks, deckName),out deck);
 		} else {
-			loadSuccess = SaveAndLoadJson.loadStruct(SaveAndLoadJson.getResourcePath(baddyDecks + deckName), out deck);
+			loadSuccess = SaveAndLoadJson.loadStruct(SaveAndLoadJson.getResourcePath(baddyDecks, deckName), out deck);
 		}
 		if(!loadSuccess) {
-			SaveAndLoadJson.loadStruct(SaveAndLoadJson.getResourcePath(playerDecks + "errorDeck"), out deck);
+			SaveAndLoadJson.loadStruct(SaveAndLoadJson.getResourcePath(baddyDecks , "errorDeck"), out deck);
+		}
+		//get card class types from names
+		Type[] cardClasses = new Type[deck.cardTypeName.Length];
+		for(int i = 0; i < deck.cardTypeName.Length; i++) {
+			cardClasses[i] = Type.GetType(deck.cardTypeName[i]);
 		}
 
+		addCardsToDeck(cardClasses, deck.cardBaseAttributes);
 
-		return true;
+
+		return loadSuccess;
 	}
 
 

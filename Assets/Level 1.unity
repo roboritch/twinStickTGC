@@ -259,12 +259,6 @@ Prefab:
       propertyPath: m_Name
       value: Enamy Spawn (2)
       objectReference: {fileID: 0}
-    - target: {fileID: 114947868731885182, guid: 70263d939c239184181dbfb9f9d10511,
-        type: 2}
-      propertyPath: enamyPrefab
-      value: 
-      objectReference: {fileID: 1061758612061284, guid: dbb8b5d6c0d2df54e9138d51dc43f17e,
-        type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 70263d939c239184181dbfb9f9d10511, type: 2}
   m_IsPrefabParent: 0
@@ -361,23 +355,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &311829195 stripped
-GameObject:
-  m_PrefabParentObject: {fileID: 1191798331180790, guid: 11858318182d0f144bd52f644981827a,
-    type: 2}
-  m_PrefabInternal: {fileID: 1284287251}
---- !u!114 &311829196
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 311829195}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5462513e61233b044908cad78b09d690, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  objectToTrigger: {fileID: 143090237}
 --- !u!114 &447223277 stripped
 MonoBehaviour:
   m_PrefabParentObject: {fileID: 114947868731885182, guid: 70263d939c239184181dbfb9f9d10511,
@@ -692,6 +669,11 @@ Prefab:
       propertyPath: m_RootOrder
       value: 5
       objectReference: {fileID: 0}
+    - target: {fileID: 114252220932145366, guid: 11858318182d0f144bd52f644981827a,
+        type: 2}
+      propertyPath: objectToTrigger
+      value: 
+      objectReference: {fileID: 143090237}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 11858318182d0f144bd52f644981827a, type: 2}
   m_IsPrefabParent: 0

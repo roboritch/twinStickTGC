@@ -15,6 +15,16 @@ public class Actor : MonoBehaviour , IDamageable {
 	#endregion
 
 	#region health
+	private bool dead = false;
+	/// <summary>
+	/// this method must be checked by any script that saves
+	/// references an actor
+	/// </summary>
+	/// <returns></returns>
+	public bool isDead() {
+		return dead;
+	}
+
 	[SerializeField] private float health_MAX = 100;
 	[SerializeField] private float health_MIN = 0; //some cards may set this > 0 for a short time
 	[SerializeField] private float health;
@@ -57,6 +67,7 @@ public class Actor : MonoBehaviour , IDamageable {
 
 	private void actorDies() {
 		UnityExtentionMethods.destoryAllChildren(transform);
+		dead = true;
 		//TAG: level analytics
 		if(team != DamageSources.player1) {
 			LevelAnalytics.Instance.enemyDestroyed();

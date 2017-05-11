@@ -2,15 +2,20 @@
 using System.Collections;
 using System;
 
-public abstract class ProjectileSpeedModification : TimedEffect {
-	public override void applyEffect(Actor applyTo) {
+public class ProjectileSpeedModification : TimedEffect {
+	public override void apply(Actor applyTo) {
 		Debug.LogWarning("This effect cant be called this way! :" + GetType().Name);
 	}
-
+	#region base effectProperties
 	/// <summary>
 	/// increase of 50% = an increase multiplier of 0.5f
 	/// </summary>
 	protected float increseMultiplyer = 0f;
+	#endregion
+
+	public ProjectileSpeedModification(bool requiresCreator, bool mustBeInitalized) : base(requiresCreator, mustBeInitalized) {
+	}
+
 	public virtual float getProjectileSpeedIncreseMultiplyer(float baseSpeed) {
 		return increseMultiplyer;
 	}
@@ -26,5 +31,29 @@ public abstract class ProjectileSpeedModification : TimedEffect {
 
 	public override void removeEffect() {
 		//nothing here
+	}
+
+	public override void setCreator(Actor creator) {
+		throw new NotImplementedException();
+	}
+
+	public override void initalize(Actor actor) {
+		throw new NotImplementedException();
+	}
+
+	public override void setEffectProperties(EffectProperties properties) {
+		increseMultiplyer = float.Parse(properties.value[0]);
+	}
+
+	public override EffectProperties getEffectPropertiesStructure(bool forGUI) {
+		EffectProperties properties = new EffectProperties(GetType().Name, 1, forGUI);
+		if(forGUI) {
+			properties.valueTypeName[0] = typeof(float).Name;
+			properties.propertyName[0] = "increseMultiplyer";
+
+		}
+		properties.value[0] = default(float).ToString();
+
+		return properties;
 	}
 }

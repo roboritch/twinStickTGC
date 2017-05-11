@@ -15,7 +15,7 @@ public class ContactDamageBase : Card {
 	// clicking on this script in the project assets window
 
 	public ContactDamageBase() : base(){
-
+		
 	}
 	#endregion
 	
@@ -29,7 +29,7 @@ public class ContactDamageBase : Card {
 
 
 	public override bool useCard(Actor cardUser) {
-		DamageOnContactEffect effect = new DamageOnContactEffect(cardUser);
+		DamageOnContactEffect effect = new DamageOnContactEffect();
 		//this is a legacy implementation that should be removed 
 		EffectProperties properties = effect.getEffectPropertiesStructure(false);
 		properties.value[0] = 1f.ToString();

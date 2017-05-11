@@ -7,6 +7,20 @@ using System;
 
 public class DeckList : MonoBehaviour {
 
+	#region developer options
+	private bool playerDeck;
+	/// <summary>
+	/// true for player decks, false for enemy decks 
+	/// </summary>
+	/// <param name="type"></param>
+	public void saveLoadDeckType(Toggle type) {
+		playerDeck = type.isOn;
+		clearDeck();
+	}
+
+	#endregion
+
+
 	[SerializeField]
 	private InputField deckName;
 
@@ -41,9 +55,28 @@ public class DeckList : MonoBehaviour {
 		foreach(CardDisplayController cardDisplayer in listOfCards) {
 			UnityExtentionMethods.destoryAllChildren(cardDisplayer.transform);
 		}
+		listOfCards.Clear();
+	}
+
+
+
+
+	#region save/load decks
+	/// <summary>
+	/// get the deck path
+	/// enemy decks are stored in the resource folder so they are added to build
+	/// </summary>
+	/// <returns></returns>
+	private string getDeckPath() {
+		if(playerDeck) {
+			return Deck.playerDecks;
+		} else {
+			return SaveAndLoadJson.getResourcePath(Deck.baddyDecks);
+		}
 	}
 
 	public void saveDeck() {
+
 		string[] cardClassNames = new string[listOfCards.Count];
 		BasicCardAttributes[] cardsAttributes= new BasicCardAttributes[listOfCards.Count];
 		Card c;
@@ -51,20 +84,25 @@ public class DeckList : MonoBehaviour {
 		foreach(CardDisplayController item in listOfCards) { 
 			c = item.getCardRepresented();
 			cardClassNames[index] = c.GetType().Name;
+			//WARNING for now all enemy cards stay in decks when used
+			if(!playerDeck) {
+				c.basicAttrabutes.removeOnDraw = false;
+			}
 			cardsAttributes[index++] = c.basicAttrabutes;
+			
+
 		}
 		
 		JsonDeck deckSave = new JsonDeck(cardClassNames, cardsAttributes);
-		SaveAndLoadJson.saveStruct(SaveAndLoadJson.getResourcePath(Deck.playerDecks + deckName.text), deckSave);
+		SaveAndLoadJson.saveStruct(getDeckPath() + deckName.text, deckSave);
 	}
 
 	public void loadDeck(string deckName) {
 		clearDeck();
-
+		
 		//TODO add confirmation screen when loading/exiting deck editor
-
 		JsonDeck deckLoad;
-		if(SaveAndLoadJson.loadStruct(SaveAndLoadJson.getResourcePath(Deck.playerDecks + deckName), out deckLoad) == false) {
+		if(SaveAndLoadJson.loadStruct(getDeckPath() + deckName, out deckLoad) == false) {
 			Debug.LogError("selected deck does not exist");
 			return;
 		}
@@ -89,6 +127,7 @@ public class DeckList : MonoBehaviour {
 		
 	}
 
+	#endregion
 	private void orderList_cost() {
 		int locationInList = 0;
 		listOfCards.Sort(new CardDisplayControllerSort_cost());

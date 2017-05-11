@@ -6,6 +6,12 @@
 /// this is due to editor scripts using reflection
 /// </summary>
 public abstract class Effect {
+	public Effect(bool requiresCreator, bool mustBeInitalized) {
+		this.requiresCreator = requiresCreator;
+		this.effectMustBeInitalized = mustBeInitalized;
+	}
+
+
 	public bool canBeTriggered = false;
 	/// <summary>
 	/// used by the effect container to know what effect this is
@@ -27,12 +33,39 @@ public abstract class Effect {
 		get { return usesLeft; }
 	}
 
+	#region effect initialization
+	/// <summary>
+	/// set to true if the effect has a reference to the actor creating it
+	/// this should be checked by all methods that create effects
+	/// </summary>
+	public readonly bool requiresCreator = false;
+	/// <summary>
+	/// set the creator of this effect 
+	/// WARNING when using the stored reference check actor.isDead() to prevent null errors
+	/// </summary>
+	/// <param name="creator"></param>
+	public abstract void setCreator(Actor creator);
+	
+	
+	/// <summary>
+	/// set to true if the effect must be initialized with the actor it is added to
+	/// </summary>
+	public readonly bool effectMustBeInitalized = false;
+	/// <summary>
+	/// whatever initialization the actor requires 
+	/// WARNING this should only be called by the EffectsContainerComponent 
+	/// and the actor should not be stored in a class variable
+	/// </summary>
+	/// <param name="actor"></param>
+	public abstract void initalize(Actor actor);
+	#endregion
+
 	/// <summary>
 	/// apply some effect to the actor (damage, moment changes, ext)
-	/// try to get this method to work first
+	/// called by EffectsContainerComponent on trigger or time intervals
 	/// </summary>
 	/// <param name="applyTo"></param>
-	public abstract void applyEffect(Actor applyTo);
+	public abstract void apply(Actor applyTo);
 
 	/// <summary>
 	/// called by Effect container to fully remove this effect

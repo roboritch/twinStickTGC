@@ -22,19 +22,25 @@ public class LoadDecks : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		decks =  Resources.LoadAll<TextAsset>("Player Decks");
+		loadDeckFolder("Player Decks");
+	}
+	
+	public void loadDeckFolder(string folderName) {
+		decks = Resources.LoadAll<TextAsset>(folderName);
 		dropdown.ClearOptions();
 		List<Dropdown.OptionData> dropdownData = new List<Dropdown.OptionData>();
 		for(int i = 0; i < decks.Length; i++) {
 			dropdownData.Add(new Dropdown.OptionData(decks[i].name));
 		}
 		dropdown.AddOptions(dropdownData);
-
-
 	}
 	
-	// Update is called once per frame
-	void Update () {
-		
+	public void loadDeckType(Toggle deckType) {
+		if(deckType.isOn) {
+			loadDeckFolder(Deck.playerDecks.TrimEnd('/'));
+		} else {
+			loadDeckFolder(Deck.baddyDecks.TrimEnd('/'));
+		}
 	}
+
 }

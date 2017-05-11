@@ -34,6 +34,15 @@ public static class SaveAndLoadJson {
 	}
 
 	/// <summary>
+	///  Application.dataPath + "/" + "Resources/" + folderPath + "/" + fileName
+	/// </summary>
+	/// <param name="folderAndItemInResource"></param>
+	/// <returns></returns>
+	public static string getResourcePath(string folderPath, string fileName) {
+		return Application.dataPath + "/" + "Resources/" + folderPath + "/" + fileName;
+	}
+
+	/// <summary>
 	///  Application.dataPath + "/" + "Resources/" + folderAndItemInResource
 	/// </summary>
 	/// <param name="folderAndItemInResource"></param>
@@ -154,7 +163,7 @@ public static class SaveAndLoadJson {
 			//write to file
 			File.WriteAllText(path, JsonUtility.ToJson(dw));
 		} catch(System.Exception) {
-			Debug.LogError("json Dic save failed, path: " + path);
+			Debug.LogError("json Dictionary save failed, path: " + path);
 			return false;
 		}
 

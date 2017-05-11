@@ -4,7 +4,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class DamageOnContactEffect : Effect {
-	public DamageOnContactEffect() { }
+	public DamageOnContactEffect() : base(false,true) {
+		effectType = EffectTypes.damageOnContact;
+	}
 
 	private ContactDamageComponent contactDamageComp;
 
@@ -17,20 +19,8 @@ public class DamageOnContactEffect : Effect {
 	private float damageAmount = 0;
 	#endregion
 
-	/// <summary>
-	/// called by any card to specify the actor 
-	/// using this card
-	/// </summary>
-	/// <param name="actorUsingEffect"></param>
-	/// <param name="maxDamageInterval_sec"></param>
-	/// <param name="damageAmount"></param>
-	public DamageOnContactEffect(Actor actorUsingEffect) {
- 		contactDamageComp = actorUsingEffect.gameObject.AddComponent<ContactDamageComponent>();
-		contactDamageComp.initDamage(actorUsingEffect, damageAmount, DamageTypes.physical_normal, maxDamageInterval_sec);
-	}
-
-	public override void applyEffect(Actor applyTo) {
-		//effect is always active
+	public override void apply(Actor applyTo) {
+		//effect is constant
 	}
 
 	/// <summary>
@@ -64,5 +54,14 @@ public class DamageOnContactEffect : Effect {
 	public override void setEffectProperties(EffectProperties properties) {
 		maxDamageInterval_sec = float.Parse(properties.value[0]);
 		damageAmount = float.Parse(properties.value[1]);
+	}
+
+	public override void setCreator(Actor creator) {
+		throw new NotImplementedException();
+	}
+
+	public override void initalize(Actor actor) {
+		contactDamageComp = actor.gameObject.AddComponent<ContactDamageComponent>();
+		contactDamageComp.initDamage(actor, damageAmount, DamageTypes.physical_normal, maxDamageInterval_sec);
 	}
 }

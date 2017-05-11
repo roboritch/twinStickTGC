@@ -6,11 +6,11 @@ public class DamageDealtChange : Effect {
 
 	protected DamageTypes effectsDamageTypes;
 
-	public DamageDealtChange() {
+	public DamageDealtChange() : base(false,false) {
 		canBeTriggered = true;
 	}
 
-	public DamageDealtChange(int numberOfUses,DamageTypes damageTypesEffected,float damageMultiplicationChange, float damageAdditonChange, bool damageSetTo0,bool onlyWorksOnCards) {
+	public DamageDealtChange(int numberOfUses,DamageTypes damageTypesEffected,float damageMultiplicationChange, float damageAdditonChange, bool damageSetTo0,bool onlyWorksOnCards) : base(false, false) {
 		canBeTriggered = true;
 		effectType = EffectTypes.damageDealtChange;
 		usesLeft = numberOfUses;
@@ -59,7 +59,7 @@ public class DamageDealtChange : Effect {
 			return false;
 	}
 
-	public override void applyEffect(Actor applyTo) {
+	public override void apply(Actor applyTo) {
 		Debug.LogWarning("This effect cant be called this way! :" + GetType().Name);
 	}
 
@@ -102,6 +102,14 @@ public class DamageDealtChange : Effect {
 		properties.value[4] = default(bool).ToString();
 
 		return properties;
+	}
+
+	public override void setCreator(Actor creator) {
+		throw new NotImplementedException();
+	}
+
+	public override void initalize(Actor actor) {
+		throw new NotImplementedException();
 	}
 }
 

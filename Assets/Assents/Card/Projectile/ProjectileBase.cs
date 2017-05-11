@@ -86,7 +86,7 @@ public class ProjectileBase : MonoBehaviour {
 			//apply effects to object
 			if(effectsApplyedOnContact != null)
 			foreach(EffectProperties effect in effectsApplyedOnContact) {
-				Effect effectInsance = (Effect)System.Activator.CreateInstance(System.Type.GetType(effect.effectClassName),effect.value);
+				Effect effectInsance = (Effect)System.Activator.CreateInstance(System.Type.GetType(effect.effectClassName));
 				effectInsance.setEffectProperties(effect);
 				hitObject.addEffect(effectInsance);
 			}
