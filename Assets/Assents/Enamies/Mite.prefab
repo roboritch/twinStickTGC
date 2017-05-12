@@ -29,6 +29,7 @@ GameObject:
   - component: {fileID: 60171541809091674}
   - component: {fileID: 114042315505818480}
   - component: {fileID: 114887187635919614}
+  - component: {fileID: 114252220932145366}
   m_Layer: 0
   m_Name: Mite
   m_TagString: AI
@@ -107,6 +108,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fde990a9832f3d14dacd99fc7a56eabc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &114252220932145366
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1191798331180790}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5462513e61233b044908cad78b09d690, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  objectToTrigger: {fileID: 0}
 --- !u!114 &114380248835705388
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -161,6 +174,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   updateGUI: 0
   deckName: miteDeck
+  playerDeck: 0
 --- !u!114 &114950328875524700
 MonoBehaviour:
   m_ObjectHideFlags: 1

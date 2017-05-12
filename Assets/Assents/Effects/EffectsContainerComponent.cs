@@ -27,6 +27,7 @@ public class EffectsContainerComponent : MonoBehaviour {
 	/// <summary>
 	/// if an effect type must be a child of a particular class
 	/// this method insures there are no errors
+	/// 
 	/// </summary>
 	/// <param name="effect"></param>
 	/// <param name="et"></param>
@@ -59,6 +60,10 @@ public class EffectsContainerComponent : MonoBehaviour {
 		varifyEffectType(effect, effect.getEffectType);
 		int effectIndex = (int)effect.getEffectType;
 		effects[effectIndex].AddLast(effect);
+		//initialize the effect
+		if(effect.effectMustBeInitalized) {
+			effect.initalize(actor);
+		}
 	}
 
 	public void addEffect(TimedEffect effect) {
@@ -68,6 +73,10 @@ public class EffectsContainerComponent : MonoBehaviour {
 			timedAndTriggerdEffects[effectIndex].AddLast(effect);
 		} else {
 			timedEffects[effectIndex].AddLast(effect);
+		}
+		//initialize the effect
+		if(effect.effectMustBeInitalized) {
+			effect.initalize(actor);
 		}
 	}
 
@@ -95,7 +104,7 @@ public class EffectsContainerComponent : MonoBehaviour {
 					curNode = tempNode;
 					totalEffectCount--;
 				} else {
-					curNode.Value.applyEffect(actor);
+					curNode.Value.apply(actor);
 					curNode = curNode.Next;
 				}
 			}
@@ -116,7 +125,7 @@ public class EffectsContainerComponent : MonoBehaviour {
 				curNode2 = tempNode;
 				totalEffectCount--;
 			} else {
-				curNode2.Value.applyEffect(actor);
+				curNode2.Value.apply(actor);
 				curNode2 = curNode2.Next;
 			}
 		}
@@ -128,7 +137,7 @@ public class EffectsContainerComponent : MonoBehaviour {
 	public void triggerEffects(EffectTypes effectType,Actor actor) {
 		Effect[] list = getListOfTriggerableEffectsOfType(effectType);
 		for (int i = 0; i < list.Length; i++) {
-			list[i].applyEffect(actor);
+			list[i].apply(actor);
 		}
 	}
 
@@ -202,7 +211,7 @@ public class EffectsContainerComponent : MonoBehaviour {
 					curNode = tempNode;
 				} else {
 					if (effect.incrmentTimer(timeInc_seconds)) {//Inc effectTimer
-						effect.applyEffect(actor); //apply the effect to the actor
+						effect.apply(actor); //apply the effect to the actor
 					}
 					curNode = curNode.Next;
 				}
@@ -222,7 +231,7 @@ public class EffectsContainerComponent : MonoBehaviour {
 					curNode = tempNode;
 				} else {
 					if (effect.incrmentTimer(timeInc_seconds)) {//Inc effectTimer
-						effect.applyEffect(actor); //apply the effect to the actor
+						effect.apply(actor); //apply the effect to the actor
 					}
 					curNode = curNode.Next;
 				}

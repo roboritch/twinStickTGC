@@ -1,6 +1,10 @@
 ﻿
 public abstract class TimedEffect : Effect {
 	public float timeLeft_seconds;
+
+	public TimedEffect(bool requiresCreator, bool mustBeInitalized) : base(requiresCreator, mustBeInitalized) {
+	}
+
 	/// <summary>
 	/// called by EffectContainor
 	/// </summary>

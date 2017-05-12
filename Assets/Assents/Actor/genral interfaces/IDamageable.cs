@@ -1,6 +1,7 @@
 ﻿/// <summary>
 /// implemented on all monobehaver scripts that can take damage
-/// damage can include only astetic changes (wall chips, scorch marks)
+/// damage can include only ascetic changes (wall chips, scorch marks)
+/// so this should be applied to most objects in the game world
 /// </summary>
 public interface IDamageable : UnityEngine.EventSystems.IEventSystemHandler {
 	/// <summary>
@@ -25,6 +26,17 @@ public interface IDamageable : UnityEngine.EventSystems.IEventSystemHandler {
 	/// <param name="type"></param>
 	/// <returns></returns>
 	bool ignoreDamage(DamageSources damageSorce, DamageTypes damageType);
+
+
+
+	/// <summary>
+	/// tries to apply this effect to the damageable object
+	/// can be used to modify hit imagery of objects without 
+	/// an effects handled
+	/// </summary>
+	/// <param name="effect"></param>
+	/// <returns></returns>
+	bool addEffect(Effect effect);
 }
 
 [System.Flags]

@@ -14,10 +14,8 @@ public class AreaBase : Card {
 	// sprite is done via the unity inspector by 
 	// clicking on this script in the project assets window
 
-	public AreaBase() {
-		cardReloadTime_seconds = 2f;
-		cardResorceCost = 1f;
-		cardArt = CardPrefabResorceLoader.Instance.loadSprite(getIconPath());
+	public AreaBase() : base() {
+		
 	}
 	#endregion
 
@@ -35,7 +33,7 @@ public class AreaBase : Card {
 	}
 	
 	protected string getAreaPrefabPath() {
-		return this.GetType().Name + "/" + "DamageArea";
+		return getCardResorceFolderPath() + "DamageArea";
 	}
 
 	protected bool actorSelectingArea = false;
@@ -64,11 +62,9 @@ public class AreaBase : Card {
 
 	#region override methods
 	public override void cacheResorces() {
+		base.cacheResorces();
 		CardPrefabResorceLoader.Instance.cashePrefab(getAreaPrefabPath());
-	}
-
-	public override void displayDescription(defaultTextHolder decriptionBox) {
-		throw new NotImplementedException();
+		CardPrefabResorceLoader.Instance.cashePrefab(getCardResorceFolderPath() + "AnvilAnimation");
 	}
 
 	public override bool useCard(Actor cardUser) {

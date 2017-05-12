@@ -190,7 +190,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   updateGUI: 0
-  deckName: baddyDeck
+  deckName: projectile
+  playerDeck: 0
 --- !u!212 &212506622058424506
 SpriteRenderer:
   m_ObjectHideFlags: 1
