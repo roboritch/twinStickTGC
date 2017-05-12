@@ -8,7 +8,7 @@ public class ProjectileSpeedModification : TimedEffect {
 	}
 
 	/// <summary>
-	/// increse of 50% = an increse multipyer of 0.5f
+	/// increase of 50% = an increase multiplier of 0.5f
 	/// </summary>
 	protected float increseMultiplyer = 0f;
 	public virtual float getProjectileSpeedIncreseMultiplyer(float baseSpeed) {
