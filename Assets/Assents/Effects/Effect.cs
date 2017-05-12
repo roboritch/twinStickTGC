@@ -13,7 +13,7 @@ public abstract class Effect {
 	protected int usesLeft;
 	/// <summary>
 	/// read only: once equal to 0 this effect should be removed
-	/// must be checked by any effect contaniers whenevner this effects
+	/// must be checked by any effect containers whenever this effects
 	/// methods are called
 	/// </summary>
 	public int NumberOfUsesLeft
@@ -22,8 +22,8 @@ public abstract class Effect {
 	}
 
 	/// <summary>
-	/// apply some effect to the actor (damage, movment changes, ext)
-	/// try to get this methed to work first
+	/// apply some effect to the actor (damage, moment changes, ext)
+	/// try to get this method to work first
 	/// </summary>
 	/// <param name="applyTo"></param>
 	public abstract void applyEffect(Actor applyTo);

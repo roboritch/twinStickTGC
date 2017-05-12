@@ -5,6 +5,6 @@ public abstract class TimedEffect : Effect {
 	/// called by EffectContainor
 	/// </summary>
 	/// <param name="time_seconds"></param>
-	/// <returns>wether effect should be applyed now</returns>
+	/// <returns>whether effect should be applied now</returns>
 	public abstract bool incrmentTimer(float time_seconds);
 }
