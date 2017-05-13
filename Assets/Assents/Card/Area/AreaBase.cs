@@ -24,7 +24,7 @@ public class AreaBase : Card {
 	/// </summary>
 	/// <returns></returns>
 	protected DamageAreaControls createDamageAreas() {
-		GameObject AreaPrefab = CardPrefabResorceLoader.Instance.loadPrefab(getAreaPrefabPath());
+		GameObject AreaPrefab = PrefabResorceLoader.Instance.loadPrefab(getAreaPrefabPath());
 		if(AreaPrefab == null) {
 			Debug.LogError("assent Not found!" + StackTraceUtility.ExtractStackTrace());
 			return null;
@@ -63,8 +63,8 @@ public class AreaBase : Card {
 	#region override methods
 	public override void cacheResorces() {
 		base.cacheResorces();
-		CardPrefabResorceLoader.Instance.cashePrefab(getAreaPrefabPath());
-		CardPrefabResorceLoader.Instance.cashePrefab(getCardResorceFolderPath() + "AnvilAnimation");
+		PrefabResorceLoader.Instance.cashePrefab(getAreaPrefabPath());
+		PrefabResorceLoader.Instance.cashePrefab(getCardResorceFolderPath() + "AnvilAnimation");
 	}
 
 	public override bool useCard(Actor cardUser) {

@@ -24,8 +24,7 @@ public abstract class Effect {
 	protected int usesLeft;
 	/// <summary>
 	/// read only: once equal to 0 this effect should be removed
-	/// must be checked by any effect containers whenever this effects
-	/// methods are called
+	/// this is checked before any effect containers whenever apply is called
 	/// </summary>
 	public int NumberOfUsesLeft {
 		get { return usesLeft; }
@@ -69,6 +68,12 @@ public abstract class Effect {
 	/// called by Effect container to fully remove this effect
 	/// </summary>
 	public abstract void removeEffect();
+
+	/// <summary>
+	/// called to cache resources of effect in ram
+	/// </summary>
+	public abstract void cacheResorces();
+
 
 	/*all properties that are set using the below method should be
 	 be defined in a region marked "effect properties" and be

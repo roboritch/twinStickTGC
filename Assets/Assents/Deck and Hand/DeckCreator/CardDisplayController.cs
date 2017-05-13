@@ -78,17 +78,17 @@ public class CardDisplayController : MonoBehaviour {
 	}
 
 	private void displayCardIcon() {
-		Sprite iconVal = CardPrefabResorceLoader.Instance.loadSprite(cardRepresented.basicAttrabutes.cardIconPath);
+		Sprite iconVal = PrefabResorceLoader.Instance.loadSprite(cardRepresented.basicAttrabutes.cardIconPath);
 		if(iconVal == null) {
-			iconVal = CardPrefabResorceLoader.Instance.loadSprite("_Basic/icon");
+			iconVal = PrefabResorceLoader.Instance.loadSprite("_Basic/icon");
 		}
 		cardIcon.sprite = iconVal;
 	}
 
 	private void displayCardArt() {
-		Sprite art = CardPrefabResorceLoader.Instance.loadSprite(cardRepresented.basicAttrabutes.cardArtPath);
+		Sprite art = PrefabResorceLoader.Instance.loadSprite(cardRepresented.basicAttrabutes.cardArtPath);
 		if(art == null) {
-			art = CardPrefabResorceLoader.Instance.loadSprite("_Basic/card art");
+			art = PrefabResorceLoader.Instance.loadSprite("_Basic/card art");
 		}
 		cardArt.sprite = art;
 	}
@@ -110,9 +110,9 @@ public class CardDisplayController : MonoBehaviour {
 	}
 
 	private void displayCardDescription() {
-		TextAsset text = CardPrefabResorceLoader.Instance.loadTextAsset(cardRepresented.basicAttrabutes.cardDescriptionPath);
+		TextAsset text = PrefabResorceLoader.Instance.loadTextAsset(cardRepresented.basicAttrabutes.cardDescriptionPath);
 		if(text == null) {
-			text = CardPrefabResorceLoader.Instance.loadTextAsset("_Basic/description");
+			text = PrefabResorceLoader.Instance.loadTextAsset("_Basic/description");
 		}
 		description.text = text.text;
 	}

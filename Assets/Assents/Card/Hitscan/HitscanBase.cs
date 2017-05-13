@@ -123,7 +123,7 @@ public class HitscanBase : Card {
 	/// <param name="startLocation"></param>
 	/// <param name="endLocation"></param>
 	protected void displayRay(Vector2 startLocation, Vector2 endLocation,float rayWidth) {
-		GameObject beamGO = CardPrefabResorceLoader.Instance.loadPrefab(getBeamPath(0));
+		GameObject beamGO = PrefabResorceLoader.Instance.loadPrefab(getBeamPath(0));
 		BeamAnimation beam = UnityEngine.Object.Instantiate(beamGO).GetComponent<BeamAnimation>();
 		beam.setBeamLength(startLocation, endLocation);
 		beam.setBeamColor(Color.red);
@@ -144,7 +144,7 @@ public class HitscanBase : Card {
 
 	public override void cacheResorces() {
 		for (int i = 0; i < hitscanFireAnimationNames.Length; i++) {
-			CardPrefabResorceLoader.Instance.cashePrefab(getBeamPath(i));
+			PrefabResorceLoader.Instance.cashePrefab(getBeamPath(i));
 		}
 	}
 

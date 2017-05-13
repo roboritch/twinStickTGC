@@ -5,7 +5,7 @@ using UnityEngine;
 public class LoadCardResorces : MonoBehaviour {
 
 	public void loadAllCardsResorces() {
-		CardPrefabResorceLoader.Instance.preLoadAllCards();
+		PrefabResorceLoader.Instance.preLoadAllCards();
 	}
 
 

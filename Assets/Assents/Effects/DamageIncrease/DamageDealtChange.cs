@@ -111,6 +111,10 @@ public class DamageDealtChange : Effect {
 	public override void initalize(Actor actor) {
 		throw new NotImplementedException();
 	}
+
+	public override void cacheResorces() {
+		//no resources cashed
+	}
 }
 
 public struct DamageIncreaseData {

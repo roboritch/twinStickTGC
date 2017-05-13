@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CardPrefabResorceLoader : Singleton<CardPrefabResorceLoader> {
+public class PrefabResorceLoader : Singleton<PrefabResorceLoader> {
 
 	//TODO look up ways to improve this (not sure how good folder structure is
 	#region Card Icon loading

@@ -22,7 +22,7 @@ public class ProjectileWeaponBase : Card {
 	protected float projectileDistanceFromUser = .3f;
 
 	private ProjectileBase instantiateProjectile() {
-		GameObject projectile = CardPrefabResorceLoader.Instance.loadPrefab(getProjectilePath());
+		GameObject projectile = PrefabResorceLoader.Instance.loadPrefab(getProjectilePath());
 		if(projectile == null) { //debug helper null check
 			Debug.LogError("projectile prefab null, check resource folder\n" + getProjectilePath());
 			return null;
@@ -44,7 +44,7 @@ public class ProjectileWeaponBase : Card {
 	}
 
 	public override void cacheResorces() {
-		CardPrefabResorceLoader.Instance.cashePrefab(getProjectilePath());
+		PrefabResorceLoader.Instance.cashePrefab(getProjectilePath());
 	}
 
 	public override void destroyCard() {

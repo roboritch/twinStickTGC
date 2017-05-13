@@ -5,6 +5,9 @@ using UnityEngine;
 
 [RequireComponent(typeof(Actor))]
 public class EffectsContainerComponent : MonoBehaviour {
+	//TODO standardize effect checking to one method that works for all effect lists
+	//TODO check each effect for removal after the effect has been applied
+
 	private Actor actor;
 	//indexed by effect type
 	private LinkedList<Effect>[] effects;
@@ -39,7 +42,7 @@ public class EffectsContainerComponent : MonoBehaviour {
 			case EffectTypes.damageReceavedChange:
 				break;
 			case EffectTypes.damageOverTime:
-				break;
+				return effect is DamageOverTimeEffect;
 			case EffectTypes.preventCardPlaying:
 				break;
 			case EffectTypes.modifyProjectileSpeed:
@@ -193,10 +196,6 @@ public class EffectsContainerComponent : MonoBehaviour {
 
 	void Awake() {
 		initEventStorage();
-	}
-
-	// Use this for initialization
-	void Start () {
 		actor = GetComponent<Actor>();
 	}
 

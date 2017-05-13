@@ -58,9 +58,9 @@ public abstract class Card {
 	/// All on disk assents required for the card are loaded into memory
 	/// </summary>
 	public virtual void cacheResorces() {
-		CardPrefabResorceLoader.Instance.loadSprite(basicAttrabutes.cardIconPath);
-		CardPrefabResorceLoader.Instance.loadSprite(basicAttrabutes.cardArtPath);
-		CardPrefabResorceLoader.Instance.loadTextAsset(basicAttrabutes.cardDescriptionPath);
+		PrefabResorceLoader.Instance.loadSprite(basicAttrabutes.cardIconPath);
+		PrefabResorceLoader.Instance.loadSprite(basicAttrabutes.cardArtPath);
+		PrefabResorceLoader.Instance.loadTextAsset(basicAttrabutes.cardDescriptionPath);
 	}
 
 	/// <summary>
@@ -79,7 +79,7 @@ public static class CardAttributeLoader{
 	/// <returns></returns>
 	public static bool LoadBasicCardAttributesFromJsonInResorceFolder(string path, out BasicCardAttributes cardAttr) {
 		cardAttr = default(BasicCardAttributes);
-		TextAsset cardAttrJson = CardPrefabResorceLoader.Instance.loadTextAsset(path + "CardAttr"); //Note: resorce.load does not need file extension
+		TextAsset cardAttrJson = PrefabResorceLoader.Instance.loadTextAsset(path + "CardAttr"); //Note: resorce.load does not need file extension
 		bool loaded = false;
 		if(cardAttrJson != null) {
 			loaded = SaveAndLoadJson.loadStructFromString(out cardAttr, cardAttrJson.text);

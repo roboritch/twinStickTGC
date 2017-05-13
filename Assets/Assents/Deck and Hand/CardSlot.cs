@@ -24,7 +24,7 @@ public class CardSlot : MonoBehaviour {
 
 	public void displayCardIcon() {
 		if (cardBeingHeld != null)
-			image.sprite = CardPrefabResorceLoader.Instance.loadSprite(cardBeingHeld.basicAttrabutes.cardIconPath);
+			image.sprite = PrefabResorceLoader.Instance.loadSprite(cardBeingHeld.basicAttrabutes.cardIconPath);
 		else
 			image.sprite = noCardsLeft;
 	}

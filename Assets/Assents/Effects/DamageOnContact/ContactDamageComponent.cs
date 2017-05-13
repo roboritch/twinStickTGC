@@ -3,10 +3,8 @@ using System.Collections;
 
 public class ContactDamageComponent : MonoBehaviour {
 
-	
-
 	// set to -1 so if this component is uninitialized it is detectable
-	protected float maxDamageInterval_seconds = -1f;
+	protected float maxDamageInterval_seconds;
 	protected float damageInterval_seconds;
 
 	protected bool damageActive = false;
@@ -46,9 +44,10 @@ public class ContactDamageComponent : MonoBehaviour {
 				if (actor.ignoreDamage(user.Team, damageType)) {
 					return;
 				}
-				actor.takeDamage(user.effects.modifyDamage(damageAmount,damageType,false), damageType,user.Team);
-				resetDamageTimer();
-            }
+				if(actor.takeDamage(user.effects.modifyDamage(damageAmount,damageType,false), damageType, user.Team)) {
+					resetDamageTimer();
+				}
+			}
 		}
 	}
 
@@ -101,7 +100,7 @@ public class ContactDamageComponent : MonoBehaviour {
 
 	void Start() {
 		if(maxDamageInterval_seconds == -1f) {
-			Debug.LogError("uninitialized ContactDamageComponent ID:" + transform.GetInstanceID());
+			Debug.LogError("uninitialized ContactDamageComponent, ID:" + transform.GetInstanceID());
 		}
 		collider = GetComponent<Collider2D>();
         if (collider == null) {

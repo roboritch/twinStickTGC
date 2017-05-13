@@ -64,4 +64,8 @@ public class DamageOnContactEffect : Effect {
 		contactDamageComp = actor.gameObject.AddComponent<ContactDamageComponent>();
 		contactDamageComp.initDamage(actor, damageAmount, DamageTypes.physical_normal, maxDamageInterval_sec);
 	}
+
+	public override void cacheResorces() {
+		GameObject animationPrefab = Resources.Load<GameObject>("ContactDamageComponent/spinning part");
+	}
 }

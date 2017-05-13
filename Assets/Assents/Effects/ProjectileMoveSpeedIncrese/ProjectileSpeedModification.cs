@@ -6,6 +6,7 @@ public class ProjectileSpeedModification : TimedEffect {
 	public override void apply(Actor applyTo) {
 		Debug.LogWarning("This effect cant be called this way! :" + GetType().Name);
 	}
+
 	#region base effectProperties
 	/// <summary>
 	/// increase of 50% = an increase multiplier of 0.5f
@@ -13,13 +14,14 @@ public class ProjectileSpeedModification : TimedEffect {
 	protected float increseMultiplyer = 0f;
 	#endregion
 
-	public ProjectileSpeedModification(bool requiresCreator, bool mustBeInitalized) : base(requiresCreator, mustBeInitalized) {
+	public ProjectileSpeedModification() : base(false, false) {
 	}
 
 	public virtual float getProjectileSpeedIncreseMultiplyer(float baseSpeed) {
 		return increseMultiplyer;
 	}
 
+	protected float timeLeft_seconds;
 	public override bool incrmentTimer(float time_seconds) {
 		timeLeft_seconds -= timeLeft_seconds;
 		if(timeLeft_seconds <= 0) {
@@ -55,5 +57,9 @@ public class ProjectileSpeedModification : TimedEffect {
 		properties.value[0] = default(float).ToString();
 
 		return properties;
+	}
+
+	public override void cacheResorces() {
+		//no resources to be cached
 	}
 }

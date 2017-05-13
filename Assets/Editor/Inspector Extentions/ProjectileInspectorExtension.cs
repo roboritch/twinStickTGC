@@ -50,8 +50,6 @@ public class ProjectileInspectorExtension : Editor {
 
 		}
 
-		//TODO save and load serialized version of effects to the target
-		//use this http://answers.unity3d.com/questions/610303/unity-systemobject-serialization.html
 		foreach(EffectProperties effectValues in myTarget.effectsApplyedOnContact) {
 		
 				EditorGUILayout.LabelField(effectValues.effectClassName + " values");
@@ -66,7 +64,7 @@ public class ProjectileInspectorExtension : Editor {
 						effectValues.value[x] = EditorGUILayout.Toggle(effectValues.propertyName[x], bool.Parse(effectValues.value[x])).ToString();
 					} else if(GetEnumType(prameTypeName).IsEnum) {
 						//TODO see if menu has flags and change inspector selection type
-						Enum enumValue = (Enum)Enum.ToObject(GetEnumType(prameTypeName), effectValues.value[x]);
+						Enum enumValue = (Enum)Enum.Parse(GetEnumType(prameTypeName), effectValues.value[x]);
 						effectValues.value[x] = EditorGUILayout.EnumPopup(prameTypeName, enumValue).ToString();
 					}
 				} catch(Exception) {

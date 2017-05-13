@@ -163,7 +163,9 @@ public class Deck : MonoBehaviour {
 			loadSuccess = SaveAndLoadJson.loadStruct(SaveAndLoadJson.getResourcePath(baddyDecks, deckName), out deck);
 		}
 		if(!loadSuccess) {
-			SaveAndLoadJson.loadStruct(SaveAndLoadJson.getResourcePath(baddyDecks , "errorDeck"), out deck);
+			if(!SaveAndLoadJson.loadStruct(SaveAndLoadJson.getResourcePath(baddyDecks , "errorDeck"), out deck)) {
+				return false;
+			}
 		}
 		//get card class types from names
 		Type[] cardClasses = new Type[deck.cardTypeName.Length];
