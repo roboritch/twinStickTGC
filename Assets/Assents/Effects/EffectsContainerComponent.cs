@@ -60,6 +60,13 @@ public class EffectsContainerComponent : MonoBehaviour {
 	}
 
 	public void addEffect(Effect effect) {
+		if(effect is TimedEffect) {
+			//this effect is in the wrong place due to the add effect method being called
+			//using a polymorphic variable, it is fixed here so Effect vars can still be polymorphic
+			addEffect((TimedEffect)effect);
+			return;
+		}
+
 		varifyEffectType(effect, effect.getEffectType);
 		int effectIndex = (int)effect.getEffectType;
 		effects[effectIndex].AddLast(effect);

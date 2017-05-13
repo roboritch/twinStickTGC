@@ -77,19 +77,19 @@ public class ProjectileBase : MonoBehaviour {
 	/// <param name="colider"></param>
 	protected void objectCollision(Collider2D colider) {
 		IDamageable hitObject = colider.GetComponent<IDamageable>();
-		if (hitObject != null) {
+		if(hitObject != null) {
 			if(hitObject.ignoreDamage(sourceTeam, damageType)) {
 				return;
 			}
 			//damage hit object
-			hitObject.takeDamage(damageAmount,damageType,sourceTeam);
+			hitObject.takeDamage(damageAmount, damageType, sourceTeam);
 			//apply effects to object
 			if(effectsApplyedOnContact != null)
-			foreach(EffectProperties effect in effectsApplyedOnContact) {
-				Effect effectInsance = (Effect)System.Activator.CreateInstance(System.Type.GetType(effect.effectClassName));
-				effectInsance.setEffectProperties(effect);
-				hitObject.addEffect(effectInsance);
-			}
+				foreach(EffectProperties effect in effectsApplyedOnContact) {
+					Effect effectInsance = (Effect)System.Activator.CreateInstance(System.Type.GetType(effect.effectClassName));
+					effectInsance.setEffectProperties(effect);
+					hitObject.addEffect(effectInsance);
+				}
 
 			destroyProjectile();
 		} else {

@@ -41,12 +41,12 @@ public interface IDamageable : UnityEngine.EventSystems.IEventSystemHandler {
 
 [System.Flags]
 public enum DamageSources {
-	none = 0,
-	player1 = 1 << 0,
-	player2 = 1 << 1,
-	player3 = 1 << 2,
-	player4 = 1 << 3,
-	AIGroup1 = 1 << 4,
-	AIGroup2 = 1 << 5,
-	AIGroup3 = 1 << 6,
+	none = 1 << 0,
+	player1 = 1 << 1,
+	player2 = 1 << 2,
+	player3 = 1 << 3,
+	player4 = 1 << 4,
+	AIGroup1 = 1 << 5,
+	AIGroup2 = 1 << 6,
+	AIGroup3 = 1 << 7,
 }

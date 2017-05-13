@@ -51,9 +51,10 @@ public class ProjectileInspectorExtension : Editor {
 		}
 
 		foreach(EffectProperties effectValues in myTarget.effectsApplyedOnContact) {
-		
-				EditorGUILayout.LabelField(effectValues.effectClassName + " values");
-				for(int x = 0; x < effectValues.propertyName.Length; x++) {
+			EditorGUILayout.LabelField("", GUI.skin.horizontalSlider);
+			EditorGUILayout.LabelField(effectValues.effectClassName + " values");
+			for(int x = 0; x < effectValues.propertyName.Length; x++) {
+
 				string prameTypeName = effectValues.valueTypeName[x];
 				try {
 					if(prameTypeName == typeof(int).Name) {
