@@ -293,6 +293,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   updateGUI: 1
   deckName: testDeck
+  playerDeck: 1
 --- !u!114 &114123856856574042
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -319,7 +320,7 @@ MonoBehaviour:
   health_MIN: 0
   health: 0
   invincibilityFrames_seconds: 2
-  team: 1
+  team: 2
   collider: {fileID: 0}
   playerControled: 1
   effects: {fileID: 0}

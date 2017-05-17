@@ -43,7 +43,7 @@ public static class SaveAndLoadJson {
 	}
 
 	/// <summary>
-	///  Application.dataPath + "/" + "Resources/" + folderAndItemInResource
+	///  Application.dataPath + "/" + "Resources/" + folderAndItemInResource 
 	/// </summary>
 	/// <param name="folderAndItemInResource"></param>
 	/// <returns></returns>

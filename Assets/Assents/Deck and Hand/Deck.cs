@@ -83,9 +83,9 @@ public class Deck : MonoBehaviour {
 		BasicCardAttributes[] baseAttributes = new BasicCardAttributes[cardType.Length];
 		
 		for (int i = 0; i < cardType.Length; i++) {
-			if(SaveAndLoadJson.loadStruct(SaveAndLoadJson.getResourcePath(cardType[i].Name), out baseAttributes[i])) {
+			if(SaveAndLoadJson.loadStruct(SaveAndLoadJson.getResourcePath(cardType[i].Name, "CardAttr"), out baseAttributes[i])) {
 				//load the error handling card
-				SaveAndLoadJson.loadStruct(SaveAndLoadJson.getResourcePath("_Basic"), out baseAttributes[i]);
+				SaveAndLoadJson.loadStruct(SaveAndLoadJson.getResourcePath("_Basic", "CardAttr"), out baseAttributes[i]);
 			}
 		}
 		
@@ -146,11 +146,11 @@ public class Deck : MonoBehaviour {
 	}
 	#region Deck load and save from disk
 	/// <summary>
-	/// "Player Decks/"
+	/// "Player Decks"
 	/// </summary>
 	public static readonly string playerDecks = "Player Decks";
 	/// <summary>
-	/// "Baddy Decks/"
+	/// "Baddy Decks"
 	/// </summary>
 	public static readonly string baddyDecks = "Baddy Decks";
 
@@ -172,8 +172,8 @@ public class Deck : MonoBehaviour {
 		for(int i = 0; i < deck.cardTypeName.Length; i++) {
 			cardClasses[i] = Type.GetType(deck.cardTypeName[i]);
 		}
-
-		addCardsToDeck(cardClasses, deck.cardBaseAttributes);
+		
+		addCardsToDeck(cardClasses);
 
 
 		return loadSuccess;
@@ -222,12 +222,9 @@ public struct JsonDeck {
 
 	public JsonDeck(string[] cardNames, BasicCardAttributes[] cardBaseAttributes) {
 		cardTypeName = cardNames;
-		this.cardBaseAttributes = cardBaseAttributes;
 	}
 
 	public string[] cardTypeName;
-	//it is possible that some base attributes are changed by the deck creator
-	public BasicCardAttributes[] cardBaseAttributes;
 }
 
 [System.Obsolete("Json is now the method used to save and load decks")]

@@ -14,9 +14,9 @@ public class PlayerAim : Aim {
 	private float layerOfReticle = -.1f;
 
 	/// <summary>
-	/// moves reticale based on mouse location
+	/// moves reticle based on mouse location
 	/// </summary>
-	private void updateReticalPosition() {
+	private void updateReticlePosition() {
 		Vector3	aimLocation3d = Input.mousePosition;
 		aimLocation3d = Camera.main.ScreenToWorldPoint(aimLocation3d);
 		aimLocation3d.z = layerOfReticle;
@@ -28,6 +28,10 @@ public class PlayerAim : Aim {
 	#region camera control
 	public Camera cam;
 	[SerializeField] private float camMoveSpeed = 1f;
+	/// <summary>
+	/// updates the camera position to fallow the player
+	/// TODO update with smooth flowing and action fallowing 
+	/// </summary>
 	private void updateCameraPos() {
 		Vector3 newCamPos = transform.position;
 
@@ -37,17 +41,20 @@ public class PlayerAim : Aim {
 
 	#endregion
 
+	void Awake() {
+		if(cam == null) {
+			GameObject.FindGameObjectWithTag("MainCamera");
+		}
+	}
 
-	// Use this for initialization
 	void Start () {
 		KeyEvents.Instance.constrainMouseToScreen(true);
 		aimLocationObject = Instantiate(reticle).GetComponent<Transform>();
-    }
+	}
 	
-	// Update is called once per frame
 	void Update () {
 		updateCameraPos();
-		updateReticalPosition();
+		updateReticlePosition();
 		lookAtAimLocation();
 	}
 

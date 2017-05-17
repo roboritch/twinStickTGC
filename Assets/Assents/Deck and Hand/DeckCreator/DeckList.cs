@@ -8,7 +8,7 @@ using System;
 public class DeckList : MonoBehaviour {
 
 	#region developer options
-	private bool playerDeck;
+	private bool playerDeck = true;
 	/// <summary>
 	/// true for player decks, false for enemy decks 
 	/// </summary>
@@ -69,9 +69,9 @@ public class DeckList : MonoBehaviour {
 	/// <returns></returns>
 	private string getDeckPath() {
 		if(playerDeck) {
-			return Deck.playerDecks;
+			return SaveAndLoadJson.getBaseFilePath(Deck.playerDecks);
 		} else {
-			return SaveAndLoadJson.getResourcePath(Deck.baddyDecks);
+			return SaveAndLoadJson.getResourcePath(Deck.baddyDecks,"");
 		}
 	}
 
@@ -89,8 +89,7 @@ public class DeckList : MonoBehaviour {
 				c.basicAttrabutes.removeOnDraw = false;
 			}
 			cardsAttributes[index++] = c.basicAttrabutes;
-			
-
+		
 		}
 		
 		JsonDeck deckSave = new JsonDeck(cardClassNames, cardsAttributes);
@@ -102,8 +101,8 @@ public class DeckList : MonoBehaviour {
 		
 		//TODO add confirmation screen when loading/exiting deck editor
 		JsonDeck deckLoad;
-		if(SaveAndLoadJson.loadStruct(getDeckPath() + deckName, out deckLoad) == false) {
-			Debug.LogError("selected deck does not exist");
+		if(SaveAndLoadJson.loadStruct( getDeckPath() + "/" + deckName, out deckLoad) == false) {
+			Debug.LogError("selected deck does not exist in " + getDeckPath());
 			return;
 		}
 
@@ -114,7 +113,6 @@ public class DeckList : MonoBehaviour {
 			if(obj != null) {
 				if(obj is Card) {
 					c = (Card)obj;
-					c.basicAttrabutes = deckLoad.cardBaseAttributes[i];
 					addCardToDeck(c);
 					continue;
 				}
@@ -122,8 +120,8 @@ public class DeckList : MonoBehaviour {
 			Debug.LogError("card " + deckLoad.cardTypeName[i]+ " could not be loaded\n" +
 				"check that the card class with that name exists");
 		}
-		
 
+		this.deckName.text = deckName;
 		
 	}
 
