@@ -15,8 +15,10 @@ public class CardSlot : MonoBehaviour {
 	}
 
 	public void removeCard() {
-		cardBeingHeld.destroyCard();
-		cardBeingHeld = null;
+		if(cardBeingHeld != null) { 
+			cardBeingHeld.destroyCard();
+			cardBeingHeld = null;
+		}
 	}
 
 	[SerializeField] private Sprite defaultSprite;

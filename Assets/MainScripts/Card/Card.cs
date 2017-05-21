@@ -8,8 +8,6 @@ public abstract class Card {
 #if false
 	#region Initialization of static members
 	static CardName() { } //insures these values are overwritten properly
-	public new static readonly bool removeOnDraw = true;
-	public new static readonly float probabiltyOfDraw = 1f;
 	#endregion
 
 	#region initialization of parent vars

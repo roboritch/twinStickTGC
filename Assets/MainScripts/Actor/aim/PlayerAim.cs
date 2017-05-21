@@ -43,7 +43,7 @@ public class PlayerAim : Aim {
 
 	void Awake() {
 		if(cam == null) {
-			GameObject.FindGameObjectWithTag("MainCamera");
+			cam = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
 		}
 	}
 

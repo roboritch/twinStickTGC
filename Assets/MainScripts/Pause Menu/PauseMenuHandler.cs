@@ -49,8 +49,8 @@ public class PauseMenuHandler : Singleton<PauseMenuHandler> {
 	
 	// Update is called once per frame
 	void Update () {
-		//HACK only let pause menu show up if an actor
-		if (Input.GetKeyUp(KeyCode.Escape) && FindObjectOfType<Actor>() != null) {
+		//HACK only let pause menu show up if an actor exists
+		if (Input.GetKeyUp(KeyCode.Escape) && FindObjectsOfType<Actor>() != null) {
 			openPauseMenu();
         }
 	}

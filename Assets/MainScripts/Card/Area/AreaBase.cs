@@ -6,8 +6,6 @@ using UnityEngine;
 public class AreaBase : Card {
 	#region Initialization of static members
 	static AreaBase() { } //insures these values are overwritten properly
-	public new static readonly bool removeOnDraw = true;
-	public new static readonly float probabiltyOfDraw = 1f;
 	#endregion
 
 	#region initialization of parent vars

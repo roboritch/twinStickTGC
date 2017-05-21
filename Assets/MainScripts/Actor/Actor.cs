@@ -155,6 +155,11 @@ public class Actor : MonoBehaviour , IDamageable {
 
 	#endregion
 
+	#region Equipment
+	
+
+	#endregion
+
 	//all connections to KeyEvents should be here and be disable
 	#region button callbacks
 	[SerializeField] private bool playerControled = false;
@@ -185,12 +190,12 @@ public class Actor : MonoBehaviour , IDamageable {
 	#endregion
 
 	#region Hand of Cards
-	
+
 	#endregion
 
+	#region MonoBehaviour methods
 	void Awake() {
 		collider = GetComponent<Collider2D>();
-		initHealth();
 		initGrapics();
 		initEffects();
 		aimObject = GetComponent(typeof(IGetAim)) as IGetAim;
@@ -198,6 +203,7 @@ public class Actor : MonoBehaviour , IDamageable {
 
 	// Use this for initialization
 	void Start () {
+		initHealth();
 		initButtonCallbacks();
 	}
 	
@@ -205,6 +211,7 @@ public class Actor : MonoBehaviour , IDamageable {
 	void Update () {
 		updateSpriteDamage();
 	}
+	#endregion
 
 	#region card helper functions
 	public Vector2 get2dPostion() {

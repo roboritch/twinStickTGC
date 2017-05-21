@@ -5,14 +5,14 @@ using UnityEngine;
 public class EnamySpawner : MonoBehaviour {
 	[SerializeField]
 	protected GameObject enamyPrefab;
-	//TODO load premade enamy decks from xml rather than setting decks in prefabs
+	//TODO load premade enemy decks from xml rather than setting decks in prefabs
 	[SerializeField]
 	protected string targetTagName = "";
 	
 	[SerializeField]
 	protected SpawnTimes spawnTimings;
 
-	#region Interval Spawing
+	#region Interval Spawning
 	[SerializeField]
 	protected float spawnIntervel_seconds;
 	protected float initalSpawnInterval_seconds;
