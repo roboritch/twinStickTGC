@@ -22,7 +22,7 @@ public abstract class Card {
 	#endregion
 
 	public Card() {
-		if(CardAttributeLoader.LoadBasicCardAttributesFromJsonInResorceFolder(getCardResorceFolderPath(), out basicAttrabutes)) {
+		if(CardAttributeLoader.LoadBasicCardAttributesFromJsonInResorceFolder(GetType().Name, out basicAttrabutes)) {
 			
 		}
 		Debug.Log(basicAttrabutes.ToString());
@@ -72,12 +72,12 @@ public static class CardAttributeLoader{
 	/// <summary>
 	/// load the text Assent CardAttr
 	/// </summary>
-	/// <param name="path"></param>
+	/// <param name="cardName"></param>
 	/// <param name="cardAttr"></param>
 	/// <returns></returns>
-	public static bool LoadBasicCardAttributesFromJsonInResorceFolder(string path, out BasicCardAttributes cardAttr) {
+	public static bool LoadBasicCardAttributesFromJsonInResorceFolder(string cardName, out BasicCardAttributes cardAttr) {
 		cardAttr = default(BasicCardAttributes);
-		TextAsset cardAttrJson = PrefabResorceLoader.Instance.loadTextAsset(path + "CardAttr"); //Note: resorce.load does not need file extension
+		TextAsset cardAttrJson = PrefabResorceLoader.Instance.loadTextAsset(cardName + "/CardAttr"); //Note: resorce.load does not need file extension
 		bool loaded = false;
 		if(cardAttrJson != null) {
 			loaded = SaveAndLoadJson.loadStructFromString(out cardAttr, cardAttrJson.text);
@@ -85,11 +85,10 @@ public static class CardAttributeLoader{
 		if(!loaded) {
 			if(Application.isEditor) {
 				//TODO create CardPramSetter
-				Debug.Log("Card attributes not set, creating default in " + path +"\n" 
-					+ "edit to set prams or use CardPramSetter");
-				SaveAndLoadJson.saveStruct("Resources/" + path + "CardAttr",cardAttr);
+				Debug.Log("Card attributes not set" + cardName +"\n" 
+					+ "create using editor using CardPramSetter");
 			} else {
-				Debug.LogError("something has gone wrong, there are no card Attributes in " + path);
+				Debug.LogError("something has gone wrong, there are no card Attributes in " + cardName);
 			}
 		}
 		return loaded; 

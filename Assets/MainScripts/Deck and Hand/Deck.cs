@@ -71,8 +71,7 @@ public class Deck : MonoBehaviour {
 	/// </summary>
 	/// <param name="cardType">the class type of a card</param>
 	public void addCardToDeck(System.Type cardType) {
-		//look at c# reference of Type for more info on how this works
-		addCardToDeck(cardType);
+		throw new NotImplementedException();
 	}
 
 	/// <summary>
@@ -83,9 +82,10 @@ public class Deck : MonoBehaviour {
 		BasicCardAttributes[] baseAttributes = new BasicCardAttributes[cardType.Length];
 		
 		for (int i = 0; i < cardType.Length; i++) {
-			if(SaveAndLoadJson.loadStruct(SaveAndLoadJson.getResourcePath(cardType[i].Name, "CardAttr"), out baseAttributes[i])) {
+			if(!CardAttributeLoader.LoadBasicCardAttributesFromJsonInResorceFolder(cardType[i].Name, out baseAttributes[i])) {
 				//load the error handling card
-				SaveAndLoadJson.loadStruct(SaveAndLoadJson.getResourcePath("_Basic", "CardAttr"), out baseAttributes[i]);
+				Debug.LogWarning("no card attribute file found for " + cardType[i].Name);
+				CardAttributeLoader.LoadBasicCardAttributesFromJsonInResorceFolder("_Basic", out baseAttributes[i]);
 			}
 		}
 		
@@ -180,7 +180,7 @@ public class Deck : MonoBehaviour {
 	}
 
 
-
+	
 	private void initalDeckLoad(string deckName) {
 		//Dev code to save a test deck
 		//if (!File.Exists(SaveAndLoadXML.getBaseFilePath() + deckFolderLocation + deckName)) {
@@ -188,12 +188,10 @@ public class Deck : MonoBehaviour {
 		//}
 		if (loadDeckFromMemory(deckName) == false) {
 			Debug.LogError("No deck found with name:" + deckName + "\n"
-				+ "Deck gameObject ID: " + GetInstanceID());
-			//add a card to the deck to avoid errors
-			addCardToDeck(typeof(ProjectileWeaponBase));
+				+ "Deck gameObject ID: " + GetInstanceID());		
 		}
 	}
-
+	
 	#endregion
 
 	[SerializeField]

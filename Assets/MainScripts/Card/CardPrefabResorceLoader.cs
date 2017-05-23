@@ -45,7 +45,7 @@ public class PrefabResorceLoader : Singleton<PrefabResorceLoader> {
 		} else { //get resource from folder
 			textAsset = Resources.Load<TextAsset>(resorcePathname);
 			if(textAsset == null) {
-				Debug.LogWarning("no text asset found with that name");
+				Debug.LogWarning("no text asset found with that name\n" + resorcePathname);
 				return null;
 			}
 			textResorces.Add(resorcePathname, textAsset);
