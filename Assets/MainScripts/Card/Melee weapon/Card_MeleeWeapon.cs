@@ -17,16 +17,10 @@ public class Card_MeleeWeapon : Card {
 	}
 	#endregion
 
-
-
-
-
 	#region override methods
-
 	public override void cacheResorces() {
 		base.cacheResorces();
-
-
+		
 	}
 
 	public override void destroyCard() {

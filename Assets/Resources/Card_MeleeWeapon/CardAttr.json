@@ -1,0 +1,1 @@
+{"cardIconPath":"Card_MeleeWeapon/icon","cardArtPath":"Card_MeleeWeapon/card art","cardDescriptionPath":"Card_MeleeWeapon/description","cardName":"Card_MeleeWeapon","cardReloadTime_seconds":10.0,"cardResorceCost":20.0,"cardElements":2,"cardType":40,"probabilityOfDraw":0.30000001192092898,"removeOnDraw":true,"numberOfCardAllowedInDeck":3}

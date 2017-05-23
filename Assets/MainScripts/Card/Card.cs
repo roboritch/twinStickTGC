@@ -155,7 +155,7 @@ public struct BasicCardAttributes {
 	/// this specifies basic information about how a card is used
 	/// and where it is stored on a character
 	/// </summary>
-	public CardTypes cardType;
+	public CardLocation cardType;
 
 	/// <summary>
 	/// probability this card is drawn over other cards
@@ -174,6 +174,29 @@ public struct BasicCardAttributes {
 	public int numberOfCardAllowedInDeck;
 }
 
+//linked with actor equipment
+public enum CardLocation {
+	///card is never really exists in the world
+	///this includes cards that create projectiles on use
+	instant = 1 << 0,
+	///creates some object in the world
+	persistant = 1 << 1,
+
+	//slots
+	above = 1 << 2,
+	right = 1 << 3,
+	below = 1 << 4,
+	left = 1 << 5,
+	onTopOf = 1 << 6,
+	///if this slot is used no other slot should be used
+	noSlot = 1 << 7,
+
+	//the card takes up all slots
+	all = 1 << 8,
+}
+
+
+#if false
 // char sheet used as reference https://s-media-cache-ak0.pinimg.com/originals/02/2d/45/022d4533e8fb9351a42f5d904cd69da7.png
 /// <summary>
 /// only a few of these will be used in the initial releases 
@@ -225,3 +248,4 @@ public enum CardTypes {
 	///the card can fit in any slot specified
 	onlyOne = 1 << 26,
 }
+#endif

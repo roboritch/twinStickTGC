@@ -2,15 +2,20 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Equipment {
+public abstract class Equipment {
 
-	// Use this for initialization
-	void Start () {
-		
+	protected CardLocation possibleCardLocations;
+	public CardLocation getPossibleCardLocations {
+		get {
+			return possibleCardLocations;
+		}
 	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+
+	public CardLocation inCardSlots;
+
+
+	public abstract void initalizeEquipment(Actor actor);
+	public abstract void destroyEquipment();
+
+
 }

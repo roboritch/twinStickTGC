@@ -156,7 +156,156 @@ public class Actor : MonoBehaviour , IDamageable {
 	#endregion
 
 	#region Equipment
-	
+	private Equipment equipSlot_Above;
+	private Equipment equipSlot_Right;
+	private Equipment equipSlot_Below;
+	private Equipment equipSlot_Left;
+	private Equipment equipSlot_OnTopOf;
+
+	///used by equipment that does not use a slot
+	///but is still connected to the actor somehow
+	private List<Equipment> equipSlot_Global;
+
+	private void initEquipment() {
+		updateEquipPoints();
+	}
+
+
+	private bool checkIfTakesUpSlot(Equipment equipment, CardLocation slotType) {
+		return (equipment.getPossibleCardLocations & slotType) == slotType;
+	}
+
+	private bool trySetEquipSlot(Equipment newEquipment,CardLocation location, ref Equipment equipSlot, bool overrideCurrent) {
+		//check if this slot is used by the newEquipment
+		if(checkIfTakesUpSlot(equipSlot, location)) {
+			//check to see if slot is already in use
+			if(!overrideCurrent) {
+				if(equipSlot != null) {
+					return false;
+				}
+			}
+			//set the new equipment
+			if(equipSlot != null) {
+				equipSlot.destroyEquipment();
+			}
+			equipSlot = newEquipment;
+			return true;
+		}
+		return false;
+	}
+
+	public bool addEquipment(Equipment equipment,bool overrideCurrent) {
+		if(checkIfTakesUpSlot(equipment, CardLocation.noSlot)) {
+			equipSlot_Global.Add(equipment);
+			//if this slot is used no other slot should be used
+			return true;
+		}
+
+		bool setAll = (equipment.getPossibleCardLocations & CardLocation.all) == CardLocation.all;
+		bool someIsSet = false;
+
+		//TODO change part of CardLocation to inalterable enum
+		if(trySetEquipSlot(equipment, CardLocation.above, ref equipSlot_Above, overrideCurrent)) {
+			if(!setAll) {
+				return true;
+			}
+			someIsSet = true;
+		}
+		if(trySetEquipSlot(equipment, CardLocation.right, ref equipSlot_Right, overrideCurrent)) {
+			if(!setAll) {
+				return true;
+			}
+			someIsSet = true;
+		}
+		if(trySetEquipSlot(equipment, CardLocation.below, ref equipSlot_Below, overrideCurrent)) {
+			if(!setAll) {
+				return true;
+			}
+			someIsSet = true;
+		}
+		if(trySetEquipSlot(equipment, CardLocation.left, ref equipSlot_Left, overrideCurrent)) {
+			if(!setAll) {
+				return true;
+			}
+			someIsSet = true;
+		}
+		if(trySetEquipSlot(equipment, CardLocation.onTopOf, ref equipSlot_OnTopOf, overrideCurrent)) {
+			if(!setAll) {
+				return true;
+			}
+			someIsSet = true;
+		}
+		
+		return someIsSet;
+	}
+
+	//4 points on the actor that objects can be placed
+	#region equip points
+	private Vector3 equipPoint_Above;
+	private Vector3 equipPoint_Right;
+	private Vector3 equipPoint_Below;
+	private Vector3 equipPoint_Left;
+	private Vector3 equipPoint_OnTopOf;
+
+	/// <summary>
+	/// must be called on initialization
+	/// 
+	/// this must be called whenever an actors colder changes
+	/// (including when an actor is scaled)
+	/// </summary>
+	private void updateEquipPoints() {
+		Bounds bounds = collider.bounds;
+		Vector3 centerPoint = bounds.center;
+		float offset = 0.1f;
+
+		equipPoint_Above = transform.InverseTransformPoint(bounds.ClosestPoint(centerPoint + new Vector3(0,20f)) + new Vector3(0, offset));
+		equipPoint_Right = transform.InverseTransformPoint(bounds.ClosestPoint(centerPoint + new Vector3(20f,0)) + new Vector3(offset,0));
+		equipPoint_Below = transform.InverseTransformPoint(bounds.ClosestPoint(centerPoint + new Vector3(0,-20f)) + new Vector3(0, -offset));
+		equipPoint_Left = transform.InverseTransformPoint(bounds.ClosestPoint(centerPoint + new Vector3(-20f,0)) + new Vector3(-offset, 0));
+
+		equipPoint_OnTopOf = transform.InverseTransformPoint(centerPoint);
+	}
+
+	/// <summary>
+	/// get the location of an equip point in the local space of this actor
+	/// </summary>
+	/// <param name="pointLocation"></param>
+	/// <returns></returns>
+	public Vector3 getEquipPoint(CardLocation pointLocation) {
+		switch(pointLocation) {
+			case CardLocation.instant:
+			break;
+			case CardLocation.persistant:
+			break;
+			case CardLocation.above:
+			return equipPoint_Above;
+			case CardLocation.right:
+			return equipPoint_Right;
+			case CardLocation.below:
+			return equipPoint_Below;
+			case CardLocation.left:
+			return equipPoint_Left;
+			case CardLocation.onTopOf:
+			return equipPoint_OnTopOf;
+			case CardLocation.noSlot:
+			break;
+			case CardLocation.all:
+			break;
+			default:
+			break;
+		}
+
+		Debug.LogError("no valid location found");
+		return new Vector3();
+	}
+
+
+
+
+	#endregion
+
+
+
 
 	#endregion
 
@@ -199,6 +348,7 @@ public class Actor : MonoBehaviour , IDamageable {
 		initGrapics();
 		initEffects();
 		aimObject = GetComponent(typeof(IGetAim)) as IGetAim;
+		initEquipment();
 	}
 
 	// Use this for initialization
@@ -244,5 +394,6 @@ public class Actor : MonoBehaviour , IDamageable {
 		return aim;
 	}
 	#endregion
+
 
 }

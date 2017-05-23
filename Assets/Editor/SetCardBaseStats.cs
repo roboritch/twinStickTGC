@@ -80,7 +80,7 @@ public class SetCardBaseStats : EditorWindow {
 		cardAttrabutes.probabilityOfDraw = EditorGUILayout.FloatField("draw probability", cardAttrabutes.probabilityOfDraw );
 		cardAttrabutes.numberOfCardAllowedInDeck = EditorGUILayout.IntField("Numb Allowed In Deck", cardAttrabutes.numberOfCardAllowedInDeck);
 		cardAttrabutes.cardElements = (DamageTypes)EditorGUILayout.EnumMaskPopup("setCardElements", cardAttrabutes.cardElements);
-		cardAttrabutes.cardType = (CardTypes)EditorGUILayout.EnumMaskPopup("setCardType(s)", cardAttrabutes.cardType);
+		cardAttrabutes.cardType = (CardLocation)EditorGUILayout.EnumMaskPopup("setCardType(s)", cardAttrabutes.cardType);
 
 
 		GUILayout.Label("icon,card art, and card description (.txt)\nmust be added to the created folder");
@@ -93,8 +93,8 @@ public class SetCardBaseStats : EditorWindow {
 			colorset.normal.textColor = Color.black;
 
 		if(GUILayout.Button("create card information", colorset) && cardFilePath != "/") {
-			if(!Directory.Exists(cardFilePath))
-				Directory.CreateDirectory(cardFilePath);
+			if(!Directory.Exists(SaveAndLoadJson.getResourcePath(cardFilePath)))
+				Directory.CreateDirectory(SaveAndLoadJson.getResourcePath(cardFilePath));
 
 			//string printer = "";
 			//SaveAndLoadJson.saveStructToString(cardAttrabutes,out printer);
